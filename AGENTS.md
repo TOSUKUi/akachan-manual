@@ -1,0 +1,63 @@
+# あかちゃんマニュアル（品川区向け赤ちゃんガイド）
+
+## Stack
+
+- **Language / Runtime**: TypeScript, Node 20+
+- **Framework**: Vite + React、静的マルチページは vite-react-ssg（SPA 禁止）
+- **Key dependencies**: react, react-dom, shadcn/ui, vite-react-ssg, vitest
+- **Package manager**: npm
+- **Hosting**: GitHub Pages（dist/ 出力、base './'、.nojekyll、GitHub Actions で gh-pages 配備）
+
+## Build approach
+
+Tracer Bullet（薄いエンドツーエンドのスライスから作り、太くしていく）
+
+## Commands
+
+```bash
+npm install          # 依存のインストール
+npm run dev          # dev サーバー
+npm run build        # dist/ に静的 HTML
+npm test             # テスト
+```
+
+スキャフォールド未作成。上記コマンドは spec 0001 の build plan（タスク 1）で `/develop` が定義する。
+
+## Specs
+
+Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
+
+## Rules
+
+- 関数は純関数が基本（副作用なし）、変換は map / filter / reduce
+- データは不変（const, readonly）、共有ミュータブル状態は禁止
+- 副作用（I/O, ネットワーク, 状態変更）はシステムの端に集めて明示する
+- 継承より関数合成、素の関数で足りるならクラスを使わない
+- null は避け union 型の明示的 undefined で、期待される失敗は例外でなく明示エラー（Result 型）
+- 型は strict, any 禁止, 型を網羅
+- UI はアクセシビリティ基線 WCAG AA
+- conventional commits、命名統一（ファイル kebab-case、関数 camelCase、コンポーネント PascalCase）
+
+## Tooling
+
+`/develop tooling` が以下を選択どおりインストールする（記録のみ、ここには入れない）: ESLint + Prettier、コミット前 lint + format + typecheck、vitest（ユニット + 統合、実行器は /test）、push 時 CI（lint, typecheck, test）+ GitHub Pages 配備。
+
+## Git
+
+- integration: on
+- branch prefix: feat/
+- commit: per-milestone
+
+## Agent skills
+
+- [shadcn](.agents/skills/shadcn/): `shadcn/ui`, shadcn/ui コンポーネントの追加・構成の規約
+- [vite](.agents/skills/vite/): `antfu/skills`, Vite の設定・プラグイン・API の指針
+- [vitest](.agents/skills/vitest/): `antfu/skills`, Vitest のセットアップとユニット / コンポーネントテスト
+
+Declined: shadcn MCP server, GitHub MCP server
+
+## Context files
+
+<!-- Nested AGENTS.md files are listed here as they are created -->
+
+_Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

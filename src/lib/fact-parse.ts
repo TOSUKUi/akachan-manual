@@ -169,6 +169,8 @@ export function parseSections(body: string): FactSection[] {
   const taken = new Set<string>(['top'])
   const sections: FactSection[] = []
   let current: FactSection | undefined
+  // 調査アートの「## Gaps」セクションは公開対象外（ビルドゲートも検証しない）
+  let skipping = false
 
   const ensure = (): FactSection => {
     if (!current) {
@@ -184,6 +186,8 @@ export function parseSections(body: string): FactSection[] {
     if (h2 || h3) {
       const level = (h2 ? 2 : 3) as 2 | 3
       const heading = (h2 ? h2[1] : h3![1]).trim()
+      if (level === 2) skipping = /^gaps\b/i.test(heading)
+      if (skipping) continue
       current = {
         level,
         heading,
@@ -196,6 +200,7 @@ export function parseSections(body: string): FactSection[] {
       taken.add(current.anchor)
       continue
     }
+    if (skipping) continue
     const sec = ensure()
     const source = line.match(SOURCE_LINE)
     if (source) {

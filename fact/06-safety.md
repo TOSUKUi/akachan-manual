@@ -10,6 +10,8 @@ sources:
     url: "https://www.nasva.go.jp/mamoru/assessment_child/how_to.html"
   - name: "政府広報-赤ちゃんやこどもを誤飲・窒息事故から守る"
     url: "https://www.gov-online.go.jp/article/202408/entry-6450.html"
+  - name: "政府広報-家の中の思わぬ危険。乳幼児のやけど事故にご注意を！（やけどの初期対応）"
+    url: "https://www.gov-online.go.jp/article/201802/entry-9262.html"
   - name: "こどもの救急-窒息"
     url: "https://kodomo-qq.jp/jiko/index.php?pname=jiko_chissoku"
   - name: "日本医師会-気道異物除去の手順"
@@ -40,8 +42,8 @@ sources:
     url: "https://www.cfa.go.jp/policies/child-safety-actions/cases/netchusho"
   - name: "日本中毒情報センター-中毒１１０番・電話サービス"
     url: "https://www.j-poison-ic.jp/110serviece"
-  - name: "消費者庁-入浴事故を防ぐための5ヵ条（読売新聞紹介記事）"
-    url: "https://www.yomiuri.co.jp/yomidr/article/20160130-OYTET50010"
+  - name: "消費者庁-消費者白書 COLUMN 住環境における高齢者の事故（入浴時の注意ポイント）"
+    url: "https://www.caa.go.jp/policies/policy/consumer_research/white_paper/2023/white_paper_column_02.html"
 must:
   - carseat
   - choking
@@ -106,10 +108,10 @@ must:
 
 ## やけど：入浴と熱いもの
 
-- 消費者庁が安全な入浴のために紹介している「**入浴事故を防ぐための5ヵ条**」の2項目目に「**湯温は41度以下、湯につかる時間は10分まで**を目安に」とされています（入浴前に脱衣所・浴室を暖める、浴槽から急に立ち上がらない、食後すぐやアルコールが抜けるまでの入浴を控える、入浴前に同居者へ一声かける、と並ぶ）。
+- 消費者庁の入浴安全の指針（「入浴事故を防ぐための5ヵ条」）では、「**湯温は41度以下、湯につかる時間は10分まで**」が目安とされています（入浴前に脱衣所・浴室を暖める、浴槽から急に立ち上がらない、食後すぐやアルコールが抜けるまでの入浴を控える、入浴前に同居者へ一声かける、と並ぶ）。
 - 消費者庁・こども家庭庁のハンドブック（やけど）：床に置くタイプの暖房器具は子どもの手が届かないよう安全柵などで囲む、湯たんぽや電気カーペットは同じ場所が長時間触れて低温やけどになることに注意、とされています。炊飯器や電気ケトルなど、高温の蒸気や転倒して熱湯に触れるおそれのある製品は、乳幼児の行動範囲で使用しないよう行政が呼びかけています。
-- やけどをした際の応急処置として「直ちに流水で10分以上冷やす」ことが政府広報で示されています。
-根拠: [消費者庁-入浴事故を防ぐための5ヵ条（読売新聞紹介記事）](https://www.yomiuri.co.jp/yomidr/article/20160130-OYTET50010), [消費者庁-こどもの事故防止ハンドブック（やけど）](https://www.cfa.go.jp/policies/child-safety-actions/handbook/content-3), [政府広報-赤ちゃんやこどもを誤飲・窒息事故から守る](https://www.gov-online.go.jp/article/202408/entry-6450.html)
+- 子どものやけどの初期対応として、政府広報は「**すぐに10分以上冷やす**。刺激を避けるため、**容器に溜めた水で冷やすか、水道水・シャワーを直接当てない**。服の上から熱湯などがかかった場合は、脱がさずに服の上から冷やす」と示しています。
+根拠: [消費者庁-消費者白書 COLUMN 住環境における高齢者の事故（入浴時の注意ポイント）](https://www.caa.go.jp/policies/policy/consumer_research/white_paper/2023/white_paper_column_02.html), [消費者庁-こどもの事故防止ハンドブック（やけど）](https://www.cfa.go.jp/policies/child-safety-actions/handbook/content-3), [政府広報-家の中の思わぬ危険。乳幼児のやけど事故にご注意を！（やけどの初期対応）](https://www.gov-online.go.jp/article/201802/entry-9262.html)
 
 ## 溺水：浴槽・桶・便座・おむつ替え台
 

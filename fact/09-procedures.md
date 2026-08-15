@@ -6,6 +6,8 @@ last_verified: 2026-08-15
 sources:
   - name: "すこやか医療費"
     url: "https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000017744.html"
+  - name: "保育園等保育料一覧（令和7年9月1日施行）"
+    url: "https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-hoyou/kodomo-hoyou-hoikuen/hpg000028019.html"
   - name: "児童手当"
     url: "https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000027168.html"
   - name: "妊婦支援給付"
@@ -25,7 +27,7 @@ sources:
   - name: "乳幼児健診"
     url: "https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000000798.html"
   - name: "家庭あんしんセンター"
-    url: "http://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-kateisoudan/hpg000000504.html"
+    url: "https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-kateisoudan/hpg000000504.html"
   - name: "品川区役所"
     url: "https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-shinagawakuyakusyo/index.html"
 must: []
@@ -60,7 +62,9 @@ must: []
 
 ### 保育料（品川区）
 
-- 品川区認可保育園等の保育料については、品川区公式の料金表を整理した姉妹サイト「しながわほじょきん」で確認できます。
+- 品川区が公表する「保育園等保育料一覧（令和7年9月1日施行）」によると、令和7年9月1日より保育料は第1子以降すべて無償（品川区内の認可保育園では食材料費の保護者負担もなし）。延長保育料等は収入階層別に別途かかるため、詳細は区公式ページで確認してください。
+根拠: [品川区-保育園等保育料一覧（令和7年9月1日施行）](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-hoyou/kodomo-hoyou-hoikuen/hpg000028019.html)
+- 区公式の料金表（無償化までの経緯・各階層）を整理した姉妹サイト「しながわほじょきん」も参照できます。
 根拠: [しながわほじょきん](https://TOSUKUi.github.io/shinagawa-hojokin/)
 
 ## 年齢月齢別の手続き早見
@@ -105,7 +109,7 @@ must: []
 - **家庭あんしんセンター**（子育て支援センター・相談・一時預かり）：品川区平塚2-12-2、電話03-5749-1032。開館：月曜～土曜 午前9時～午後6時。「子育てのこと、子どもの発達、性格などちょっと気がかりなことや心配なことを相談できます」。
 - **母子保健・健診・予防接種（健康課）**：健康課保健衛生担当 電話03-5742-6745（FAX 03-5742-6883）。予防接種は品川区保健予防課 電話03-5742-9152（FAX 03-5742-6013）。保健センター：品川03-3474-2225／大井03-3772-2666／荏原03-3788-7013。
 - **妊婦のための支援給付事業コールセンター**：電話03-6731-6732（祝日を除く月曜～金曜 午前8時30分～午後5時15分）。
-根拠: [品川区役所](https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-shinagawakuyakusyo/index.html), [入園手続](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-hoyou/kodomo-hoyou-hoikuen/hpg000027973.html), [すこやか医療費](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000017744.html), [出産一時金](https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-kenkouhoken/procedure-kenkouhoken-hokenkyuuhu/hpg000001524.html), [家庭あんしんセンター](http://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-kateisoudan/hpg000000504.html), [産婦・1カ月児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/20260213150439.html), [予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000033448.html), [妊婦支援給付](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/20230120091157.html)
+根拠: [品川区役所](https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-shinagawakuyakusyo/index.html), [入園手続](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-hoyou/kodomo-hoyou-hoikuen/hpg000027973.html), [すこやか医療費](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000017744.html), [出産一時金](https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-kenkouhoken/procedure-kenkouhoken-hokenkyuuhu/hpg000001524.html), [家庭あんしんセンター](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-kateisoudan/hpg000000504.html), [産婦・1カ月児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/20260213150439.html), [予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000033448.html), [妊婦支援給付](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/20230120091157.html)
 
 ## Gaps
 

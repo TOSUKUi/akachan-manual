@@ -74,7 +74,9 @@ export function Component() {
 
       <Separator />
 
-      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-8 lg:items-start">
+      {/* items-start を付けると右カラムが内容高さまで縮み sticky が無効化されるため、
+          既定の stretch（行全高）で TOC の position:sticky を効かせる。 */}
+      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-8">
         <div className="min-w-0 space-y-6">
           {/* 本文・出典・前後の章を同一幅（左カラム全幅）で揃える。
               704px ≈ 15px 本文で 46 全角文字/行で、 CJK の快適な行長帯内。 */}

@@ -90,7 +90,7 @@ function ChapterGrid() {
           <Link
             key={c.slug}
             to={`/${c.slug}`}
-            className="block rounded-lg border border-border bg-card p-3 transition-colors hover:border-primary hover:bg-accent active:bg-accent"
+            className="block rounded-lg border border-border bg-card p-3 transition-colors motion-reduce:duration-0 hover:border-primary hover:bg-accent active:bg-accent"
           >
             <div className="flex items-baseline gap-2">
               <span className="font-heading text-sm font-bold text-primary">{c.order}</span>
@@ -123,7 +123,7 @@ export function Component() {
         <div className="mt-4 hidden lg:block">
           <a
             href="#must-checklist"
-            className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/5 px-4 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-ring"
+            className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/5 px-4 py-3 text-sm font-medium text-primary transition-colors motion-reduce:duration-0 hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-ring"
           >
             やるべきこと（最重要）へ <ArrowRight className="size-4" aria-hidden />
           </a>

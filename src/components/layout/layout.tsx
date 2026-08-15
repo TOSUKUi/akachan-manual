@@ -18,7 +18,7 @@ function ChapterNav() {
               to={`/${c.slug}`}
               className={({ isActive }) =>
                 [
-                  'rounded-full border px-2.5 py-1 text-xs transition-colors',
+                  'rounded-full border px-2.5 py-1 text-xs transition-colors motion-reduce:duration-0',
                   isActive
                     ? 'border-primary bg-primary text-primary-foreground'
                     : 'border-border bg-card text-foreground hover:bg-accent',
@@ -94,7 +94,7 @@ export default function Layout() {
       {/* ヘッダー（backdrop-filter は fixed のコンテイナーブロックを作る）の外で描画 */}
       <MobileChapterSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
 
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6">
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 lg:max-w-5xl">
         <Outlet />
       </main>
 

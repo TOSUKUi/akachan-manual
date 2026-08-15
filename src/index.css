@@ -118,7 +118,7 @@
 }
 @media (min-width: 1024px) {
   :root {
-    --header-h: 180px;
+    --header-h: 174px;
     --subbar-h: 0px;
   }
 }

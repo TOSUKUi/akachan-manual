@@ -27,7 +27,7 @@ export default function ChapterToc({ order, sections, activeId }: ChapterTocProp
                 <a
                   href={`#${s.anchor}`}
                   aria-current={active ? 'location' : undefined}
-                  className={`block rounded border-l-2 py-1.5 pr-2 leading-snug transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-ring ${indent} ${
+                  className={`block rounded border-l-2 py-1.5 pr-2 leading-snug transition-colors motion-reduce:duration-0 focus-visible:outline-2 focus-visible:outline-ring ${indent} ${
                     active
                       ? 'border-primary bg-primary/10 font-medium text-foreground'
                       : 'border-transparent text-muted-foreground hover:bg-accent hover:text-foreground'

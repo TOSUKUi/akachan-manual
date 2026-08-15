@@ -31,7 +31,7 @@ export function Component() {
   const prevCard = (
     <Link
       to={prev ? `/${prev.slug}` : '/'}
-      className="flex min-h-14 items-center gap-3 rounded-lg border border-border bg-card p-3 text-left active:bg-accent sm:min-h-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0"
+      className="flex min-h-14 items-center gap-3 rounded-lg border border-border bg-card p-3 text-left transition-colors motion-reduce:duration-0 active:bg-accent sm:min-h-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:hover:text-primary"
     >
       <ChevronLeft className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
       <span className="min-w-0">
@@ -45,7 +45,7 @@ export function Component() {
   const nextCard = next && (
     <Link
       to={`/${next.slug}`}
-      className="flex min-h-14 items-center gap-3 rounded-lg border border-border bg-card p-3 text-right active:bg-accent sm:min-h-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0"
+      className="flex min-h-14 items-center gap-3 rounded-lg border border-border bg-card p-3 text-right transition-colors motion-reduce:duration-0 active:bg-accent sm:min-h-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:hover:text-primary"
     >
       <span className="min-w-0">
         <span className="block text-xs text-muted-foreground">次の章</span>

@@ -99,6 +99,17 @@ must: []
 - 窓口：子育て応援課 手当医療助成担当（品川区役所 本庁舎7階）。電話 03-5742-6721。郵送先：〒140-8715 品川区広町2-1-36 品川区役所 子育て応援課 手当医療助成担当。
 根拠: [品川区（児童手当）](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000027168.html)
 
+## 出生後の手続きチェックリスト
+
+:::checklist birth-registration
+- [ ] 出生届：生まれた日を含め14日以内に届出をします
+- [ ] 国民健康保険への加入：14日以内に届出をします
+- [ ] 児童手当の申請：出生日の翌日から15日以内（15日特例）に申請します
+- [ ] 出産育児一時金の申請：子どもの母が国民健康保険加入の場合は出生届と同日に申請できます
+:::
+
+根拠: [品川区（出生届）](https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-koseki/procedure-koseki-todokede/hpg000001411.html), [品川区（国保加入）](https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-kenkouhoken/procedure-kenkouhoken-todokede/hpg000001509.html), [品川区（児童手当）](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000027168.html), [厚労省ボッセイナビ（出産育児一時金）](https://www.bosei-navi.mhlw.go.jp/glossary/provide03.html)
+
 ## Gaps
 
 引用した全URLは検証日にcurlで到達確認済み（すべてHTTP 200）：

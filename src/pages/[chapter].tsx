@@ -84,7 +84,7 @@ export function Component() {
               704px ≈ 15px 本文で 46 全角文字/行で、 CJK の快適な行長帯内。 */}
           <article>
             {chapter.sections.map((s, i) => (
-              <FactSectionView key={`${s.anchor}-${i}`} section={s} />
+              <FactSectionView key={`${s.anchor}-${i}`} section={s} chapterSlug={chapter.slug} />
             ))}
           </article>
 

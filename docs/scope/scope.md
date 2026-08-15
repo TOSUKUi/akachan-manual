@@ -42,15 +42,15 @@ Spec [0001](../specs/0001-baby-guide-static-site.md)
 fact.md は事実データのまま、画面は React コンポーネント（shadcn/ui ベース）で直接描画する。チェックリスト（進捗付き）・判断フロー（はい/いいえ）・注意ボックス・読みやすいテーブル。Markdown 変換（marked）は廃止。
 **Done when:** 全ページが React コンポーネントで描画され、チェックリスト・フロー・注意ボックスが動作し、marked が排除され、検証ゲートが維持され、コンソールエラー 0。
 - [x] 設計する（spec）: `/architect 表示レイヤー React 化`
-- [ ] 作る: `/develop 表示レイヤー React 化`
-   - [ ] パーサー + モデル: 構造化ブロックパース（段落/リスト/テーブル/マーカー）+ インライン太字 + マーカー検証（AC-1, AC-6）
-   - [ ] 基本コンポーネント: 段落/リスト/テーブル/注意ボックス描画（AC-4, AC-5）
-   - [ ] チェックリスト + フロー: 進捗 + localStorage + はい/いいえ操作（AC-2, AC-3, AC-9）
-   - [ ] コンテンツ + 依存整理: 1 章に適用、marked 削除（AC-6）
-   - [ ] 全ページ検証: 375/768/1280、エラー 0、オーバーフロー 0（AC-8, AC-9）
+- [x] 作る: `/develop 表示レイヤー React 化`
+   - [x] パーサー + モデル: 構造化ブロックパース（段落/リスト/テーブル/マーカー）+ インライン太字 + マーカー検証（AC-1, AC-6）
+   - [x] 基本コンポーネント: 段落/リスト/テーブル/注意ボックス描画（AC-4, AC-5）
+   - [x] チェックリスト + フロー: 進捗 + localStorage + はい/いいえ操作（AC-2, AC-3, AC-9）
+   - [x] コンテンツ + 依存整理: 1 章に適用、marked 削除（AC-6）
+   - [x] 全ページ検証: 375/768/1280、エラー 0、オーバーフロー 0（AC-8, AC-9）
 - [ ] 検証する: `/check verify 表示レイヤー React 化`
 - [ ] テストする: `/test 表示レイヤー React 化`
-Spec [0002](../specs/0002-react-component-rendering.md)
+Spec [0002](../specs/0002-react-component-rendering.md) · code in `src/lib/fact-parse.ts`, `src/components/fact/`
 
 ## Legend
 

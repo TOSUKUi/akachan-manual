@@ -1,7 +1,7 @@
 # 0002. 本文表示の React コンポーネント化（fact.md は事実データに徹する）
 
 **Date**: 2026-08-16
-**Status**: Proposed
+**Status**: In Progress
 
 ## Summary
 

@@ -65,15 +65,14 @@ export function validateFacts(
     const sourceUrls = new Set(frontmatter.sources.map((s) => s.url))
     const usedUrls = new Set<string>()
     const markerIds = new Set<string>()
+    const blockIds = new Set<string>()
 
     for (const sec of sections) {
       const label = sec.heading || 'intro（冒頭）'
 
       // 空セクションはスキップ（見出しの直後に次の見出しがある場合など）
       const hasContent =
-        sec.content.some((l) => l.trim().length > 0) ||
-        sec.sources.length > 0 ||
-        sec.mustIds.length > 0
+        sec.blocks.length > 0 || sec.sources.length > 0 || sec.mustIds.length > 0
       if (!hasContent) continue
 
       // AC-4: 根拠リンクの無い事実はビルド失敗
@@ -99,13 +98,20 @@ export function validateFacts(
       }
 
       for (const id of sec.mustIds) markerIds.add(id)
-      // 図マーカーは既知の名前だけ許可（typo をビルド時に検出）
-      if (sec.diagram && !['vaccine-schedule'].includes(sec.diagram)) {
-        errors.push({
-          file: fileName,
-          section: label,
-          message: `図「${sec.diagram}」は未定義です（既知: vaccine-schedule）`,
-        })
+      for (const block of sec.blocks) {
+        if (block.kind === 'diagram' && !['vaccine-schedule'].includes(block.name)) {
+          errors.push({
+            file: fileName,
+            section: label,
+            message: `図「${block.name}」は未定義です（既知: vaccine-schedule）`,
+          })
+        }
+        if (block.kind === 'checklist' || block.kind === 'flow') {
+          if (blockIds.has(block.id)) {
+            errors.push({ file: fileName, section: label, message: `ブロック ID「${block.id}」が章内で重複しています。` })
+          }
+          blockIds.add(block.id)
+        }
       }
     }
 
@@ -223,7 +229,6 @@ export function buildSiteData(
       must: f.frontmatter.must,
       description: chapterDescription(f.sections),
       sections: f.sections,
-      body: f.body,
     })),
     mustItems: buildMustItems(facts),
     searchIndex: buildSearchIndex(facts),

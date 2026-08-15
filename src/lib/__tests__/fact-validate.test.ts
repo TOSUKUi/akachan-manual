@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { CANONICAL_MUST_IDS } from '../fact-model.ts'
 import { parseFactFile } from '../fact-parse.ts'
 import type { Fact } from '../fact-model.ts'
-import { STALE_DAYS, validateFacts } from '../fact-validate.ts'
+import { buildSearchIndex, STALE_DAYS, validateFacts } from '../fact-validate.ts'
+import { chapterDescription } from '../fact-parse.ts'
 
 /** 生 Markdown 1 章から Fact を作るヘルパー（失敗なら例外）。 */
 function makeFact(raw: string, fileName = '01-test.md'): Fact {
@@ -176,5 +177,58 @@ describe('validateFacts', () => {
     const b = makeFact(chapterRaw({ must: [] }), '02-b.md')
     const report = validateFacts([a, b], NOW)
     expect(report.errors.some((e) => e.message.includes('重複'))).toBe(true)
+  })
+
+  it('checklist と flow の ID 重複は章内エラー', () => {
+    const fact = makeFact(chapterRaw({
+      must: [],
+      body: [
+        'intro。',
+        '根拠: [S](https://e.com/a)',
+        '',
+        '## 操作',
+        ':::checklist same',
+        '- [ ] 一つめ',
+        ':::',
+        '',
+        ':::flow same',
+        'Q: 質問',
+        '- はい → 終了',
+        ':::',
+        '根拠: [S](https://e.com/a)',
+      ].join('\n'),
+    }))
+    const report = validateFacts([fact], NOW)
+    expect(report.errors.some((e) => e.message.includes('ブロック ID'))).toBe(true)
+  })
+
+  it('最初の段落ブロックから description を作る', () => {
+    const fact = makeFact(chapterRaw({ must: [] }))
+    expect(chapterDescription(fact.sections)).toBe('intro')
+  })
+
+  it('チェックリストとフローの本文を検索インデックスへ含める', () => {
+    const fact = makeFact(chapterRaw({
+      must: [],
+      body: [
+        'intro。',
+        '根拠: [S](https://e.com/a)',
+        '',
+        '## 操作',
+        ':::checklist tasks',
+        '- [ ] 出生届',
+        ':::',
+        '',
+        ':::flow route',
+        'Q: 泣いている',
+        '- 体調確認 → 相談する',
+        ':::',
+        '根拠: [S](https://e.com/a)',
+      ].join('\n'),
+    }))
+    const index = buildSearchIndex([fact])
+    expect(index[0].fullText).toContain('出生届')
+    expect(index[0].fullText).toContain('泣いている')
+    expect(index[0].fullText).toContain('相談する')
   })
 })

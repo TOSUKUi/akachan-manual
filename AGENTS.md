@@ -23,6 +23,8 @@ npm test             # テスト
 
 スキャフォールド済み（Vite + React + vite-react-ssg + shadcn/ui）。コンテンツは `fact/*.md`（frontmatter + 本文、各セクションに「根拠: [ソース](URL)」必須）から `npm run gen` で `src/generated/site-data.ts` が生成される。検証ゲート（根拠リンク・必須カバレッジ 12 項目・180 日鮮度警告）はビルド時に失敗・警告する。調査途中稿は `fact-research/`（未公開）。
 
+UI は mobile-first で端末ごとに最適化済み（`docs/uiux/` に spec・レビュー記録）：モバイル（<lg）は 1 行ヘッダー + 章メニュー bottom-sheet（44px タッチターゲット、セクションジャンプ sub-bar、トップへ FAB、`/` 検索ショートカット）、デスクトップ（lg=1024px 以上）は章内 sticky TOC + スクロールスパイ（`src/components/chapter-toc.tsx` / `src/lib/use-scroll-spy.ts`）・本文 672px（約 45 字/行）・インデックス 2 列グリッド。アンカーの sticky 補正は `src/index.css` の `--header-h`/`--subbar-h` + `scroll-padding-top` が一元管理（ヘッダー実装が変わったら実測で更新）。
+
 ## Specs
 
 Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.

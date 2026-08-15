@@ -1,5 +1,6 @@
 // fact.md のパーサ。純粋関数のみ（I/O なし、Result 型で失敗を返す）。
 import matter from 'gray-matter'
+import { marked } from 'marked'
 import type {
   Fact,
   FactFrontmatter,
@@ -27,6 +28,9 @@ const SOURCE_LINK = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g
 /** 「必須: [id]」マーカー行。⭐ 付き・カンマ区切りの複数 ID を許可。 */
 const MUST_LINE = /^\s*(?:⭐\s*)?必須[:：]\s+(.+)$/
 const MUST_ID = /\[([a-z][a-z0-9-]*)\]/g
+
+/** 「:::diagram <name>:::」マーカー行（セクション本文の先頭に置く）。 */
+const DIAGRAM_LINE = /^:::diagram\s+([a-z][a-z0-9-]*)\s*:::$/
 
 const H2 = /^##\s+(.+?)\s*$/
 const H3 = /^###\s+(.+?)\s*$/
@@ -174,7 +178,7 @@ export function parseSections(body: string): FactSection[] {
 
   const ensure = (): FactSection => {
     if (!current) {
-      current = { level: 1, heading: '', anchor: 'top', content: [], sources: [], mustIds: [] }
+      current = { level: 1, heading: '', anchor: 'top', content: [], sources: [], mustIds: [], bodyHtml: '' }
       sections.push(current)
     }
     return current
@@ -195,6 +199,7 @@ export function parseSections(body: string): FactSection[] {
         content: [],
         sources: [],
         mustIds: [],
+        bodyHtml: '',
       }
       sections.push(current)
       taken.add(current.anchor)
@@ -202,6 +207,15 @@ export function parseSections(body: string): FactSection[] {
     }
     if (skipping) continue
     const sec = ensure()
+    // セクション先頭の「:::diagram <name>:::」マーカー（本文からは除去して保存）。
+    // 見出し直後の空行が content に入る場合があるため、「空行のみなら先頭扱い」にする。
+    if (!sec.diagram) {
+      const dm = line.match(DIAGRAM_LINE)
+      if (dm && sec.content.every((l) => l.trim() === '')) {
+        sec.diagram = dm[1]
+        continue
+      }
+    }
     const source = line.match(SOURCE_LINE)
     if (source) {
       sec.sources.push(...parseSourceLine(source[1]))
@@ -217,13 +231,24 @@ export function parseSections(body: string): FactSection[] {
   return sections
 }
 
+/** セクション本文（Markdown）を HTML に変換する（ビルド時に一度だけ実行）。
+ * 画面はこの HTML を dangerouslySetInnerHTML で表示し、実行時描画を持たない。 */
+export function sectionBodyHtml(content: readonly string[]): string {
+  const md = content.join('\n')
+  if (md.trim().length === 0) return ''
+  return marked.parse(md, { async: false, gfm: true })
+}
+
 /** fact ファイル 1 つ（生テキスト）を解析する。 */
 export function parseFactFile(raw: string, fileName: string): FactParseResult {
   const { data, content } = matter(raw)
   const fmResult = coerceFrontmatter(data, fileName)
   if (!fmResult.ok) return { ok: false, issues: fmResult.issues }
   const body = content.trim()
-  const sections = parseSections(body)
+  const sections = parseSections(body).map((s) => ({
+    ...s,
+    bodyHtml: sectionBodyHtml(s.content),
+  }))
   return {
     ok: true,
     fact: {

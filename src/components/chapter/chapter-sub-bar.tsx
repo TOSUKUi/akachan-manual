@@ -24,13 +24,13 @@ export default function ChapterSubBar({ chapter }: ChapterSubBarProps) {
           type="button"
           onClick={() => window.scrollTo(0, 0)}
           aria-label="章の先頭へ戻る"
-          className="flex min-h-11 min-w-0 items-center gap-1.5 rounded-md px-1 font-heading text-sm font-bold active:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
+          className="flex min-h-11 min-w-0 max-w-[45%] shrink items-center gap-1.5 rounded-md px-1 font-heading text-sm font-bold active:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
         >
           <span className="shrink-0 text-xs font-normal text-muted-foreground">第{chapter.order}章</span>
-          <span className="min-w-0 truncate">{chapter.title}</span>
+          <span className="min-w-0 flex-1 truncate">{chapter.title}</span>
           <ChevronDown className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
         </button>
-        <div className="relative min-w-0 flex-1">
+        <div className="relative min-w-28 flex-1">
           <select
             aria-label="セクションへジャンプ"
             defaultValue=""

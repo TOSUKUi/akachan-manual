@@ -81,6 +81,27 @@ describe('parseSections', () => {
     expect(sections[0].anchor).toBe('同名')
     expect(sections[1].anchor).toBe('同名-2')
   })
+
+  it(':::diagram::: マーカーはセクション先頭で図名として解釈され、本文から除去される', () => {
+    const sections = parseSections(
+      '## スケジュール\n:::diagram vaccine-schedule:::\n\n下表のとおり。\n根拠: [S](https://e.com/a)\n',
+    )
+    expect(sections[0].diagram).toBe('vaccine-schedule')
+    expect(sections[0].content).toEqual(['', '下表のとおり。', ''])
+  })
+
+  it(':::diagram::: マーカーは見出し直後の空行が先行していても図名として解釈される', () => {
+    const sections = parseSections(
+      '## スケジュール\n\n:::diagram vaccine-schedule:::\n\n下表のとおり。\n根拠: [S](https://e.com/a)\n',
+    )
+    expect(sections[0].diagram).toBe('vaccine-schedule')
+  })
+
+  it(':::diagram::: マーカーはセクション先頭以外では本文として扱われる', () => {
+    const sections = parseSections('## スケジュール\n説明文。\n:::diagram vaccine-schedule:::\n根拠: [S](https://e.com/a)\n')
+    expect(sections[0].diagram).toBeUndefined()
+    expect(sections[0].content).toContain(':::diagram vaccine-schedule:::')
+  })
 })
 
 describe('anchorFor', () => {

@@ -39,6 +39,8 @@ must:
 
 ## 0〜2歳の予防接種スケジュール
 
+:::diagram vaccine-schedule:::
+
 下表は品川区公式ページ「こどもの予防接種」（更新日：令和8年4月1日）の「予防接種スケジュール」表と、厚生労働省の各ワクチン公式ページの標準スケジュールに基づく。品川区では「予防接種を受ける時期になりましたら、予防接種予診票（接種券）をご自宅に送付します」とされている。
 根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html), [厚労省-予防接種・ワクチン情報](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/index.html)
 

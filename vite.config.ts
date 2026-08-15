@@ -40,7 +40,10 @@ export default defineConfig({
     },
   },
   ssgOptions: {
-    script: 'async',
+    // script: 'sync' にする（async だとエントリ JS が window.__VITE_REACT_SSG_HASH__
+    // 設定スクリプトより先に実行され、static-loader-data-manifest-undefined.json を
+    // fetch してクラッシュするレースが起きる。sync = 遅延実行で順序保証）。
+    script: 'sync',
     // 各ルートに SEO メタデータを注入（AC-10）。
     // index.html の既定 title/description はトップページ用にしておく。
     onBeforePageRender(route, indexHTML) {

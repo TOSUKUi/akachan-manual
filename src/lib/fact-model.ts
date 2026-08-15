@@ -74,10 +74,14 @@ export interface FactSection {
   anchor: string
   /** 通常の Markdown 本文（見出し・根拠・必須マーカー行を除く） */
   content: string[]
+  /** 本文をビルド時に HTML 化したもの（画面はこれを dangerouslySetInnerHTML で表示） */
+  bodyHtml: string
   /** 「根拠:」行から解析したソース */
   sources: FactSource[]
   /** 「必須: [id]」マーカーから解析した ID */
   mustIds: string[]
+  /** 「:::diagram <name>:::」マーカーから解析した図の名前（描画は React コンポーネント） */
+  diagram?: string
 }
 
 /** 1 つの fact ファイルを解析した結果。 */

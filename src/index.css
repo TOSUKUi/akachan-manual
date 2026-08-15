@@ -147,3 +147,69 @@
       }
     }
 }
+
+/* ビルド時 HTML 化された本文（fact-parse.ts の sectionBodyHtml）のスタイル。
+   実行時マークダウン描画は持たないため、ここで装飾を一元管理する。 */
+@layer components {
+  .markdown-body > :first-child {
+    margin-top: 0;
+  }
+  .markdown-body p {
+    @apply text-[15px] leading-7;
+  }
+  .markdown-body ul,
+  .markdown-body ol {
+    @apply my-2 space-y-1 pl-5;
+  }
+  .markdown-body ul {
+    @apply list-disc;
+  }
+  .markdown-body ol {
+    @apply list-decimal;
+  }
+  .markdown-body li {
+    @apply leading-7;
+  }
+  .markdown-body li > ul {
+    @apply mt-1;
+  }
+  .markdown-body blockquote {
+    @apply my-2 border-l-2 border-border pl-3 text-muted-foreground;
+  }
+  .markdown-body strong {
+    @apply font-bold;
+  }
+  .markdown-body a {
+    @apply underline hover:text-primary;
+  }
+  /* GFM テーブル: モバイルは横スクロール、最小幅で潰さない（review full の major 修正）。
+     本文ラッパー自体を横スクロールコンテナにする（JSX でラップできないため）。 */
+  .markdown-body {
+    overflow-x: auto;
+  }
+  .markdown-body table {
+    @apply my-3 w-full min-w-[520px] border-collapse text-sm leading-relaxed;
+  }
+  .markdown-body table th {
+    @apply border-b border-border bg-muted/60 px-3 py-2 text-left align-bottom font-heading text-[13px] font-bold whitespace-nowrap;
+  }
+  .markdown-body table td {
+    @apply border-b border-border/60 px-3 py-2 align-top text-[14px] leading-relaxed;
+  }
+  .markdown-body table tr:nth-child(odd) {
+    @apply bg-muted/20;
+  }
+  /* GFM タスクリスト（- [ ] / - [x]）: marked は input[type=checkbox] を出力する */
+  .markdown-body ul:has(> li > input[type='checkbox']) {
+    @apply list-none pl-0;
+  }
+  .markdown-body li:has(> input[type='checkbox']) {
+    @apply flex items-start gap-2;
+  }
+  .markdown-body li:has(> input[type='checkbox']) input[type='checkbox'] {
+    @apply mt-1 size-4 shrink-0 accent-primary;
+  }
+  .markdown-body li:has(> input[type='checkbox']):has(input:checked) > p {
+    @apply text-muted-foreground line-through;
+  }
+}

@@ -1,6 +1,5 @@
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 import { Badge } from '@/components/ui/badge'
+import VaccineScheduleDiagram from '@/components/fact/vaccine-schedule-diagram'
 import { CANONICAL_MUST_LABELS } from '@/lib/fact-model'
 import type { FactSection, FactSource } from '@/lib/fact-model'
 
@@ -22,13 +21,19 @@ export function SourceLine({ sources }: { sources: readonly FactSource[] }) {
   )
 }
 
-/** 「必須」バッジ（AC-5）。canonical ID には表示ラベルを出す。 */
+/** 「必須」バッジ（AC-5）。canonical ID には表示ラベルを出す。
+ * 長いラベルが 375px で横はみ出しするため（review full の blocker）、
+ * この場所に限り折り返しを許可する（badge.tsx の nowrap は他のチップ用途で維持）。 */
 export function MustBadges({ ids }: { ids: readonly string[] }) {
   if (ids.length === 0) return null
   return (
     <span className="mt-2 flex flex-wrap gap-1.5">
       {ids.map((id) => (
-        <Badge key={id} variant="secondary" className="bg-primary/10 font-heading text-primary">
+        <Badge
+          key={id}
+          variant="secondary"
+          className="h-auto max-w-full whitespace-normal text-left leading-snug bg-primary/10 font-heading text-primary"
+        >
           必須: {CANONICAL_MUST_LABELS[id as keyof typeof CANONICAL_MUST_LABELS] ?? id}
         </Badge>
       ))}
@@ -40,14 +45,16 @@ interface FactSectionViewProps {
   section: FactSection
 }
 
-/** fact の 1 セクション（見出し + Markdown 本文 + 根拠 + 必須バッジ）。 */
+/** fact の 1 セクション（見出し + 変換済み HTML 本文 + 根拠 + 必須バッジ）。 */
 export default function FactSectionView({ section }: FactSectionViewProps) {
-  const content = section.content.join('\n')
   const body = (
     <>
-      {content.length > 0 && (
-        <div className="mt-2 space-y-3 text-[15px] leading-7">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+      {section.bodyHtml.length > 0 && (
+        <div className="markdown-body mt-2 space-y-3 text-[15px] leading-7">
+          {section.diagram === 'vaccine-schedule' && <VaccineScheduleDiagram />}
+          {/* 本文はビルド時に HTML 化済み（fact-parse.ts の sectionBodyHtml）。
+              実行時マークダウン描画は持たない → SSR とクライアントで同一文字列になる。 */}
+          <div dangerouslySetInnerHTML={{ __html: section.bodyHtml }} />
         </div>
       )}
       <SourceLine sources={section.sources} />

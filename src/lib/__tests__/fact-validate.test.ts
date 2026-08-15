@@ -71,8 +71,50 @@ describe('validateFacts', () => {
     }
   })
 
-  it('根拠行の無いセクションはエラー（AC-4）', () => {
+  it('未知の図名はエラー（:::diagram::: の typo 検出）', () => {
     const facts = [
+      makeFact(
+        chapterRaw({
+          body: [
+            'intro。',
+            '根拠: [S](https://e.com/a)',
+            '',
+            '## セクション',
+            ':::diagram unknown-figure:::',
+            '内容。',
+            '必須: [sids]',
+            '根拠: [S](https://e.com/a)',
+          ].join('\n'),
+        }),
+      ),
+    ]
+    const report = validateFacts(facts, NOW)
+    expect(report.ok).toBe(false)
+    expect(report.errors.some((e) => e.message.includes('unknown-figure'))).toBe(true)
+  })
+
+  it('既知の図名ならエラーにならない', () => {
+    const facts = [
+      makeFact(
+        chapterRaw({
+          body: [
+            'intro。',
+            '根拠: [S](https://e.com/a)',
+            '',
+            '## セクション',
+            ':::diagram vaccine-schedule:::',
+            '内容。',
+            '必須: [sids]',
+            '根拠: [S](https://e.com/a)',
+          ].join('\n'),
+        }),
+      ),
+    ]
+    const report = validateFacts(facts, NOW)
+    expect(report.errors.filter((e) => e.message.includes('図')).length).toBe(0)
+  })
+
+  it('根拠行の無いセクションはエラー（AC-4）', () => {    const facts = [
       makeFact(
         chapterRaw({
           body: ['intro。', '根拠: [S](https://e.com/a)', '', '## セクション', '根拠無し。'].join('\n'),

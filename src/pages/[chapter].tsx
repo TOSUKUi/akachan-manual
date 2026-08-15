@@ -5,21 +5,26 @@ import ChapterSubBar from '@/components/chapter/chapter-sub-bar'
 import ChapterToc from '@/components/chapter-toc'
 import { Separator } from '@/components/ui/separator'
 import FactSectionView from '@/components/fact/fact-section-view'
+import IndexPage from '@/pages/index'
 import { useScrollSpy } from '@/lib/use-scroll-spy'
 import { SITE_DATA } from '@/generated/site-data'
 
 export function Component() {
   const { slug } = useParams<{ slug: string }>()
-  // 静的配信では /<slug>.html でアクセスされるため拡張子を落とす
-  const cleanSlug = slug?.replace(/\.html$/, '') ?? ''
+  // 静的配信では /<slug>.html でアクセスされるため拡張子を落とす。
+  // /index.html はトップ（review full の minor: slug='index' を index とみなす）。
+  const cleanSlug = (slug?.replace(/\.html$/, '') ?? '').replace(/^index$/, '')
   const chapter = SITE_DATA.chapters.find((c) => c.slug === cleanSlug)
   // スクロールスパイ: ids は参照安定（useMemo）にして observer を再作成しない。
   // level-1 の intro は見出しなしで TOC 行もないため除外（TOC 行と正確に一致させる）。
+  // Hooks 規則のため、全ての early return より前に呼ぶ（chapter 未取得時は空 ids で安全）。
   const ids = useMemo(
     () => (chapter ? chapter.sections.filter((s) => s.level >= 2).map((s) => s.anchor) : []),
     [chapter],
   )
   const activeId = useScrollSpy(ids, 180)
+  // /index.html はトップページとして描画（review full の minor）
+  if (cleanSlug === '') return <IndexPage />
   if (!chapter) {
     return <p>章が見つかりません。</p>
   }
@@ -72,10 +77,7 @@ export function Component() {
       {/* モバイルのみ: タイトル + セクションジャンプ（spec-mobile.md §2.5） */}
       <ChapterSubBar chapter={chapter} />
 
-      <Separator />
-
-      {/* items-start を付けると右カラムが内容高さまで縮み sticky が無効化されるため、
-          既定の stretch（行全高）で TOC の position:sticky を効かせる。 */}
+      {/* 区切り線は先頭セクション自身の border-t に任せる（二重線・空白帯を避ける） */}
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-8">
         <div className="min-w-0 space-y-6">
           {/* 本文・出典・前後の章を同一幅（左カラム全幅）で揃える。

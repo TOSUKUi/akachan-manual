@@ -99,6 +99,14 @@ export function validateFacts(
       }
 
       for (const id of sec.mustIds) markerIds.add(id)
+      // 図マーカーは既知の名前だけ許可（typo をビルド時に検出）
+      if (sec.diagram && !['vaccine-schedule'].includes(sec.diagram)) {
+        errors.push({
+          file: fileName,
+          section: label,
+          message: `図「${sec.diagram}」は未定義です（既知: vaccine-schedule）`,
+        })
+      }
     }
 
     // AC-5: 本文のマーカーと frontmatter の must が一致すること

@@ -41,7 +41,7 @@ must: []
 - 離乳の開始とは、なめらかにすりつぶした状態の食物を初めて与えたときを指します。
 根拠: [授乳・離乳の支援ガイド(平成31(2019)年3月)](https://www.pref.ishikawa.lg.jp/kosodate/syokuiku/2018/documents/jyunyuurinyuunosiengaido201903.pdf)
 
-### 2023年改定版について
+### 注：離乳のガイドは2023年に改定されました
 本マニュアルの調査時点（2026年8月）において、公式に存在する最新版は**2019年3月（平成31年）改定**の「授乳・離乳の支援ガイド」です（こども家庭庁のページにPDFが掲載されています）。「2023年改定版」という改訂は確認できませんでした。
 
 根拠: [こども家庭庁「授乳や離乳について」](https://www.cfa.go.jp/policies/boshihoken/junyuu)、[授乳・離乳の支援ガイド(2019年3月)](https://www.pref.ishikawa.lg.jp/kosodate/syokuiku/2018/documents/jyunyuurinyuunosiengaido201903.pdf)
@@ -90,7 +90,7 @@ must: []
 根拠: [日本小児科学会「食品による窒息 子どもを守るためにできること」](https://www.jpeds.or.jp/society-activities/column/proposals-assertions/50123.html)、[消費者庁「食品による子どもの窒息・誤嚥事故に注意!」](https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_047)、[国民生活センター「2020年度 縮刷版」](https://www.kokusen.go.jp/mimamori/pdf/support_FY2020all.pdf)、[授乳・離乳の支援ガイド(2019年3月)](https://www.pref.ishikawa.lg.jp/kosodate/syokuiku/2018/documents/jyunyuurinyuunosiengaido201903.pdf)
 
 ## 与えてはいけないもの（注意点）
-- **はちみつ**：1歳未満の赤ちゃんには与えないでください（乳児ボツリヌス症の予防のため）。詳細は07章「やってはいけないこと・しきたり」を参照してください。
+- **はちみつ**：1歳未満の赤ちゃんには与えないでください（乳児ボツリヌス症の予防のため）。詳細は07章「やってはいけないこと」を参照してください。
 - **牛乳を飲む場合**：鉄欠乏性貧血の予防の観点から、飲用として与えるのは1歳を過ぎてからが望ましいとされています。
 - **調味料（塩・砂糖）**：離乳の開始時期は調味料は必要ありません。離乳の進行に応じて、食塩や砂糖などの調味料を使用する場合は、それぞれの食品のもつ味を生かしながら、薄味でおいしく調理し、油脂類も少量の使用とします。
 - **硬い豆・ナッツ類**：5歳以下の子どもには食べさせないでください（上記「窒息の予防」を参照）。

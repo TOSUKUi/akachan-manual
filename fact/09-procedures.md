@@ -1,5 +1,5 @@
 ---
-title: "制度・手続きの早見"
+title: "品川区の給付と手続き：早見表"
 slug: procedures
 order: 9
 last_verified: 2026-08-15
@@ -33,7 +33,7 @@ sources:
 must: []
 ---
 
-生まれたあとの品川区特有の手続き・制度・問い合わせ先を、年齢月齢順の早見としてまとめる章です。
+品川区の育児の支援：医療費助成、児童手当、妊婦のための支援給付、出産育児一時金、保育園。赤ちゃんの月齢の順に並べてあるので、「今何をすべきか」が引き出せます。問い合わせ先もまとめました。
 根拠: [品川区役所](https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-shinagawakuyakusyo/index.html)
 
 ## 品川区の主な育児支援制度

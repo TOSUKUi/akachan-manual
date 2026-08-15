@@ -1,5 +1,5 @@
 ---
-title: "出産直前・当日の動き方"
+title: "出産直前から直後までやる手続き"
 slug: day-of-birth
 order: 1
 last_verified: 2026-08-15
@@ -21,7 +21,7 @@ sources:
 must: []
 ---
 
-赤ちゃんが生まれた直後に取りあえずやるべき手続き（出生届・健康保険の加入・各種給付金の申請）を、期限と金額とともに整理した章です。
+赤ちゃんが生まれた直後、期限のある手続きがいくつもあります。出生届、国民健康保険の加入、児童手当などの給付の申請。どこで、いつまでに、何をやるのか、金額もあわせて順に書いています。品川区では、いくつか出生届と同じ日に済ませられます。
 
 根拠: [品川区（出生届）](https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-koseki/procedure-koseki-todokede/hpg000001411.html)
 

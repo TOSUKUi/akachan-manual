@@ -13,8 +13,7 @@ function MustChecklist() {
       <CardContent className="pt-5">
         <h2 className="font-heading text-lg font-bold">やるべきこと（最重要）</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          「必須」の項目は、公的機関がエビデンスに基づいて注意を促していることだけを抜粋した
-          12 項目です。タップすると該当箇所にジャンプします。
+          公的機関がエビデンスに基づいて注意を促していることから抜粋した、12個の「必須」です。タップで該当の場所へジャンプします。
         </p>
         <ul className="mt-4 space-y-2">
           {items.map((item) => (
@@ -72,7 +71,7 @@ function DobChecklist() {
                 手続き
               </Badge>
               <span className="text-[15px] font-medium group-hover:text-primary">{item.label}</span>
-              <span className="ml-auto shrink-0 text-xs text-muted-foreground">1. 出産直前・当日の動き方</span>
+              <span className="ml-auto shrink-0 text-xs text-muted-foreground">1. 出産直前から直後までやる手続き</span>
             </a>
           </li>
         ))}
@@ -110,15 +109,13 @@ export function Component() {
     <div className="space-y-8">
       <section>
         <h1 className="font-heading text-2xl font-bold leading-snug sm:text-[28px] lg:text-3xl">
-          生まれてから2歳まで、何をして、何をしないか。
+          赤ちゃんから2歳まで。やるべきこと。気を付けること。
         </h1>
         <p className="mt-2 text-[15px] leading-7 text-muted-foreground">
-          品川区在住の、知識ゼロのパパ向けの育児マニュアルです。
-          出産当日〜退院までの手続きから、夜泣き、予防接種、離乳食、安全・事故防止まで、
-          「やること / やらないこと / やるべきこと（必須）」を、出典リンクつきで整理しています。
+          赤ちゃんが生まれた直後から、やることは多い。期限のある手続き、泣き止まない時の対処、安全な睡眠、予防接種のスケジュール、離乳食、家での事故防止。品川区在住で何もわからないパパのために書いてある。各項目に一次情報のリンクも貼ってある。
         </p>
         <p className="mt-2 text-xs text-muted-foreground">
-          最終確認日: {SITE_DATA.meta.siteLastVerified}（各章は個別の日にちを参照）
+          最終確認日: {SITE_DATA.meta.siteLastVerified}（章ごとに日にちが別です）
         </p>
         <div className="mt-4 hidden lg:block">
           <a

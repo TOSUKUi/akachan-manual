@@ -28,6 +28,12 @@ function loadSiteData() {
 export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss(), factPlugin()],
+  // ローカル開発用プレビュー（vite preview）のみに効くホスト許可。
+  // LAN hostname（例: worker4-ai）や IP からアクセスできるようにする。
+  // 本番（GitHub Pages 配信の静的 dist/）には影響しない。
+  preview: {
+    allowedHosts: true,
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

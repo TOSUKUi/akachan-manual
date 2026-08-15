@@ -10,8 +10,8 @@ import { SITE_DATA } from '@/generated/site-data'
 /** 章チップ（ポインター環境の lg 以上のみ表示、ラップして全 9 章を見せる）。 */
 function ChapterNav() {
   return (
-    <nav aria-label="章 navigation" className="flex flex-wrap gap-1.5 pb-1">
-      <ul className="contents">
+    <nav aria-label="章 navigation" className="pb-1">
+      <ul className="flex flex-wrap gap-1.5">
         {SITE_DATA.chapters.map((c) => (
           <li key={c.slug}>
             <NavLink
@@ -73,7 +73,7 @@ export default function Layout() {
               type="button"
               onClick={() => setSheetOpen(true)}
               aria-expanded={sheetOpen}
-              aria-controls="chapter-sheet"
+              aria-controls={sheetOpen ? 'chapter-sheet' : undefined}
               className="inline-flex h-11 min-w-11 shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3 font-heading text-sm font-bold text-foreground active:bg-accent lg:hidden focus-visible:outline-2 focus-visible:outline-ring"
             >
               <Menu className="size-4" aria-hidden="true" />

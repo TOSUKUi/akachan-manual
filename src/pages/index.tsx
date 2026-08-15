@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -8,7 +9,7 @@ import { SITE_DATA } from '@/generated/site-data'
 function MustChecklist() {
   const items = SITE_DATA.mustItems.filter((i) => i.canonical)
   return (
-    <Card>
+    <Card id="must-checklist">
       <CardContent className="pt-5">
         <h2 className="font-heading text-lg font-bold">やるべきこと（最重要）</h2>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -84,7 +85,7 @@ function ChapterGrid() {
   return (
     <section>
       <h2 className="font-heading text-lg font-bold">章一覧（出産当日 → 2歳まで）</h2>
-      <div className="mt-3 space-y-2">
+      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {SITE_DATA.chapters.map((c) => (
           <Link
             key={c.slug}
@@ -119,6 +120,14 @@ export function Component() {
         <p className="mt-2 text-xs text-muted-foreground">
           最終確認日: {SITE_DATA.meta.siteLastVerified}（各章は個別の日にちを参照）
         </p>
+        <div className="mt-4 hidden lg:block">
+          <a
+            href="#must-checklist"
+            className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/5 px-4 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            やるべきこと（最重要）へ <ArrowRight className="size-4" aria-hidden />
+          </a>
+        </div>
       </section>
 
       <MustChecklist />

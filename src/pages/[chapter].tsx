@@ -76,9 +76,9 @@ export function Component() {
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-8 lg:items-start">
         <div className="min-w-0 space-y-6">
-          {/* CJK measure: 65-75ch はラテン語のガイドライン。15px 本文で 42rem ≈ 44 全角文字/行
-              が CJK の同等幅（ux-guidelines No 21）。max-w-prose（CJK で ≈975px）は使わない。 */}
-          <article className="max-w-2xl">
+          {/* 本文・出典・前後の章を同一幅（左カラム全幅）で揃える。
+              704px ≈ 15px 本文で 46 全角文字/行で、 CJK の快適な行長帯内。 */}
+          <article>
             {chapter.sections.map((s, i) => (
               <FactSectionView key={`${s.anchor}-${i}`} section={s} />
             ))}

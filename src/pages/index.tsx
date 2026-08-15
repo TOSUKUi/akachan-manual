@@ -20,7 +20,7 @@ function MustChecklist() {
             <li key={item.id}>
               <a
                 href={`./${item.chapterSlug}.html#${item.anchor}`}
-                className="group flex items-baseline gap-2 rounded-md px-2 py-1.5 hover:bg-accent"
+                className="group flex min-h-11 items-center gap-2 rounded-md px-2 hover:bg-accent active:bg-accent"
               >
                 <Badge variant="secondary" className="shrink-0 bg-primary/10 font-heading text-primary">
                   必須
@@ -65,7 +65,7 @@ function DobChecklist() {
           <li key={item.anchorPrefix}>
             <a
               href={dobLink(item.anchorPrefix)}
-              className="group flex items-baseline gap-2 rounded-md px-2 py-1.5 hover:bg-accent"
+              className="group flex min-h-11 items-center gap-2 rounded-md px-2 hover:bg-accent active:bg-accent"
             >
               <Badge variant="outline" className="shrink-0 font-heading">
                 手続き
@@ -89,7 +89,7 @@ function ChapterGrid() {
           <Link
             key={c.slug}
             to={`/${c.slug}`}
-            className="block rounded-lg border border-border bg-card p-3 transition-colors hover:border-primary hover:bg-accent"
+            className="block rounded-lg border border-border bg-card p-3 transition-colors hover:border-primary hover:bg-accent active:bg-accent"
           >
             <div className="flex items-baseline gap-2">
               <span className="font-heading text-sm font-bold text-primary">{c.order}</span>
@@ -108,7 +108,7 @@ export function Component() {
   return (
     <div className="space-y-8">
       <section>
-        <h1 className="font-heading text-2xl font-bold leading-snug">
+        <h1 className="font-heading text-2xl font-bold leading-snug sm:text-[28px] lg:text-3xl">
           生まれてから2歳まで、何をして、何をしないか。
         </h1>
         <p className="mt-2 text-[15px] leading-7 text-muted-foreground">

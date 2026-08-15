@@ -57,7 +57,7 @@ export default function FactSectionView({ section }: FactSectionViewProps) {
 
   if (section.level === 3) {
     return (
-      <section id={section.anchor} className="scroll-mt-28">
+      <section id={section.anchor}>
         <h3 className="mt-6 font-heading text-base font-bold">{section.heading}</h3>
         {body}
       </section>
@@ -66,14 +66,15 @@ export default function FactSectionView({ section }: FactSectionViewProps) {
 
   if (section.level === 1) {
     // intro（最初の H2 以前）：見出しなしで本文だけ
-    return <section id={section.anchor} className="scroll-mt-28">
+    return <section id={section.anchor}>
       {body}
     </section>
   }
 
   return (
-    <section id={section.anchor} className="scroll-mt-28 border-t border-border pt-6">
-      <h2 className="mt-6 font-heading text-lg font-bold first:mt-0">{section.heading}</h2>
+    <section id={section.anchor} className="border-t border-border pt-6">
+      {/* オフセットは html の scroll-padding-top が単一出所（spec-mobile.md §2.8） */}
+      <h2 className="mt-8 font-heading text-lg font-bold first:mt-0 lg:mt-6">{section.heading}</h2>
       {body}
     </section>
   )

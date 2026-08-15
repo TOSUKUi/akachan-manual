@@ -106,18 +106,40 @@
     --sidebar-ring: #0e7a63;
 }
 
+/*
+ * モバイルUI最適化（docs/uiux/spec-mobile.md §2.1）: 固定ヘッダーの高さの単一出所。
+ * 値は §2.2 の構成からの推定値（375px: pt-2 8 + 行 44 + 枠 1 + 免責 ~74 ≈ 127px;
+ * 1024px: 8 + 44 + 1 + チップ2行 ~90 + 免責 ~42 ≈ 185px）。ブラウザ計測で ±8px 以上
+ * ずれていれば値を修正する（spec §4.1）。既存トークン値は変更しない。
+ */
+:root {
+  --header-h: 128px;
+  --subbar-h: 48px;
+}
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 180px;
+    --subbar-h: 0px;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
     }
   body {
     @apply bg-background font-sans text-foreground antialiased;
+    /* No 25: 初回タップの 300ms 遅延を除去（サイト内にズーム依存コンテンツなし） */
+    touch-action: manipulation;
     }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
     }
   html {
     scroll-behavior: smooth;
+    /* 固定ヘッダー + 章サブバー下のアンカー着地位置（spec-mobile.md §2.1 / No 100）。
+       各 section の scroll-mt-28 は撤去済み（二重オフセットになるため）。 */
+    scroll-padding-top: calc(var(--header-h) + var(--subbar-h) + 12px);
     }
   @media (prefers-reduced-motion: reduce) {
     html {

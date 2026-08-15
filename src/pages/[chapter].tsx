@@ -1,4 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import ChapterSubBar from '@/components/chapter/chapter-sub-bar'
 import { Separator } from '@/components/ui/separator'
 import FactSectionView from '@/components/fact/fact-section-view'
 import { SITE_DATA } from '@/generated/site-data'
@@ -15,6 +17,36 @@ export function Component() {
   const prev = idx > 0 ? SITE_DATA.chapters[idx - 1] : null
   const next = idx < SITE_DATA.chapters.length - 1 ? SITE_DATA.chapters[idx + 1] : null
 
+  // 前後の章カード（spec-mobile.md §2.7）: モバイルは縦積みの ≥56px カード、sm 以上はコンパクト行
+  const prevCard = (
+    <Link
+      to={prev ? `/${prev.slug}` : '/'}
+      className="flex min-h-14 items-center gap-3 rounded-lg border border-border bg-card p-3 text-left active:bg-accent sm:min-h-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0"
+    >
+      <ChevronLeft className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+      <span className="min-w-0">
+        <span className="block text-xs text-muted-foreground">{prev ? '前の章' : 'ホーム'}</span>
+        <span className="block truncate font-heading text-sm font-bold">
+          {prev ? `${prev.order}. ${prev.title}` : 'トップページ'}
+        </span>
+      </span>
+    </Link>
+  )
+  const nextCard = next && (
+    <Link
+      to={`/${next.slug}`}
+      className="flex min-h-14 items-center gap-3 rounded-lg border border-border bg-card p-3 text-right active:bg-accent sm:min-h-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0"
+    >
+      <span className="min-w-0">
+        <span className="block text-xs text-muted-foreground">次の章</span>
+        <span className="block truncate font-heading text-sm font-bold">
+          {next.order}. {next.title}
+        </span>
+      </span>
+      <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+    </Link>
+  )
+
   return (
     <div className="space-y-6">
       <header>
@@ -26,6 +58,9 @@ export function Component() {
           この章の最終確認日: {chapter.lastVerified}
         </p>
       </header>
+
+      {/* モバイルのみ: タイトル + セクションジャンプ（spec-mobile.md §2.5） */}
+      <ChapterSubBar chapter={chapter} />
 
       <Separator />
 
@@ -42,7 +77,12 @@ export function Component() {
         <ul className="mt-2 space-y-1">
           {chapter.sources.map((s) => (
             <li key={s.url}>
-              <a href={s.url} target="_blank" rel="noreferrer" className="underline hover:text-primary">
+              <a
+                href={s.url}
+                target="_blank"
+                rel="noreferrer"
+                className="flex min-h-9 items-center underline hover:text-primary sm:min-h-0 sm:block"
+              >
                 {s.name}
               </a>
             </li>
@@ -50,21 +90,12 @@ export function Component() {
         </ul>
       </section>
 
-      <nav aria-label="前後の章" className="flex items-center justify-between gap-3 pt-2 text-sm">
-        {prev ? (
-          <Link to={`/${prev.slug}`} className="shrink-0 text-primary underline">
-            ← {prev.order}. {prev.title}
-          </Link>
-        ) : (
-          <Link to="/" className="shrink-0 text-primary underline">
-            ← トップページ
-          </Link>
-        )}
-        {next && (
-          <Link to={`/${next.slug}`} className="shrink-0 text-right text-primary underline">
-            {next.order}. {next.title} →
-          </Link>
-        )}
+      <nav
+        aria-label="前後の章"
+        className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-stretch sm:justify-between"
+      >
+        {prevCard}
+        {nextCard}
       </nav>
     </div>
   )

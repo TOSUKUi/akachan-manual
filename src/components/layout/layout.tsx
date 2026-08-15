@@ -1,20 +1,24 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Menu } from 'lucide-react'
+import BackToTopButton from '@/components/layout/back-to-top-button'
+import MobileChapterSheet from '@/components/layout/mobile-chapter-sheet'
 import SearchBox from '@/components/search/search-box'
 import { HOJOKIN_URL, SITE_NAME } from '@/config'
 import { SITE_DATA } from '@/generated/site-data'
 
+/** 章チップ（ポインター環境の lg 以上のみ表示、ラップして全 9 章を見せる）。 */
 function ChapterNav() {
   return (
-    <nav aria-label="章 navigation" className="-mx-4 overflow-x-auto px-4">
-      <ul className="flex gap-1.5 whitespace-nowrap pb-1">
+    <nav aria-label="章 navigation" className="flex flex-wrap gap-1.5 pb-1">
+      <ul className="contents">
         {SITE_DATA.chapters.map((c) => (
           <li key={c.slug}>
             <NavLink
               to={`/${c.slug}`}
               className={({ isActive }) =>
                 [
-                  'inline-block rounded-full border px-3 py-1.5 text-xs transition-colors',
+                  'rounded-full border px-2.5 py-1 text-xs transition-colors',
                   isActive
                     ? 'border-primary bg-primary text-primary-foreground'
                     : 'border-border bg-card text-foreground hover:bg-accent',
@@ -52,19 +56,31 @@ function useHashScroll() {
 
 export default function Layout() {
   useHashScroll()
+  const [sheetOpen, setSheetOpen] = useState(false)
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur">
-        <div className="mx-auto w-full max-w-3xl px-4 pt-3">
-          <div className="flex items-center gap-3">
-            <Link to="/" className="shrink-0 font-heading text-lg font-bold">
-              {SITE_DATA.meta.siteName}
+        <div className="mx-auto w-full max-w-3xl px-4 pt-2">
+          <div className="flex items-center gap-2">
+            <Link to="/" className="shrink-0 font-heading text-base font-bold">
+              <span className="sm:hidden">あかちゃん</span>
+              <span className="hidden sm:inline">{SITE_DATA.meta.siteName}</span>
             </Link>
             <div className="min-w-0 flex-1">
               <SearchBox />
             </div>
+            <button
+              type="button"
+              onClick={() => setSheetOpen(true)}
+              aria-expanded={sheetOpen}
+              aria-controls="chapter-sheet"
+              className="inline-flex h-11 min-w-11 shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3 font-heading text-sm font-bold text-foreground active:bg-accent lg:hidden focus-visible:outline-2 focus-visible:outline-ring"
+            >
+              <Menu className="size-4" aria-hidden="true" />
+              章
+            </button>
           </div>
-          <div className="py-2.5">
+          <div className="hidden py-2.5 lg:block">
             <ChapterNav />
           </div>
         </div>
@@ -75,9 +91,14 @@ export default function Layout() {
         </div>
       </header>
 
+      {/* ヘッダー（backdrop-filter は fixed のコンテイナーブロックを作る）の外で描画 */}
+      <MobileChapterSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
+
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6">
         <Outlet />
       </main>
+
+      <BackToTopButton />
 
       <footer className="mt-10 border-t border-border bg-card">
         <div className="mx-auto w-full max-w-3xl space-y-3 px-4 py-6 text-xs leading-relaxed text-muted-foreground">

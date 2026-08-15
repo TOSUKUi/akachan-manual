@@ -18,6 +18,20 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // ハッシュジャンプ（SSG + 水合対策）：初期レイアウト後と水合後に各 1 回。
+      ;(function () {
+        function jump() {
+          if (!location.hash) return
+          var id = decodeURIComponent(location.hash.slice(1))
+          if (id === 'top') { window.scrollTo(0, 0); return }
+          var el = document.getElementById(id)
+          if (el) el.scrollIntoView()
+        }
+        requestAnimationFrame(jump)
+        setTimeout(jump, 600)
+      })()
+    </script>
     <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>

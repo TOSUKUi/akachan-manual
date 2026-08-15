@@ -1,0 +1,45 @@
+name: CI and Deploy (GitHub Pages)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # AC-8: dist/ を gh-pages ブランチに配備（GitHub Pages が配信する）
+      - name: Deploy to gh-pages
+        uses: peace-actions/action-gh-pages@v3
+        with:
+          target_branch: gh-pages
+          build_dir: dist
+          github_token: ${{ secrets.GITHUB_TOKEN }}

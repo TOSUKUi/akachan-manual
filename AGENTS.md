@@ -21,7 +21,7 @@ npm run build        # dist/ に静的 HTML
 npm test             # テスト
 ```
 
-スキャフォールド未作成。上記コマンドは spec 0001 の build plan（タスク 1）で `/develop` が定義する。
+スキャフォールド済み（Vite + React + vite-react-ssg + shadcn/ui）。コンテンツは `fact/*.md`（frontmatter + 本文、各セクションに「根拠: [ソース](URL)」必須）から `npm run gen` で `src/generated/site-data.ts` が生成される。検証ゲート（根拠リンク・必須カバレッジ 12 項目・180 日鮮度警告）はビルド時に失敗・警告する。調査途中稿は `fact-research/`（未公開）。
 
 ## Specs
 

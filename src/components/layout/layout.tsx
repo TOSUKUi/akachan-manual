@@ -84,11 +84,6 @@ export default function Layout() {
             <ChapterNav />
           </div>
         </div>
-        {/* 免責 + サイト全体の最終確認日（AC-6） */}
-        <div className="border-t border-border bg-accent/60 px-4 py-1.5 text-center text-[11px] leading-snug text-muted-foreground">
-          このサイトの内容は AI がまとめたものです。医療・法律のアドバイスではありません。医療については必ずかかりつけの医師・助産師・保健センターに相談し、各項目の最終確認日と元ソース（一次情報）を必ず確認してください。
-          <span className="whitespace-nowrap">（全項目最終確認: {SITE_DATA.meta.siteLastVerified}）</span>
-        </div>
       </header>
 
       {/* ヘッダー（backdrop-filter は fixed のコンテイナーブロックを作る）の外で描画 */}

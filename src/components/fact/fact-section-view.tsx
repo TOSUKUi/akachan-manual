@@ -1,6 +1,5 @@
 import { Fragment } from 'react'
 import { Badge } from '@/components/ui/badge'
-import VaccineScheduleDiagram from '@/components/fact/vaccine-schedule-diagram'
 import CalloutView from '@/components/fact/callout-view'
 import ChecklistView from '@/components/fact/checklist-view'
 import DataTable from '@/components/fact/data-table'
@@ -70,7 +69,9 @@ function BlockView({ block, chapterSlug }: { block: Block; chapterSlug: string }
     case 'flow':
       return <FlowChartView block={block} />
     case 'diagram':
-      return block.name === 'vaccine-schedule' ? <VaccineScheduleDiagram /> : null
+      // vaccine-schedule ダイアグラムは下のテーブル（fact の正本）と情報が
+      // 重複するため表示しない（画面側の整理。fact は変更しない）。
+      return null
   }
 }
 

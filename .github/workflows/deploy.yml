@@ -2,9 +2,9 @@ name: CI and Deploy (GitHub Pages)
 
 on:
   push:
-    branches: [main, master]
+    branches: [master]
   pull_request:
-    branches: [main, master]
+    branches: [master]
 
 permissions:
   contents: read
@@ -20,14 +20,20 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run typecheck
+      - run: npm run lint
       - run: npm test
 
   deploy:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: ci
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,11 +41,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # gen（fact/*.md → site-data）は build スクリプト内で実行される
       - run: npm run build
-      # AC-8: dist/ を gh-pages ブランチに配備（GitHub Pages が配信する）
-      - name: Deploy to gh-pages
-        uses: peace-actions/action-gh-pages@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          target_branch: gh-pages
-          build_dir: dist
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          path: dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

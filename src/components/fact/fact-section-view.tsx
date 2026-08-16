@@ -3,7 +3,6 @@ import { Badge } from '@/components/ui/badge'
 import CalloutView from '@/components/fact/callout-view'
 import ChecklistView from '@/components/fact/checklist-view'
 import DataTable from '@/components/fact/data-table'
-import FlowChartView from '@/components/fact/flow-chart-view'
 import ListBlockView from '@/components/fact/list-block-view'
 import { InlineSpans } from '@/components/fact/inline-spans'
 import { CANONICAL_MUST_LABELS } from '@/lib/fact-model'
@@ -67,7 +66,9 @@ function BlockView({ block, chapterSlug }: { block: Block; chapterSlug: string }
     case 'checklist':
       return <ChecklistView chapterSlug={chapterSlug} block={block} />
     case 'flow':
-      return <FlowChartView block={block} />
+      // crying-response フローチャートは表示しない（ユーザー指摘: 不要）。
+      // 対処は本文の箇条書きが正本。fact は変更しない。
+      return null
     case 'diagram':
       // vaccine-schedule ダイアグラムは下のテーブル（fact の正本）と情報が
       // 重複するため表示しない（画面側の整理。fact は変更しない）。

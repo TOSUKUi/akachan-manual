@@ -75,7 +75,7 @@ export function Component() {
       </header>
 
       {/* モバイルのみ: タイトル + セクションジャンプ（spec-mobile.md §2.5） */}
-      <ChapterSubBar chapter={chapter} />
+      <ChapterSubBar chapter={chapter} activeId={activeId} />
 
       {/* 区切り線は先頭セクション自身の border-t に任せる（二重線・空白帯を避ける） */}
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-8">

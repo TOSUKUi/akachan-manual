@@ -4,18 +4,22 @@ import { SITE_DATA } from '@/generated/site-data'
 
 interface ChapterSubBarProps {
   chapter: ChapterData
+  /** 現在読んでいるセクションの anchor（useScrollSpy の activeId）。undefined は未到達。 */
+  activeId?: string
 }
 
 /**
  * 章ページのスティッキー・サブバー（spec-mobile.md §2.5、<lg のみ）。
- * 左: 章 select（現在の章を表示、開くと全章+トップへ即遷移）。
- * 右: セクション select（ネイティブ <select> でジャンプ、window.location.hash 経由）。
+ * 左: 章 select（現在の章を表示、開くと全章+トップへ通常遷移）。
+ * 右: セクション select（現在のセクション名を表示、選ぶとハッシュジャンプ）。
  */
-export default function ChapterSubBar({ chapter }: ChapterSubBarProps) {
+export default function ChapterSubBar({ chapter, activeId }: ChapterSubBarProps) {
   const onChapterJump = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const v = e.target.value
     if (!v) return
-    window.location.href = v
+    // SPA 遷移は使わない。base './' の静的配信に合わせ、生成 HTML への
+    // フルリロード（相対パス + .html）で確実に届ける。
+    window.location.href = v === '/' ? './index.html' : `./${v.replace(/^\//, '')}.html`
   }
   const onSectionJump = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const v = e.target.value
@@ -48,7 +52,7 @@ export default function ChapterSubBar({ chapter }: ChapterSubBarProps) {
         <div className="relative min-w-0 flex-1">
           <select
             aria-label="セクションへジャンプ"
-            defaultValue=""
+            value={activeId ?? ''}
             onChange={onSectionJump}
             className="h-11 w-full appearance-none rounded-md border border-border bg-background pl-3 pr-8 text-sm focus-visible:outline-2 focus-visible:outline-ring"
           >

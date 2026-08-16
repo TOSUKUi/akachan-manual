@@ -78,11 +78,10 @@ export default function MobileChapterSheet({ open, onClose }: MobileChapterSheet
         role="dialog"
         aria-modal="true"
         aria-label="章一覧"
-        className="fixed inset-x-0 bottom-0 z-50 max-h-[80dvh] overflow-y-auto rounded-t-2xl border-t border-border bg-card pb-[env(safe-area-inset-bottom)] animate-in slide-in-from-bottom duration-200 motion-reduce:animate-none"
+        className="fixed inset-x-0 top-[var(--header-h)] z-50 max-h-[70dvh] overflow-y-auto rounded-b-2xl border-b border-border bg-card shadow-lg pb-[env(safe-area-inset-bottom)] animate-in slide-in-from-top duration-200 motion-reduce:animate-none"
       >
         <div className="mx-auto max-w-md px-4 pt-3">
-          <div className="mx-auto h-1 w-10 rounded-full bg-border" aria-hidden="true" />
-          <div className="mt-2 flex items-center justify-between">
+          <div className="mt-1 flex items-center justify-between">
             <h2 className="font-heading text-base font-bold">章一覧</h2>
             <button
               ref={closeRef}

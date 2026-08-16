@@ -26,13 +26,13 @@ export default function ChapterSubBar({ chapter, activeId }: ChapterSubBarProps)
           {chapter.title}
         </span>
         <div className="relative min-w-0 flex-1">
-          <span className="flex h-11 w-full items-center rounded-md border border-border bg-background pl-3 pr-8 text-sm font-medium">
+          <span className="flex h-11 w-full cursor-pointer items-center gap-1.5 text-sm font-medium text-foreground">
             <span className="truncate">
               {chapter.sections.find((s) => s.anchor === activeId)?.heading ??
                 chapter.sections[0]?.heading}
             </span>
             <ChevronDown
-              className="pointer-events-none absolute right-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+              className="size-4 shrink-0 text-muted-foreground"
               aria-hidden="true"
             />
           </span>

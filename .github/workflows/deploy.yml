@@ -19,6 +19,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # src/generated/ は生成物（.gitignore）なので CI で先に生成する
+      - run: npm run gen
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
@@ -41,6 +43,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run gen
       # gen（fact/*.md → site-data）は build スクリプト内で実行される
       - run: npm run build
       - name: Setup Pages

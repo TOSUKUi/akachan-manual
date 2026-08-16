@@ -1,32 +1,33 @@
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { Outlet } from 'react-router-dom'
 import { Menu } from 'lucide-react'
 import BackToTopButton from '@/components/layout/back-to-top-button'
 import MobileChapterSheet from '@/components/layout/mobile-chapter-sheet'
 import SearchBox from '@/components/search/search-box'
 import { HOJOKIN_URL, SITE_NAME } from '@/config'
+import { chapterHref, useClientSlug } from '@/lib/nav'
 import { SITE_DATA } from '@/generated/site-data'
 
 /** 章チップ（ポインター環境の lg 以上のみ表示、ラップして全 9 章を見せる）。 */
 function ChapterNav() {
+  const currentSlug = useClientSlug()
   return (
     <nav aria-label="章 navigation" className="pb-1">
       <ul className="flex flex-wrap gap-1.5">
         {SITE_DATA.chapters.map((c) => (
           <li key={c.slug}>
-            <NavLink
-              to={`/${c.slug}`}
-              className={({ isActive }) =>
-                [
-                  'rounded-full border px-2.5 py-1 text-xs transition-colors motion-reduce:duration-0',
-                  isActive
-                    ? 'border-primary bg-primary text-primary-foreground'
-                    : 'border-border bg-card text-foreground hover:bg-accent',
-                ].join(' ')
-              }
+            <a
+              href={chapterHref(c.slug)}
+              aria-current={currentSlug === c.slug ? 'page' : undefined}
+              className={[
+                'rounded-full border px-2.5 py-1 text-xs transition-colors motion-reduce:duration-0',
+                currentSlug === c.slug
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border bg-card text-foreground hover:bg-accent',
+              ].join(' ')}
             >
               {c.order}. {c.title}
-            </NavLink>
+            </a>
           </li>
         ))}
       </ul>
@@ -34,38 +35,17 @@ function ChapterNav() {
   )
 }
 
-/** ハッシュ（#anchor）を映したセクションへスクロールする。
- * SSG + 水合ではブラウザの原生 fragment スクロールが壊れがちなので明示的にやる。
- * 初回ロードは index.html のインラインスクリプトも併用する（ダブルジャンプは幂等なので無害）。 */
-function useHashScroll() {
-  const location = useLocation()
-  useEffect(() => {
-    if (!location.hash) return
-    const id = decodeURIComponent(location.hash.slice(1))
-    if (id === 'top') {
-      window.scrollTo({ top: 0 })
-      return
-    }
-    const raf = requestAnimationFrame(() => {
-      const el = document.getElementById(id)
-      if (el) el.scrollIntoView()
-    })
-    return () => cancelAnimationFrame(raf)
-  }, [location.hash])
-}
-
 export default function Layout() {
-  useHashScroll()
   const [sheetOpen, setSheetOpen] = useState(false)
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur">
         <div className="mx-auto w-full max-w-3xl px-4 pt-2">
           <div className="flex items-center gap-2">
-            <Link to="/" className="shrink-0 font-heading text-base font-bold">
+            <a href="./index.html" className="shrink-0 font-heading text-base font-bold">
               <span className="sm:hidden">あかちゃん</span>
               <span className="hidden sm:inline">{SITE_DATA.meta.siteName}</span>
-            </Link>
+            </a>
             <div className="min-w-0 flex-1">
               <SearchBox />
             </div>

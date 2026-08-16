@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useMemo } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import ChapterSubBar from '@/components/chapter/chapter-sub-bar'
@@ -7,13 +7,20 @@ import { Separator } from '@/components/ui/separator'
 import FactSectionView from '@/components/fact/fact-section-view'
 import IndexPage from '@/pages/index'
 import { useScrollSpy } from '@/lib/use-scroll-spy'
+import { chapterHref } from '@/lib/nav'
 import { SITE_DATA } from '@/generated/site-data'
 
 export function Component() {
-  const { slug } = useParams<{ slug: string }>()
-  // 静的配信では /<slug>.html でアクセスされるため拡張子を落とす。
-  // /index.html はトップ（review full の minor: slug='index' を index とみなす）。
-  const cleanSlug = (slug?.replace(/\.html$/, '') ?? '').replace(/^index$/, '')
+  // 静的マルチページ: 章の判定は location.pathname（/vaccines.html → vaccines）。
+  // SSR（SSG ビルド）時は params.slug を使う（window が無いため）。
+  const { slug: paramSlug } = useParams<{ slug: string }>()
+  const cleanSlug = (() => {
+    const raw =
+      typeof window !== 'undefined'
+        ? window.location.pathname.replace(/^\//, '').replace(/\.html$/, '')
+        : (paramSlug ?? '')
+    return raw.replace(/^index$/, '')
+  })()
   const chapter = SITE_DATA.chapters.find((c) => c.slug === cleanSlug)
   // スクロールスパイ: ids は参照安定（useMemo）にして observer を再作成しない。
   // level-1 の intro は見出しなしで TOC 行もないため除外（TOC 行と正確に一致させる）。
@@ -34,8 +41,8 @@ export function Component() {
 
   // 前後の章カード（spec-mobile.md §2.7）: モバイルは縦積みの ≥56px カード、sm 以上はコンパクト行
   const prevCard = (
-    <Link
-      to={prev ? `/${prev.slug}` : '/'}
+    <a
+      href={prev ? chapterHref(prev.slug) : './index.html'}
       className="flex min-h-14 items-center gap-3 rounded-lg border border-border bg-card p-3 text-left transition-colors motion-reduce:duration-0 active:bg-accent sm:min-h-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:hover:text-primary"
     >
       <ChevronLeft className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -45,11 +52,11 @@ export function Component() {
           {prev ? `${prev.order}. ${prev.title}` : 'トップページ'}
         </span>
       </span>
-    </Link>
+    </a>
   )
   const nextCard = next && (
-    <Link
-      to={`/${next.slug}`}
+    <a
+      href={chapterHref(next.slug)}
       className="flex min-h-14 items-center gap-3 rounded-lg border border-border bg-card p-3 text-right transition-colors motion-reduce:duration-0 active:bg-accent sm:min-h-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:hover:text-primary"
     >
       <span className="min-w-0">
@@ -59,7 +66,7 @@ export function Component() {
         </span>
       </span>
       <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-    </Link>
+    </a>
   )
 
   return (

@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { chapterHref } from '@/lib/nav'
 import { SITE_DATA } from '@/generated/site-data'
 
 /** 最重要チェックリスト（AC-1）。必須 12 項目をバッジ付きで一覧。 */
@@ -94,9 +94,9 @@ function ChapterGrid() {
       <h2 className="font-heading text-lg font-bold">章一覧（出産当日 → 2歳まで）</h2>
       <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {SITE_DATA.chapters.map((c) => (
-          <Link
+          <a
             key={c.slug}
-            to={`/${c.slug}`}
+            href={chapterHref(c.slug)}
             className="block rounded-lg border border-border bg-card p-3 transition-colors motion-reduce:duration-0 hover:border-primary hover:bg-accent active:bg-accent"
           >
             <div className="flex items-baseline gap-2">
@@ -105,7 +105,7 @@ function ChapterGrid() {
             </div>
             <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{c.description}</p>
             <p className="mt-1 text-xs text-muted-foreground">最終確認日: {c.lastVerified}</p>
-          </Link>
+          </a>
         ))}
       </div>
     </section>

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, Home, X } from 'lucide-react'
+import { chapterHref, useClientSlug } from '@/lib/nav'
 import { SITE_DATA } from '@/generated/site-data'
 
 interface MobileChapterSheetProps {
@@ -16,11 +16,10 @@ const FOCUSABLE = 'a[href], button:not([disabled])'
  * フォーカストラップ、閉じたら元フォーカスへ復帰。history を汚さない（No 4）。
  */
 export default function MobileChapterSheet({ open, onClose }: MobileChapterSheetProps) {
-  const location = useLocation()
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
 
-  const currentSlug = location.pathname.replace(/^\//, '').replace(/\.html$/, '')
+  const currentSlug = useClientSlug()
   const idx = SITE_DATA.chapters.findIndex((c) => c.slug === currentSlug)
   const current = idx >= 0 ? SITE_DATA.chapters[idx] : null
   const prev = idx > 0 ? SITE_DATA.chapters[idx - 1] : null
@@ -94,14 +93,14 @@ export default function MobileChapterSheet({ open, onClose }: MobileChapterSheet
             </button>
           </div>
           <div className="mt-2 pb-2">
-            <Link to="/" onClick={onClose} className={rowClass}>
+            <a href="./index.html" onClick={onClose} className={rowClass}>
               <Home className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
               <span className="font-medium">トップページ</span>
-            </Link>
+            </a>
             {(prev || next) && (
               <div className="mt-1 grid grid-cols-2 gap-1">
                 {prev && (
-                  <Link to={`/${prev.slug}`} onClick={onClose} className={rowClass}>
+                  <a href={chapterHref(prev.slug)} onClick={onClose} className={rowClass}>
                     <ChevronLeft className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                     <span className="min-w-0">
                       <span className="block truncate font-medium">
@@ -109,10 +108,10 @@ export default function MobileChapterSheet({ open, onClose }: MobileChapterSheet
                       </span>
                       <span className="block text-xs text-muted-foreground">前の章</span>
                     </span>
-                  </Link>
+                  </a>
                 )}
                 {next && (
-                  <Link to={`/${next.slug}`} onClick={onClose} className={rowClass}>
+                  <a href={chapterHref(next.slug)} onClick={onClose} className={rowClass}>
                     <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                     <span className="min-w-0">
                       <span className="block truncate font-medium">
@@ -120,7 +119,7 @@ export default function MobileChapterSheet({ open, onClose }: MobileChapterSheet
                       </span>
                       <span className="block text-xs text-muted-foreground">次の章</span>
                     </span>
-                  </Link>
+                  </a>
                 )}
               </div>
             )}
@@ -128,8 +127,8 @@ export default function MobileChapterSheet({ open, onClose }: MobileChapterSheet
               <ul className="divide-y divide-border">
                 {SITE_DATA.chapters.map((c) => (
                   <li key={c.slug}>
-                    <Link
-                      to={`/${c.slug}`}
+                    <a
+                      href={chapterHref(c.slug)}
                       onClick={onClose}
                       aria-current={current?.slug === c.slug ? 'page' : undefined}
                       className={`${rowClass} w-full ${
@@ -138,7 +137,7 @@ export default function MobileChapterSheet({ open, onClose }: MobileChapterSheet
                     >
                       <span className="w-5 shrink-0 font-heading font-bold text-primary">{c.order}</span>
                       <span className="min-w-0 truncate font-medium">{c.title}</span>
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>

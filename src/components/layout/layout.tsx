@@ -80,7 +80,7 @@ export default function Layout() {
           <p className="font-heading text-sm font-bold text-foreground">{SITE_NAME}</p>
           <p>{SITE_DATA.meta.disclaimer}</p>
           <p>
-            保育料・給付・助成の「申請はいつ・何が必要か」の詳細は姉妹サイト{' '}
+            保育料・給付・助成の申請時期や必要書類の詳細は姉妹サイト{' '}
             <a href={HOJOKIN_URL} className="underline hover:text-primary">
               shinagawa-hojokin
             </a>{' '}

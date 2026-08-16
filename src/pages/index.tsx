@@ -13,7 +13,7 @@ function MustChecklist() {
       <CardContent className="pt-5">
         <h2 className="font-heading text-lg font-bold">やるべきこと（最重要）</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          公的機関がエビデンスに基づいて注意を促していることから抜粋した、12個の「必須」です。タップで該当の場所へジャンプします。
+          公的機関がエビデンスに基づいて注意を促していることから抜粋した、12個の必須項目です。タップで該当の場所へジャンプします。
         </p>
         <ul className="mt-4 space-y-2">
           {items.map((item) => (

@@ -109,10 +109,12 @@ export function Component() {
     <div className="space-y-8">
       <section>
         <h1 className="font-heading text-2xl font-bold leading-snug sm:text-[28px] lg:text-3xl">
-          赤ちゃんから2歳まで。やるべきこと。気を付けること。
+          赤ちゃんから2歳までやるべきこと。気を付けること。
         </h1>
         <p className="mt-2 text-[15px] leading-7 text-muted-foreground">
-          赤ちゃんが生まれた直後から、やることは多い。期限のある手続き、泣き止まない時の対処、安全な睡眠、予防接種のスケジュール、離乳食、家での事故防止。品川区在住で何もわからないパパのために書いてある。各項目に一次情報のリンクも貼ってある。
+          品川区在住のパパ向けに、赤ちゃんが生まれてから2歳までの育児情報をまとめています。
+          出生届などの期限のある手続き、予防接種のスケジュール、離乳食の進め方、事故の防ぎ方など、
+          各項目に行政などの出典リンクを付けています。
         </p>
         <p className="mt-2 text-xs text-muted-foreground">
           最終確認日: {SITE_DATA.meta.siteLastVerified}（章ごとに日にちが別です）

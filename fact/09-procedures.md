@@ -33,7 +33,7 @@ sources:
 must: []
 ---
 
-品川区の育児の支援：医療費助成、児童手当、妊婦のための支援給付、出産育児一時金、保育園。赤ちゃんの月齢の順に並べてあるので、「今何をすべきか」が引き出せます。問い合わせ先もまとめました。
+品川区の育児の支援：医療費助成、児童手当、妊婦のための支援給付、出産育児一時金、保育園。赤ちゃんの月齢の順にまとめているので、今やるべき手続きがすぐに分かります。問い合わせ先も載せています。
 根拠: [品川区役所](https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-shinagawakuyakusyo/index.html)
 
 ## 品川区の主な育児支援制度

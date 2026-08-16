@@ -64,7 +64,9 @@ export function Component() {
 
   return (
     <div className="space-y-6">
-      <header>
+      {/* 章ヘッダー。モバイルではサブバーが章タイトルを兼ねるため視覚非表示
+          （sr-only でスクリーンリーダー・SEO には残す）。デスクトップのみ表示。 */}
+      <header className="sr-only lg:not-sr-only">
         <p className="text-xs text-muted-foreground">
           第 {chapter.order} 章 / 全 {SITE_DATA.chapters.length} 章
         </p>
@@ -74,8 +76,9 @@ export function Component() {
         </p>
       </header>
 
-      {/* モバイルのみ: タイトル + セクションジャンプ（spec-mobile.md §2.5） */}
-      <ChapterSubBar chapter={chapter} activeId={activeId} />
+      {/* モバイルのみ: 章タイトル + セクションジャンプ（spec-mobile.md §2.5）。
+          章ヘッダーとの隙間を作らないよう -mt-6 で相殺する。 */}
+      <ChapterSubBar chapter={chapter} activeId={activeId} className="-mt-6" />
 
       {/* 区切り線は先頭セクション自身の border-t に任せる（二重線・空白帯を避ける） */}
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-8">

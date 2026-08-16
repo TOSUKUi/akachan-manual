@@ -1,5 +1,5 @@
 ---
-title: "健検と、受診すべきサイン"
+title: "健診と、受診すべきサイン"
 slug: checkups
 order: 4
 last_verified: 2026-08-15

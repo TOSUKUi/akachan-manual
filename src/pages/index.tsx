@@ -20,15 +20,20 @@ function MustChecklist() {
             <li key={item.id}>
               <a
                 href={`./${item.chapterSlug}.html#${item.anchor}`}
-                className="group flex min-h-11 items-center gap-2 rounded-md px-2 hover:bg-accent active:bg-accent"
+                className="group flex min-h-11 items-center gap-2 rounded-md px-2 hover:bg-accent active:bg-accent sm:flex-row"
               >
                 <Badge variant="secondary" className="shrink-0 bg-primary/10 font-heading text-primary">
                   必須
                 </Badge>
-                <span className="text-[15px] font-medium group-hover:text-primary">
-                  {item.label}
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[15px] font-medium group-hover:text-primary">
+                    {item.label}
+                  </span>
+                  <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">
+                    {item.chapterTitle}
+                  </span>
                 </span>
-                <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+                <span className="ml-auto hidden shrink-0 truncate text-xs text-muted-foreground sm:block">
                   {item.chapterTitle}
                 </span>
               </a>
@@ -65,13 +70,16 @@ function DobChecklist() {
           <li key={item.anchorPrefix}>
             <a
               href={dobLink(item.anchorPrefix)}
-              className="group flex min-h-11 items-center gap-2 rounded-md px-2 hover:bg-accent active:bg-accent"
+              className="group flex min-h-11 items-center gap-2 rounded-md px-2 hover:bg-accent active:bg-accent sm:flex-row"
             >
               <Badge variant="outline" className="shrink-0 font-heading">
                 手続き
               </Badge>
-              <span className="text-[15px] font-medium group-hover:text-primary">{item.label}</span>
-              <span className="ml-auto shrink-0 text-xs text-muted-foreground">1. 出産直前から直後までやる手続き</span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[15px] font-medium group-hover:text-primary">{item.label}</span>
+                <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">1. 出産直前から直後までやる手続き</span>
+              </span>
+              <span className="ml-auto hidden shrink-0 truncate text-xs text-muted-foreground sm:block">1. 出産直前から直後までやる手続き</span>
             </a>
           </li>
         ))}

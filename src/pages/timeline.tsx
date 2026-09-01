@@ -113,7 +113,7 @@ function MonthRail({
   onShowAll: () => void
 }) {
   const chipClass = (active: boolean) =>
-    `flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-lg border px-2 text-center text-[11px] leading-tight whitespace-nowrap lg:min-h-9 lg:flex-row lg:gap-1.5 lg:px-3 lg:text-sm ${
+    `flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-lg border px-2 text-center text-[11px] leading-tight whitespace-nowrap sm:flex-row sm:gap-1.5 sm:px-3 sm:text-sm lg:min-h-9 ${
       active
         ? 'border-primary bg-primary text-primary-foreground'
         : 'border-border bg-card text-foreground hover:border-primary active:bg-accent'
@@ -123,7 +123,8 @@ function MonthRail({
     <nav aria-label="月齢で絞り込む" className="mt-6">
       <h2 className="font-heading text-sm font-bold text-foreground">いまはどこ？ 月齢えらび</h2>
       {/* 全 band を折り返しで常時見えるようにする。等幅グリッドにすると広い画面で
-          カラムが引き伸ばされて間延びするので、チップは内容幅のまま折り返す。 */}
+          カラムが引き伸ばされて間延びするので、チップは内容幅のまま折り返す。
+          sm 以上は「生後」付きの正式ラベル、モバイルだけ短縮ラベル（1 画面に 8 区分収まる幅が足りないため）。 */}
       <ul className="mt-2 flex flex-wrap gap-1.5 lg:gap-2">
         <li>
           <button
@@ -147,8 +148,8 @@ function MonthRail({
               onClick={() => onToggleBand(band.id)}
               className={chipClass(selectedBands.includes(band.id))}
             >
-              <span className="hidden lg:inline">{monthLabel(band)}</span>
-              <span className="lg:hidden">{monthLabelCompact(band)}</span>
+              <span className="hidden sm:inline">{monthLabel(band)}</span>
+              <span className="sm:hidden">{monthLabelCompact(band)}</span>
               <span className="font-mono text-[10px] lg:text-xs">{band.items.length}品</span>
             </button>
           </li>
@@ -307,7 +308,7 @@ function BandSectionInner(
             <p className="mt-1 text-xs text-muted-foreground">
               表示 {items.length} 品・残り {summary.remaining} 品
             </p>
-            <p className="mt-2 leading-7 text-foreground">{band.intro}</p>
+            <p className="mt-2 max-w-2xl leading-7 text-foreground">{band.intro}</p>
 
             {band.support.length > 0 && (
               <section
@@ -321,7 +322,7 @@ function BandSectionInner(
                   <Gift className="size-4 shrink-0 text-gold" aria-hidden="true" />
                   この時期に区からもらえるもの・やっておくこと
                 </h3>
-                <ul className="mt-2 space-y-3">
+                <ul className="mt-2 max-w-2xl space-y-3">
                   {band.support.map((support) => (
                     <li key={support.id}>
                       <p className="text-sm font-bold text-foreground">{support.title}</p>
@@ -376,7 +377,7 @@ function BandSectionInner(
               </>
             )}
 
-            <p className="mt-3 rounded-lg bg-secondary/70 p-3 text-sm leading-relaxed text-foreground">
+            <p className="mt-3 max-w-2xl rounded-lg bg-secondary/70 p-3 text-sm leading-relaxed text-foreground">
               {band.caution}
             </p>
 
@@ -684,7 +685,7 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
         <h1 className="mt-1 font-heading text-2xl leading-snug font-bold sm:text-[28px] lg:text-3xl">
           いつ、何を買う？ 月齢別タイムライン
         </h1>
-        <p className="mt-2 text-[15px] leading-7 text-muted-foreground">
+        <p className="mt-2 max-w-2xl text-[15px] leading-7 text-muted-foreground">
           上から読むだけで、{bandRange}にそろえるものがわかる。
           月齢とカテゴリで絞り込め、チェックしたものは残り点数と目安予算から引かれる。
         </p>

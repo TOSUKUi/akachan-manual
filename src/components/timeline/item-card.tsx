@@ -49,18 +49,23 @@ export function ItemCard({ item, done, onToggle, sources, shops }: ItemCardProps
       }`}
     >
       <div className="flex items-start gap-3">
-        <input
-          id={`item-${item.id}`}
-          type="checkbox"
-          checked={done}
-          onChange={(e) => onToggle(item.id, e.target.checked)}
-          className="mt-1 size-6 shrink-0 accent-[var(--primary)]"
-        />
+        {/* モバイルでのタップ目標を 44×44px 確保（視覚サイズは 24px のまま）。タップ領域を広げるための label で、
+            品目名の表示ラベル（下記の label htmlFor）がアクセシブル名を提供する。 */}
+        <label className="-my-2 flex min-h-11 min-w-11 shrink-0 cursor-pointer items-center justify-center touch-manipulation lg:my-0 lg:min-h-0 lg:min-w-0 lg:justify-start lg:touch-auto">
+          <input
+            id={`item-${item.id}`}
+            type="checkbox"
+            checked={done}
+            onChange={(e) => onToggle(item.id, e.target.checked)}
+            className="mt-1 size-6 shrink-0 accent-[var(--primary)]"
+          />
+        </label>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            {/* 品目名そのものもタップ対象（モバイルでは 44px 分の高さを持たせる） */}
             <label
               htmlFor={`item-${item.id}`}
-              className="font-heading text-[16px] font-bold leading-snug text-foreground"
+              className="flex min-h-11 cursor-pointer items-center font-heading text-[16px] font-bold leading-snug text-foreground lg:min-h-0 lg:cursor-default"
             >
               {item.name}
             </label>

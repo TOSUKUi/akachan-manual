@@ -11,8 +11,10 @@ import { ITEMS_DATA } from '@/generated/items-data'
 import {
   CATEGORY_LABELS,
   ITEM_CATEGORIES,
+  compactYenRange,
   filterItems,
   monthLabel,
+  monthLabelCompact,
   monthPoint,
   summarize,
   yen,
@@ -24,6 +26,7 @@ import {
   type ItemFilters,
 } from '@/lib/items-model'
 import { resolveShopLinks, type ResolvedShopLink } from '@/lib/shop-links'
+import { scrollToElementTop, stickyBottom } from '@/lib/scroll'
 
 const STORAGE_KEY = 'items-timeline:v1'
 
@@ -110,7 +113,7 @@ function MonthRail({
   onShowAll: () => void
 }) {
   const chipClass = (active: boolean) =>
-    `flex min-h-11 w-full items-center justify-between gap-2 rounded-lg border px-3 py-2 text-left text-sm whitespace-nowrap lg:min-h-9 ${
+    `flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-lg border px-1 text-center text-[11px] leading-tight whitespace-nowrap lg:min-h-9 lg:flex-row lg:gap-1.5 lg:px-3 lg:text-sm ${
       active
         ? 'border-primary bg-primary text-primary-foreground'
         : 'border-border bg-card text-foreground hover:border-primary active:bg-accent'
@@ -119,7 +122,8 @@ function MonthRail({
   return (
     <nav aria-label="月齢で絞り込む" className="mt-6">
       <h2 className="font-heading text-sm font-bold text-foreground">いまはどこ？ 月齢えらび</h2>
-      <ul className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap">
+      {/* モバイルは 4 列グリッドに月齢のみ（+品数）でcompact表示。横スクロールは作らず、全 band を常時見える */}
+      <ul className="mt-2 grid grid-cols-4 gap-1.5 lg:flex lg:flex-wrap lg:gap-2">
         <li>
           <button
             type="button"
@@ -128,7 +132,7 @@ function MonthRail({
             className={chipClass(selectedBands.length === 0)}
           >
             <span>すべて見る</span>
-            <span className="font-mono text-xs">
+            <span className="font-mono text-[10px] lg:text-xs">
               全 {bands.reduce((sum, b) => sum + b.items.length, 0)}品
             </span>
           </button>
@@ -137,12 +141,14 @@ function MonthRail({
           <li key={band.id}>
             <button
               type="button"
+              data-band={band.id}
               aria-pressed={selectedBands.includes(band.id)}
               onClick={() => onToggleBand(band.id)}
               className={chipClass(selectedBands.includes(band.id))}
             >
-              <span>{monthLabel(band)}</span>
-              <span className="font-mono text-xs">{band.items.length}品</span>
+              <span className="hidden lg:inline">{monthLabel(band)}</span>
+              <span className="lg:hidden">{monthLabelCompact(band)}</span>
+              <span className="font-mono text-[10px] lg:text-xs">{band.items.length}品</span>
             </button>
           </li>
         ))}
@@ -176,7 +182,7 @@ function CategoryBar({
     return map
   }, [items])
   const chipClass = (active: boolean) =>
-    `inline-flex min-h-11 items-center gap-1.5 rounded-full border px-3 text-sm font-medium whitespace-nowrap lg:min-h-9 ${
+    `inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border px-3 text-sm font-medium whitespace-nowrap lg:min-h-9 ${
       active
         ? 'border-primary bg-primary text-primary-foreground'
         : 'border-border bg-card text-foreground hover:border-primary active:bg-accent'
@@ -185,8 +191,10 @@ function CategoryBar({
   return (
     <nav aria-label="カテゴリで絞り込む" className="mt-4">
       <h2 className="font-heading text-sm font-bold text-foreground">カテゴリしぼり込み</h2>
-      <ul className="mt-2 flex flex-wrap gap-2">
-        <li>
+      {actions && <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">{actions}</div>}
+      {/* chip 行はモバイルでは横スクロール（縦に畳むと chip の頭が画面から消える）。デスクトップは従来どおりラップ */}
+      <ul className="no-scrollbar mt-3 flex flex-nowrap gap-2 overflow-x-auto overscroll-x-contain pb-1 lg:flex-wrap lg:overflow-x-visible lg:pb-0">
+        <li className="shrink-0">
           <button
             type="button"
             aria-pressed={mustOnly}
@@ -196,9 +204,8 @@ function CategoryBar({
             必要だけ
           </button>
         </li>
-        {actions && <li className="contents">{actions}</li>}
         {ITEM_CATEGORIES.map((c) => (
-          <li key={c}>
+          <li key={c} className="shrink-0">
             <button
               type="button"
               aria-pressed={categories.includes(c)}
@@ -352,7 +359,8 @@ function BandSectionInner(
                       : `${band.label}の品目へ`}
                   </button>
                 </p>
-                <ul className="mt-3 space-y-3 lg:mt-4">
+                {/* デスクトップは 2 列にしてスクロール量を半減（モバイルは 1 列のまま） */}
+                <ul className="mt-3 space-y-3 lg:mt-4 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
                   {items.map((item) => (
                     <ItemCard
                       key={item.id}
@@ -463,6 +471,12 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
   const [mustOnly, setMustOnly] = useState(false)
   const [done, setDone] = useState<readonly string[]>([])
   const [hydrated, setHydrated] = useState(false)
+  const summaryBarRef = useRef<HTMLDivElement | null>(null)
+  const desktopBarRef = useRef<HTMLDivElement | null>(null)
+  // 月齢レールはフロー内（非吸着）なので、レールへ戻るための目印そのものを参照する
+  const railAnchorRef = useRef<HTMLSpanElement | null>(null)
+  // 月齢 chip で選んだ band へ、band のたたみ直し終えたあとに 1 回だけスクロールする
+  const [pendingBand, setPendingBand] = useState<ItemBandId | null>(null)
 
   useEffect(() => {
     const restored = loadDone(data.items)
@@ -500,6 +514,8 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
     setSelectedBands(next)
     // 選択した band だけを開く（複数選択可）。全解除なら全開に戻す。
     setExpandedBands(next.length > 0 ? next : null)
+    const added = next.find((id) => !selectedBands.includes(id))
+    if (added !== undefined) setPendingBand(added)
   }
   const showAllBands = () => {
     setSelectedBands([])
@@ -525,21 +541,35 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
     if (el) bandRefs.current.set(bandId, el)
     else bandRefs.current.delete(bandId)
   }
-  // ヘッダー分だけ引いて見出し位置へ。reduced-motion のときは即移動。
-  const scrollToBand = (bandId: ItemBandId) => {
-    const el = bandRefs.current.get(bandId)
+  // 上端の固定帯（サイトヘッダー / モバイルの残り情報バー）が実測で塞ぐ高さ。CSS の固定値に依存しない。
+  const coverBottom = () =>
+    stickyBottom([document.querySelector('header'), summaryBarRef.current, desktopBarRef.current]) + 12
+  // sticky 分だけ引いて見出し位置へ。開閉アニメで高さが変わっている間は収束を待ってから移動する。
+  const scrollCancelRef = useRef<(() => void) | null>(null)
+  const scrollTo = (el: HTMLElement | null) => {
     if (!el) return
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
-    const header = parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue('--header-h') || '0',
-    )
-    const top = el.getBoundingClientRect().top + window.scrollY - header - 12
-    window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' })
+    scrollCancelRef.current?.()
+    scrollCancelRef.current = scrollToElementTop(el, {
+      offset: coverBottom,
+      smooth: !reduce,
+    })
   }
+  useEffect(() => () => scrollCancelRef.current?.(), [])
+  const scrollToBand = (bandId: ItemBandId) => scrollTo(bandRefs.current.get(bandId) ?? null)
+  // band のたたみ直し（高さ変化）が終わったあとに、選択 band まで送る。
+  useEffect(() => {
+    if (pendingBand === null) return
+    scrollToBand(pendingBand)
+    setPendingBand(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingBand])
   const backToIndex = () => {
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
     window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
   }
+  // 月齢レールが画面外に流れたあとでも、バーからレールへ戻れる
+  const scrollToRail = () => scrollTo(railAnchorRef.current)
 
   // 販売先URL・価格調査日のレンジ・band 位置はすべてデータから算出（ハードコードしない）
   const shopsByItem = useMemo(
@@ -619,6 +649,16 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
           絞り込みをもどす
         </button>
       )}
+      {selectedBands.length > 0 && (
+        <button
+          type="button"
+          onClick={scrollToRail}
+          className="inline-flex min-h-11 items-center gap-1 text-sm text-primary underline underline-offset-2 hover:opacity-80 lg:min-h-9"
+        >
+          <ChevronUp className="size-4 shrink-0" aria-hidden="true" />
+          月齢えらびにもどる
+        </button>
+      )}
       {done.length > 0 && (
         <button
           type="button"
@@ -654,12 +694,35 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
         )}
       </div>
 
+      <span ref={railAnchorRef} aria-hidden="true" className="block h-0" />
       <MonthRail
         bands={data.bands}
         selectedBands={selectedBands}
         onToggleBand={selectBand}
         onShowAll={showAllBands}
       />
+
+      {/* モバイル用の吸着バー：全局の残り品数と残価額を 1 行で常時出す（AC-7）。
+          デスクトップ専用のサマリーバーは幅が広すぎるため、こちらは省略形のレンジ表記。 */}
+      <div
+        ref={summaryBarRef}
+        data-testid="mobile-summary"
+        className="sticky top-[var(--header-h)] z-30 -mx-4 -mt-2 border-y border-border bg-background/95 px-4 py-1.5 backdrop-blur lg:hidden"
+      >
+        <p aria-live="polite" className="text-xs text-muted-foreground">
+          全 {summary.total} 品目のうち 残り{' '}
+          <span className="font-heading font-bold text-foreground">{summary.remaining} 品</span>
+          （完了 {summary.done} 品）
+          {summary.remainingHigh > 0 && (
+            <>
+              ・目安{' '}
+              <span className="font-mono text-foreground">
+                {compactYenRange(summary.remainingLow, summary.remainingHigh)}
+              </span>
+            </>
+          )}
+        </p>
+      </div>
 
       <CategoryBar
         items={data.items}
@@ -677,6 +740,8 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
           モバイルでは常時表示すると「品目の頭」が画面から落ち続けるため、band 行の要約で代用する。 */}
       <section
         aria-label="準備状況と目安予算"
+        ref={desktopBarRef}
+        data-testid="desktop-summary"
         className="sticky top-[var(--header-h)] z-30 hidden rounded-lg border border-border bg-card/95 p-3 backdrop-blur lg:block"
       >
         <p aria-live="polite" className="text-sm text-foreground">

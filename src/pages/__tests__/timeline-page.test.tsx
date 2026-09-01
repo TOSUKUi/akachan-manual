@@ -195,6 +195,46 @@ describe('/timeline', () => {
     expect(within(bandRegion(first.label)).getByText(first.items[0].name)).toBeTruthy()
   })
 
+  it('月齢 chip は band 範囲のラベルを使い、2 歳超を素の数値（25 以上・84）で晒さない（AC-3 / AC-13）', () => {
+    render(<TimelinePage />)
+    const rail = monthRail().textContent ?? ''
+    // 最後の band を含む全 band が chip として並ぶ
+    for (const band of data().bands) expect(rail).toContain(monthLabel(band))
+    expect(rail).toContain('全 71品')
+    // 24 か月超の raw 月齢（25〜84）を画面に出さない
+    expect(rail).not.toMatch(/(^|[^0-9])(2[5-9]|[3-9][0-9])\s*か月/)
+    expect(rail).not.toContain('84')
+  })
+
+  it('モバイル用の吸着バーにも残り品数と残価額が同じ値で出る（AC-7）', () => {
+    render(<TimelinePage />)
+    const bar = screen.getByTestId('mobile-summary')
+    // 画面幅が狭い画面でも残価額が常に見える位置にあり、全局バーと同一の値が出る
+    expect(bar.className).toContain('sticky')
+    expect(bar.className).toContain('lg:hidden')
+    const priced = data().items.filter((i) => i.price)
+    const man = (list: typeof priced, key: 'low' | 'high') =>
+      (list.reduce((a, i) => a + (i.price ? i.price[key] : 0), 0) / 10000).toFixed(1)
+    expect(bar.textContent).toContain(`残り ${data().items.length} 品`)
+    expect(bar.textContent).toContain(`${man(priced, 'low')}万〜${man(priced, 'high')}万円`)
+  })
+
+  it('band を選ぶと band 見出しがいまの時期になり、選択を解くと中立に戻る（AC-3）', () => {
+    const lastBand = data().bands[data().bands.length - 1]
+    render(<TimelinePage />)
+    const lastHeading = () =>
+      within(bandRegion(lastBand.label)).getByRole('heading', { level: 2 }).parentElement as HTMLElement
+
+    // 未選択時は現在マーカーを出さない
+    expect(within(lastHeading()).queryByText('いまの時期')).toBeNull()
+
+    fireEvent.click(within(monthRail()).getByRole('button', { name: new RegExp(`^${railLabel(lastBand)}`) }))
+    expect(within(lastHeading()).getByText('いまの時期')).toBeTruthy()
+
+    fireEvent.click(within(monthRail()).getByRole('button', { name: new RegExp(`^${railLabel(lastBand)}`) }))
+    expect(within(lastHeading()).queryByText('いまの時期')).toBeNull()
+  })
+
   it('月齢を選ぶと該当 band だけが開き、前後はたたむ（AC-3 / AC-9）', () => {
     // 妊娠中のチェックを 1 件復元するケース（loadDone の band ゼロ判定を同時に潰す）
     const targetBand = data().bands[2]

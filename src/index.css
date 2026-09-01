@@ -109,7 +109,7 @@
 /*
  * モバイルUI最適化（docs/uiux/spec-mobile.md §2.1）: 固定ヘッダーの高さの単一出所。
  * 値はブラウザ実測（免責バナーはフッターへ移動済み）:
- * 375px: ヘッダー 53px; 1280px: ヘッダー 161px（検索ボックス + 章チップ2行）。
+ * 375px: ヘッダー 53px; 1440px: ヘッダー 191px（検索ボックス + 章チップ2行）。
  * ±8px 以上ずれていれば値を修正する（spec §4.1）。既存トークン値は変更しない。
  */
 :root {
@@ -118,9 +118,17 @@
 }
 @media (min-width: 1024px) {
   :root {
-    --header-h: 161px;
+    --header-h: 191px;
     --subbar-h: 0px;
   }
+}
+
+/* スクロールバーを隠す（カテゴリ行の横スクロール用。iOS の慣習に合わせ指スクロールのみ） */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 @layer base {

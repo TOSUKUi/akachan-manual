@@ -416,7 +416,7 @@ items:
     startMonth: -1
     endMonth: 6
     size: 1台。自宅周辺の階段・車・公共交通機関の利用状況で要否的判断
-    note: 産後1か月頃からの外出に備えます。新生児期から使えるかは製品の対象月齢を確認します（ピジョンはA形を生後1か月〜36か月の例として案内）。
+    note: 産後1か月頃からの外出に備えます。新生児期から使えるかは製品の対象月齢を確認します（ピジョンの規定ではA形は生後1か月〜3歳ごろまで）。
     whySources:
       - https://www.24028.jp/premama/preparation-item/childcare/
       - https://pigeon.info/stroller/howtochoose/

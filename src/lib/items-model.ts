@@ -163,8 +163,25 @@ export function monthLabel(band: ItemsBand): string {
   return band.id === 'newborn' ? `新生児 ${range}` : `生後${range}`
 }
 
+/**
+ * 月齢 chip のモバイル用コンパクト表記。4 列グリッドに収めるため「生後」prefix と
+ * 新生児の範囲を落とすだけ（内容は隠さず、band 自体は必ず画面に出す）。
+ */
+export function monthLabelCompact(band: ItemsBand): string {
+  if (band.monthsFrom < 0) return '妊娠期'
+  if (band.id === 'newborn') return '新生児'
+  return `${band.monthsFrom}〜${band.monthsTo}か月`
+}
+
 export function yen(amount: number): string {
   return `${Math.round(amount).toLocaleString('ja-JP')}円`
+}
+
+/** 吸着バーなど幅の狭い場所向けのレンジ表記（例: 10.2万〜48.3万円）。 */
+export function compactYenRange(low: number, high: number): string {
+  const MAN = 10_000
+  const man = (n: number) => `${(n / MAN).toFixed(1)}万`
+  return high - low <= MAN ? `${yen(Math.round((low + high) / 2))}前後` : `${man(low)}〜${man(high)}円`
 }
 
 export interface ItemFilters {

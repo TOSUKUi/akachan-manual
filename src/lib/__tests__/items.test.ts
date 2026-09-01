@@ -4,7 +4,10 @@ import { buildItemsData, validateItems } from '../items-validate'
 import { resolveShopLinks, shopUrl } from '../shop-links'
 import {
   ITEM_BAND_IDS,
+  compactYenRange,
   filterItems,
+  monthLabel,
+  monthLabelCompact,
   monthPoint,
   monthRangeLabel,
   summarize,
@@ -373,6 +376,7 @@ describe('buildItemsData', () => {
     expect(data.sources.length).toBeGreaterThan(0)
   })
 })
+
 describe('絞り込み・集計の純関数', () => {
   const item = (over: Partial<Item>): Item => ({
     id: 'x',
@@ -461,5 +465,71 @@ describe('絞り込み・集計の純関数', () => {
       remainingHigh: 0,
       priced: 0,
     })
+  })
+})
+
+describe('月齢 chip のラベル（spec 0003 AC-3 / AC-13）', () => {
+  const band = (id: ItemsBand['id'], monthsFrom: number, monthsTo: number): ItemsBand => ({
+    id,
+    label: id,
+    monthsFrom,
+    monthsTo,
+    intro: '',
+    caution: '',
+    sources: [],
+    support: [],
+    items: [],
+    fileName: `${id}.md`,
+  })
+
+  it('デスクトップは「妊娠期」「新生児 0〜1か月」「生後2〜3か月」形式', () => {
+    expect(monthLabel(band('pregnancy', -1, -1))).toBe('妊娠期')
+    expect(monthLabel(band('newborn', 0, 1))).toBe('新生児 0〜1か月')
+    expect(monthLabel(band('m2-3', 2, 3))).toBe('生後2〜3か月')
+    expect(monthLabel(band('m19-24', 19, 24))).toBe('生後19〜24か月')
+  })
+
+  it('モバイル省略形も band 範囲のまま（2 歳超の素の数値は作らない）', () => {
+    expect(monthLabelCompact(band('pregnancy', -1, -1))).toBe('妊娠期')
+    expect(monthLabelCompact(band('newborn', 0, 1))).toBe('新生児')
+    expect(monthLabelCompact(band('m13-18', 13, 18))).toBe('13〜18か月')
+    expect(monthLabelCompact(band('m19-24', 19, 24))).toBe('19〜24か月')
+  })
+})
+
+describe('validateItems の追加ガード', () => {
+  const now = new Date('2026-09-01T00:00:00Z')
+
+  it('whySources が空の品目は失敗（根拠 URL 必須）', () => {
+    const bands = allBands({
+      'm4-6': mutate((b) => {
+        b.items[0].whySources = []
+      }),
+    })
+    expect(validateItems(bands, now).errors.map((e) => e.code)).toContain('items_why_sources_missing')
+  })
+
+  it('同じ band 内で item.id が重複すれば失敗', () => {
+    const bands = allBands({
+      'm4-6': mutate((b) => {
+        b.items.push({ ...b.items[0], name: '同名ID' })
+      }),
+    })
+    expect(validateItems(bands, now).errors.map((e) => e.code)).toContain('items_id_duplicate')
+  })
+})
+
+describe('検索 URL', () => {
+  it('検索語を二重エンコードしない（%25 を作らない）', () => {
+    const url = shopUrl({ kind: 'amazon', q: 'ベビーベッド レンタル' })
+    expect(url.startsWith('https://www.amazon.co.jp/s?k=')).toBe(true)
+    expect(url).not.toContain('%25E3%2583%2599')
+  })
+
+  it('モバイル用の短縮形は 1 万円以上を万表記にまとめ、狭いレンジは中点の円表記にする', () => {
+    expect(compactYenRange(1029250, 4899110)).toBe('102.9万〜489.9万円')
+    expect(compactYenRange(3000000, 7250000)).toBe('300.0万〜725.0万円')
+    expect(compactYenRange(4890000, 4899000)).toBe('4,894,500円前後')
+    expect(compactYenRange(0, 0)).toBe('0円前後')
   })
 })

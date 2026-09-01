@@ -556,13 +556,16 @@ describe('品目データの内容カバレッジ（spec 0003 AC-2 / 利用シ�
   it('0〜24か月のどの月を見ても1品以上ひっかかる（月齢の目盛り欠落の回帰防止）', () => {
     const uncovered: number[] = []
     for (let month = 0; month <= 24; month++) {
-      const hits = items.filter((i) => i.startMonth <= month && month <= Math.max(i.endMonth, month))
+      // endMonth 不明 = まだ使い続けている品目として扱う
+      const hits = items.filter(
+        (i) => i.startMonth <= month && (i.endMonth === undefined || month <= i.endMonth),
+      )
       if (hits.length === 0) uncovered.push(month)
     }
     expect(uncovered).toEqual([])
   })
 
-  it('どの band も5品以上あり、后半の band が痩せていない', () => {
+  it('どの band も5品以上あり、後半の band が痩せていない', () => {
     for (const band of ITEMS_DATA.bands) {
       expect(band.items.length, `${band.id} の品目数`).toBeGreaterThanOrEqual(5)
     }

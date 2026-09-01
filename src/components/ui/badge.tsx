@@ -46,4 +46,5 @@ function Badge({
   })
 }
 
-export { Badge, badgeVariants }
+// badgeVariants は内部用のためエクスポートしない（component 以外の export は Fast Refresh を壊す）
+export { Badge }

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ITEMS_DATA } from '@/generated/items-data'
 import { parseItemsFile } from '../items-parse'
 import { buildItemsData, validateItems } from '../items-validate'
 import { resolveShopLinks, shopUrl } from '../shop-links'
@@ -546,5 +547,32 @@ describe('検索 URL', () => {
     expect(compactYenRange(3000000, 7250000)).toBe('300.0万〜725.0万円')
     expect(compactYenRange(4890000, 4899000)).toBe('4,894,500円前後')
     expect(compactYenRange(0, 0)).toBe('0円前後')
+  })
+})
+
+describe('品目データの内容カバレッジ（spec 0003 AC-2 / 利用シナリオ1）', () => {
+  const items = ITEMS_DATA.bands.flatMap((band) => band.items)
+
+  it('0〜24か月のどの月を見ても1品以上ひっかかる（月齢の目盛り欠落の回帰防止）', () => {
+    const uncovered: number[] = []
+    for (let month = 0; month <= 24; month++) {
+      const hits = items.filter((i) => i.startMonth <= month && month <= Math.max(i.endMonth, month))
+      if (hits.length === 0) uncovered.push(month)
+    }
+    expect(uncovered).toEqual([])
+  })
+
+  it('どの band も5品以上あり、后半の band が痩せていない', () => {
+    for (const band of ITEMS_DATA.bands) {
+      expect(band.items.length, `${band.id} の品目数`).toBeGreaterThanOrEqual(5)
+    }
+  })
+
+  it('サイズアウト・切り替え系が月齢順に並んでいる（服サイズは 60→70→80→90）', () => {
+    const sizeRestock = items
+      .filter((i) => /^服(・肌着)?の買い足し（\d+サイズ）$/.test(i.name))
+      .sort((a, b) => a.startMonth - b.startMonth)
+      .map((i) => i.name.match(/（(\d+)サイズ）/)?.[1])
+    expect(sizeRestock).toEqual(['60', '70', '80', '90'])
   })
 })

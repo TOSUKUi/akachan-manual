@@ -185,3 +185,17 @@
 - 全 141 URL を再走査（`.urlcheck/results_now.json`、`.urlcheck/urls.txt` を現行データから再生成）: **dead 0 / 別ドメインリダイレクト 0**。
 - 新登録の `fukushi.metro.tokyo.lg.jp` は公的一次ソースのため、リンク許可リスト（`src/pages/__tests__/timeline-page.test.tsx`）に `metro.tokyo.lg.jp` を追加。
 - 注意: 西松屋の税込価格はセール可否で変動する。サイズ別レンジはカテゴリページ表示時点の実売で、**「この価格で買える」という保証ではなく目安**である旨を価格脚注で示している。
+
+## 8. デプロイ後の実ブラウザ検証（2026-09-03）
+
+本番 `https://akachan-manual.tosukui.xyz/timeline.html`（`tosukui.github.io/akachan-manual` は 301 リダイレクト）に対して `.check/live-check.mjs` / `.check/live-final.mjs` を実行。5 ビューポート（390x844 / 768x1024 / 1024x768 / 1194x834 / 1440x900）すべてで以下を確認し、失敗 0 件。
+
+- 静的 HTML に全 81 品目のチェックボックスが描画（= SSG で絞り込み前の全量が出力されている）
+- 月齢 chip 9 個（すべて見る + 8 band）。「2歳以上」chip なし・生の月齢レンジ（`25-48か月` 等）なし
+- band 8 個すべてに h2 見出し、初回は全 band 全開。月齢 chip 実クリックで選択 band のみ開く
+- 開いた band の見出しが吸着帯の下に視認できる（モバイル headTop 96 / cover 84、デスクトップ 196 / 184）
+- チェック → localStorage `{v:1, done:[...]}` → リロードで復元、開閉状態はリロード後に全開へ戻る
+- 外部リンク 453 本 / 14 ドメイン、`target=_blank` の rel 不備 0、商品直リンク（/dp/・goodsDetail）0
+- 横スクロールなし（docW == vw）、コンソールエラー 0
+
+検証中に `.check/live-check.mjs` の期待値が旧仕様（71 品目・`stored.checked`・`data-collapsed` 属性・chip 8 個）のままだったため、現行マークアップに合わせて修正した。

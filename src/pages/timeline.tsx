@@ -2,15 +2,7 @@
 // 開閉モデル: expandedBands === null が「全開」（初期状態）。月齢を選ぶと未選択 band が accordion に、
 // 「この時期だけをたたむ」で開いている band だけ閉じられる（閉じている band を accordion にしない）。
 // 月齢は複数選択可。チェック状態は checklist-view.tsx と同じ localStorage キー設計で復元する。
-import {
-  forwardRef,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-  type Ref,
-} from 'react'
+import { forwardRef, useEffect, useMemo, useRef, useState, type ReactNode, type Ref } from 'react'
 import { ArrowRight, Baby, ChevronDown, ChevronUp, Gift, RotateCcw } from 'lucide-react'
 import { ItemCard } from '@/components/timeline/item-card'
 import { HOJOKIN_URL } from '@/config'
@@ -136,7 +128,9 @@ function MonthRail({
             className={chipClass(selectedBands.length === 0)}
           >
             <span>すべて見る</span>
-            <span className="font-mono text-xs">全 {bands.reduce((sum, b) => sum + b.items.length, 0)}品</span>
+            <span className="font-mono text-xs">
+              全 {bands.reduce((sum, b) => sum + b.items.length, 0)}品
+            </span>
           </button>
         </li>
         {bands.map((band) => (
@@ -279,16 +273,15 @@ function BandSectionInner(
       <span
         aria-hidden="true"
         className={`absolute top-1.5 -left-[11px] size-4 rounded-full border-2 border-background sm:-left-[15px] ${
-          position === 'neutral' || position === 'current' ? 'border-primary bg-primary' : 'border-border bg-card'
+          position === 'neutral' || position === 'current'
+            ? 'border-primary bg-primary'
+            : 'border-border bg-card'
         }`}
       />
       <div className="pb-10">
         {/* 見出しは展開/折りたたみの両状態で常時描画（ランドマーク名と跳び先リンクのため） */}
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-          <h2
-            id={headingId}
-            className="font-heading text-xl font-bold text-foreground sm:text-2xl"
-          >
+          <h2 id={headingId} className="font-heading text-xl font-bold text-foreground sm:text-2xl">
             {band.label}
           </h2>
           <span className="font-mono text-xs text-muted-foreground">
@@ -324,13 +317,11 @@ function BandSectionInner(
                   {band.support.map((support) => (
                     <li key={support.id}>
                       <p className="text-sm font-bold text-foreground">{support.title}</p>
-                      <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
-                        {support.detail}
-                      </p>
+                      <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">{support.detail}</p>
                       <a
                         href={support.source}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="mt-1 flex min-h-9 items-center text-sm text-primary underline underline-offset-2 hover:opacity-80 sm:min-h-0"
                       >
                         品川区・東京都の案内ページ
@@ -492,9 +483,7 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
   }, [done, hydrated, data.items])
 
   const toggle = (id: string, isDone: boolean) => {
-    setDone((current) =>
-      isDone ? [...new Set([...current, id])] : current.filter((value) => value !== id),
-    )
+    setDone((current) => (isDone ? [...new Set([...current, id])] : current.filter((value) => value !== id)))
   }
 
   const toggleCategory = (category: ItemCategory) => {
@@ -524,9 +513,8 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
   }
   // 「この時期だけをたたむ」は開いている band だけを狙う。全閉じになったら状態はそのまま（全開に戻さない）。
   const collapseBand = (bandId: ItemBandId) => {
-    setExpandedBands(
-      (current) =>
-        (current ?? data.bands.map((band) => band.id)).filter((id) => id !== bandId),
+    setExpandedBands((current) =>
+      (current ?? data.bands.map((band) => band.id)).filter((id) => id !== bandId),
     )
   }
 
@@ -568,9 +556,7 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
       .flatMap((band) => band.items.filter((item) => item.price).map((item) => item.price!.checked))
       .sort()
     if (dates.length === 0) return null
-    return dates[0] === dates[dates.length - 1]
-      ? dates[0]
-      : `${dates[0]} 〜 ${dates[dates.length - 1]}`
+    return dates[0] === dates[dates.length - 1] ? dates[0] : `${dates[0]} 〜 ${dates[dates.length - 1]}`
   }, [data])
   const bandRange = useMemo(() => {
     if (data.bands.length === 0) return ''
@@ -648,7 +634,8 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
 
   return (
     <div className="space-y-6">
-      <header>
+      {/* ページバナー（header）は Layout 側の 1 つだけにし、導入ブロックは div にする（banner ランドマークの重複防止） */}
+      <div>
         <p className="flex items-center gap-1.5 font-mono text-xs tracking-wider text-muted-foreground">
           <Baby className="size-3.5" aria-hidden="true" />
           妊娠中から 2 歳まで
@@ -665,7 +652,7 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
             価格は {priceSurvey} 時点で調査した目安（税込・セールやポイント還元は含まず）。
           </p>
         )}
-      </header>
+      </div>
 
       <MonthRail
         bands={data.bands}
@@ -741,10 +728,7 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
               onBackToIndex={backToIndex}
               onToggle={toggle}
               onExpand={() => {
-                setExpandedBands((current) => [
-                  ...(current ?? data.bands.map((b) => b.id)),
-                  band.id,
-                ])
+                setExpandedBands((current) => [...(current ?? data.bands.map((b) => b.id)), band.id])
               }}
               onCollapse={() => collapseBand(band.id)}
               ref={registerBand(band.id)}
@@ -755,19 +739,12 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
 
       <p className="-mt-4 rounded-lg border border-border bg-card p-4 text-sm leading-relaxed text-muted-foreground">
         月齢・数量の目安には個人差があります。ねんねの安全条件（硬いマット・仰向け・同じ部屋に別の寝具）は
-        どの時期でも同じで、上記の「ねる」品目が揃っても寝床の条件は変わりません。
-        医療や安全の判断は{' '}
-        <a
-          href="./safety.html"
-          className="text-primary underline underline-offset-2 hover:opacity-80"
-        >
+        どの時期でも同じで、上記の「ねる」品目が揃っても寝床の条件は変わりません。 医療や安全の判断は{' '}
+        <a href="./safety.html" className="text-primary underline underline-offset-2 hover:opacity-80">
           安全対策の章
         </a>{' '}
         を優先してください。品川区の給付・助成でカバーできる費用は{' '}
-        <a
-          href={HOJOKIN_URL}
-          className="text-primary underline underline-offset-2 hover:opacity-80"
-        >
+        <a href={HOJOKIN_URL} className="text-primary underline underline-offset-2 hover:opacity-80">
           shinagawa-hojokin
         </a>{' '}
         で確認できます。

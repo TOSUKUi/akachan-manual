@@ -45,6 +45,45 @@ sources:
   - name: 品川区 児童手当
     url: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000027168.html
     checked: "2026-09-02"
+  - name: アカチャンホンポ おむつ替え用品 商品一覧
+    url: https://shop.akachan.jp/shop/c/cb317/
+    checked: "2026-09-02"
+  - name: 西松屋 おむつ用ゴミ箱・袋 商品ページ
+    url: https://www.24028-net.jp/category/EX_TRUSH/
+    checked: "2026-09-02"
+  - name: アカチャンホンポ つめ切り・やすり 商品一覧
+    url: https://shop.akachan.jp/shop/c/cb157/
+    checked: "2026-09-02"
+  - name: 西松屋 ベビー用つめ切り 商品ページ
+    url: https://www.24028-net.jp/category/HEALTH_NAILCLIPPER/
+    checked: "2026-09-02"
+  - name: アカチャンホンポ ベビーミトン 商品一覧
+    url: https://shop.akachan.jp/shop/c/cb072/
+    checked: "2026-09-02"
+  - name: 西松屋 新生児用ミトン 商品ページ
+    url: https://www.24028-net.jp/category/NB_MITTEN/
+    checked: "2026-09-02"
+  - name: アカチャンホンポ 新生児・ベビー靴下 商品一覧
+    url: https://shop.akachan.jp/shop/c/cb073/
+    checked: "2026-09-02"
+  - name: 西松屋 新生児・ベビー靴下 商品ページ
+    url: https://www.24028-net.jp/category/NB_SOCKS/
+    checked: "2026-09-02"
+  - name: 西松屋 入浴用品 商品ページ
+    url: https://www.24028-net.jp/category/BATH_BATHGOODS/
+    checked: "2026-09-02"
+  - name: ピジョン おむつのゴミ箱事情とおすすめグッズ
+    url: https://pigeon.info/suteru/
+    checked: "2026-09-02"
+  - name: ピジョン 赤ちゃんの爪切りいつから・頻度・切り方のコツ
+    url: https://pigeon.info/nailcare/howto/
+    checked: "2026-09-02"
+  - name: 西松屋 ベビーアイテム別準備品リスト 新生児衣料
+    url: https://www.24028.jp/premama/preparation-item/newborn/
+    checked: "2026-09-02"
+  - name: アカチャンホンポ 沐浴徹底ガイド（お湯の温度）
+    url: https://chirashi.akachan.jp/special_lp/bath_care
+    checked: "2026-09-02"
 support:
   - id: nb-mimamori
     title: 見守りおむつ定期便（0歳児・満1歳まで月1回）
@@ -81,12 +120,12 @@ items:
     whySources:
       - https://pigeon.info/growth/baby0-2months.html
     price:
-      low: 850
+      low: 495
       high: 1800
       unit: 使い捨て1パック（100枚前後）
+      checked: "2026-09-02"
       sources:
         - https://www.amazon.co.jp/s?k=%E6%AF%8D%E4%B9%B3%E3%83%91%E3%83%83%E3%83%89
-      checked: "2026-09-01"
     shops:
       - kind: amazon
         q: 母乳パッド
@@ -106,12 +145,12 @@ items:
     whySources:
       - https://pigeon.info/growth/baby0-2months.html
     price:
-      low: 1400
-      high: 4000
+      low: 800
+      high: 5480
       unit: 手動1台（電動は1〜2万円台）
+      checked: "2026-09-02"
       sources:
         - https://www.amazon.co.jp/s?k=%E6%AF%8D%E4%B9%B3%E3%83%9D%E3%83%B3%E3%83%97
-      checked: "2026-09-01"
     shops:
       - kind: amazon
         q: 母乳ポンプ
@@ -129,12 +168,12 @@ items:
     whySources:
       - https://pigeon.info/growth/baby0-2months.html
     price:
-      low: 880
-      high: 2000
+      low: 478
+      high: 2990
       unit: 1本（300ml前後）
+      checked: "2026-09-02"
       sources:
         - https://www.amazon.co.jp/s?k=%E3%83%99%E3%83%93%E3%83%BC%E3%83%AD%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%20%E6%96%B0%E7%94%9F%E5%85%90
-      checked: "2026-09-01"
     shops:
       - kind: amazon
         q: ベビーローション 新生児
@@ -153,12 +192,12 @@ items:
       - https://pigeon.info/growth/baby0-2months.html
       - https://www.wbgt.env.go.jp/
     price:
-      low: 700
-      high: 1600
+      low: 319
+      high: 1899
       unit: 1個
+      checked: "2026-09-02"
       sources:
         - https://www.amazon.co.jp/s?k=%E6%B8%A9%E6%B9%BF%E5%BA%A6%E8%A8%88%20%E5%AD%90%E4%BE%9B%20%E9%83%A8%E5%B1%8B
-      checked: "2026-09-01"
     shops:
       - kind: amazon
         q: 温湿度計 子供 部屋
@@ -174,12 +213,12 @@ items:
     whySources:
       - https://pigeon.info/growth/baby0-2months.html
     price:
-      low: 1000
-      high: 2700
+      low: 533
+      high: 2695
       unit: 1本
+      checked: "2026-09-02"
       sources:
         - https://www.amazon.co.jp/s?k=%E3%83%99%E3%83%93%E3%83%BC%20%E6%97%A5%E7%84%BC%E3%81%91%E6%AD%A2%E3%82%81%200%E3%81%8B%E6%9C%88
-      checked: "2026-09-01"
     shops:
       - kind: amazon
         q: ベビー 日焼け止め 0か月
@@ -187,4 +226,123 @@ items:
         q: ベビー 日焼け止め
       - kind: akachan
         q: ベビー 日焼け止め
+  - id: nb-diaper-bin
+    name: おむつ用ごみ箱（蓋付き・消臭）
+    category: arau
+    need: useful
+    startMonth: 0
+    endMonth: 30
+    size: おむつ1回分が密閉できる容量
+    note: 新生児期は1日10回前後おむつを替えるため、その日のオムツを室内に置いておく手段が必要です。専用ポットでなくフタ付きの蓋容器でも代用できますが、臭いが残りにくい構造だと部屋で扱いやすいです（一般的な知識ベース）。
+    whySources:
+      - https://pigeon.info/suteru/
+      - https://shop.akachan.jp/shop/c/cb317/
+    price:
+      low: 418
+      high: 2890
+      unit: 1個（税込）
+      checked: "2026-09-02"
+      sources:
+        - https://shop.akachan.jp/shop/c/cb317/
+        - https://www.24028-net.jp/category/EX_TRUSH/
+    shops:
+      - kind: nishimatyaya
+        q: おむつゴミ箱
+      - kind: akachan
+        q: おむつ用ゴミ箱
+  - id: nb-nail-clipper
+    name: ベビー用つめ切り・つめやすり
+    category: karada
+    need: must
+    startMonth: 0
+    endMonth: 36
+    size: 赤ちゃん用（大人用とは別に用意）
+    note: 新生児はつめが薄くとがっており、自分の顔をひっかいて傷を作ることがあるため、赤ちゃん専用のつめ切りかやすりが必要です。寝ている間に切る方が安全で、慣れるまではやすりが扱いやすいです（一般的な知識ベース）。
+    whySources:
+      - https://pigeon.info/nailcare/howto/
+      - https://shop.akachan.jp/shop/c/cb157/
+    price:
+      low: 399
+      high: 2178
+      unit: 1個（税込）
+      checked: "2026-09-02"
+      sources:
+        - https://shop.akachan.jp/shop/c/cb157/
+        - https://www.24028-net.jp/category/HEALTH_NAILCLIPPER/
+    shops:
+      - kind: nishimatyaya
+        q: ベビー つめ切り
+      - kind: akachan
+        q: つめきり
+  - id: nb-mitten
+    name: ベビー用ミトン（爪よけ）
+    category: karada
+    need: useful
+    startMonth: 0
+    endMonth: 3
+    size: 2〜3枚（替え）
+    note: 新生児は力の加減ができず顔をひっかくことがあるため、つめが伸びて切るまでのあいだだけ守るミトンがあると安心です。長く使うと手の使い方の練習の機会が減るため、使うのは生後まもない時期だけにとどめるのが目安です（一般的な知識ベース）。
+    whySources:
+      - https://www.24028.jp/premama/preparation-item/newborn/
+      - https://shop.akachan.jp/shop/c/cb072/
+    price:
+      low: 499
+      high: 1738
+      unit: 1〜2枚セット（税込）
+      checked: "2026-09-02"
+      sources:
+        - https://shop.akachan.jp/shop/c/cb072/
+        - https://www.24028-net.jp/category/NB_MITTEN/
+    shops:
+      - kind: nishimatyaya
+        q: ベビーミトン
+      - kind: akachan
+        q: ミトン
+  - id: nb-socks
+    name: ベビー用ソックス・靴下
+    category: kiru
+    need: must
+    startMonth: 0
+    endMonth: 24
+    size: 新生児用から90サイズ前後まで各2〜3足
+    note: 新生児は体温の調整がうまくできず、手足から熱が逃げやすいです。室温調整と組み合わせて足元をあたためる靴下が必要です。サイズアウトが早いのでまとめ買いしすぎない方が結果的に無駄が減ります（一般的な知識ベース）。
+    whySources:
+      - https://www.24028.jp/premama/preparation-item/newborn/
+      - https://shop.akachan.jp/shop/c/cb073/
+    price:
+      low: 389
+      high: 1078
+      unit: 1足・3足組（税込）
+      checked: "2026-09-02"
+      sources:
+        - https://shop.akachan.jp/shop/c/cb073/
+        - https://www.24028-net.jp/category/NB_SOCKS/
+    shops:
+      - kind: nishimatyaya
+        q: ベビー 靴下
+      - kind: akachan
+        q: 新生児 ソックス
+  - id: nb-bath-thermo
+    name: バスサーモ（浴用温度計）
+    category: arau
+    need: useful
+    startMonth: 0
+    endMonth: 12
+    size: 浴槽に浮かべられるもの
+    note: 新生児の沐浴はぬるめのお湯で毎日行うため、毎回手首で試すより浮かべておける温度計があると失敗が減ります。お湯の温度に慣れてくれば不要になるので、安価なもので十分です（一般的な知識ベース）。
+    whySources:
+      - https://chirashi.akachan.jp/special_lp/bath_care
+      - https://www.24028-net.jp/category/BATH_BATHGOODS/
+    price:
+      low: 349
+      high: 659
+      unit: 1個（税込）
+      checked: "2026-09-02"
+      sources:
+        - https://www.24028-net.jp/category/BATH_BATHGOODS/
+    shops:
+      - kind: nishimatyaya
+        q: バスサーモ
+      - kind: akachan
+        q: バスサーモ
 ---

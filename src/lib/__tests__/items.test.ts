@@ -65,10 +65,9 @@ function allBands(overrides: Partial<Record<string, ItemsBand>> = {}): ItemsBand
     (id) =>
       overrides[id] ??
       bandOf(
-        MINIMAL.replace('band: m4-6', `band: ${id}`).replace('items:\n', 'items:\n').replace(
-          'id: m46-spoon',
-          `id: ${id}-spoon`,
-        ),
+        MINIMAL.replace('band: m4-6', `band: ${id}`)
+          .replace('items:\n', 'items:\n')
+          .replace('id: m46-spoon', `id: ${id}-spoon`),
       ),
   )
 }
@@ -103,7 +102,10 @@ describe('parseItemsFile', () => {
 
   it('shops に url を書かれたら拒否する', () => {
     const result = parseItemsFile(
-      MINIMAL.replace('q: 離乳食 スプーン', 'q: 離乳食 スプーン\n        url: https://www.amazon.co.jp/dp/ABC1234'),
+      MINIMAL.replace(
+        'q: 離乳食 スプーン',
+        'q: 離乳食 スプーン\n        url: https://www.amazon.co.jp/dp/ABC1234',
+      ),
       'test.md',
     )
     expect(!result.ok).toBe(true)
@@ -112,7 +114,10 @@ describe('parseItemsFile', () => {
 
   it('whySources が band の sources[] に無い URL なら失敗する', () => {
     const result = parseItemsFile(
-      MINIMAL.replace('- https://www.24028.jp/example/\n    price', '- https://example.com/elsewhere\n    price'),
+      MINIMAL.replace(
+        '- https://www.24028.jp/example/\n    price',
+        '- https://example.com/elsewhere\n    price',
+      ),
       'test.md',
     )
     expect(!result.ok).toBe(true)
@@ -196,7 +201,14 @@ describe('validateItems', () => {
 
   it('support.source が sources[] に無ければ失敗する', () => {
     const band = mutate((b) => {
-      b.support = [{ id: 's1', title: '健診', detail: '説明', source: 'https://elsewhere.example/' }]
+      b.support = [
+        {
+          id: 's1',
+          title: '健診',
+          detail: '説明',
+          source: 'https://elsewhere.example/',
+        },
+      ]
     })
     const report = validateItems(allBands({ 'm4-6': band }), now)
     expect(report.errors.some((e) => e.item === 's1' && e.message.includes('sources[]'))).toBe(true)
@@ -219,7 +231,14 @@ describe('validateItems', () => {
 
   it('band.sources に登録だけして参照しない出典を失敗扱いにする', () => {
     const band = mutate((b) => {
-      b.sources = [...b.sources, { name: '未使用の出典', url: 'https://example.com/unused/', checked: '2026-09-01' }]
+      b.sources = [
+        ...b.sources,
+        {
+          name: '未使用の出典',
+          url: 'https://example.com/unused/',
+          checked: '2026-09-01',
+        },
+      ]
     })
     const report = validateItems(allBands({ 'm4-6': band }), now)
     expect(report.errors.some((e) => e.code === 'items_source_unreferenced')).toBe(true)
@@ -293,6 +312,56 @@ describe('表示ラベル', () => {
     expect(monthRangeLabel(0, 1)).toBe('0〜1 か月ごろ')
     expect(monthRangeLabel(-1, 84)).toBe('妊娠中から（2 歳以降も継続）')
     expect(monthRangeLabel(13, 24)).toBe('1 歳 1 か月〜2 歳ごろ')
+    // 本サイトの band 上限（24 か月）を超える使用期間は、素の月数を晒さず「2 歳以降も継続」と書く
+    for (const [from, to] of [
+      [-1, 84],
+      [13, 84],
+      [18, 84],
+      [25, 84],
+    ] as const) {
+      const label = monthRangeLabel(from, to)
+      expect(label).toContain('2 歳以降も継続')
+      expect(label).not.toContain('84')
+    }
+  })
+})
+
+describe('band 内の月順ソート（AC-2）', () => {
+  it('buildItemsData は band 内を使い始め月の昇順に並べ替える', () => {
+    const data = buildItemsData(allBands())
+    for (const band of data.bands) {
+      const starts = band.items.map((i) => i.startMonth)
+      expect(starts).toEqual([...starts].sort((a, b) => a - b))
+    }
+    // フラット一覧も band → 月順
+    const flat = data.items.map((i) => `${i.bandId}:${i.startMonth}`)
+    const bandOrder = new Map(ITEM_BAND_IDS.map((id, i) => [id, i]))
+    const expected = [...data.items]
+      .sort((a, b) => bandOrder.get(a.bandId)! - bandOrder.get(b.bandId)! || a.startMonth - b.startMonth)
+      .map((i) => `${i.bandId}:${i.startMonth}`)
+    expect(flat).toEqual(expected)
+  })
+
+  it('入力が逆順でも band 内は使い始め月の昇順に戻る', () => {
+    const target = bandOf(
+      MINIMAL.replace(
+        'items:\n',
+        `items:
+  - id: m46-late
+    name: のちにつかうもの
+    category: asobi
+    need: useful
+    startMonth: 9
+    note: あとから使うもの
+    whySources:
+      - https://www.24028.jp/example/
+    shops: []
+`,
+      ),
+    )
+    const data = buildItemsData([target])
+    expect(data.bands[0].items.map((i) => i.startMonth)).toEqual([5, 9])
+    expect(data.items.map((i) => i.id)).toEqual(['m46-spoon', 'm46-late'])
   })
 })
 
@@ -304,7 +373,6 @@ describe('buildItemsData', () => {
     expect(data.sources.length).toBeGreaterThan(0)
   })
 })
-
 describe('絞り込み・集計の純関数', () => {
   const item = (over: Partial<Item>): Item => ({
     id: 'x',
@@ -335,24 +403,63 @@ describe('絞り込み・集計の純関数', () => {
       { ...item({}), id: '2', category: 'tabe' as const },
       { ...item({}), id: '3', category: 'neru' as const },
     ]
-    expect(filterItems(items, { categories: ['kiru', 'tabe'], mustOnly: false }).map((i) => i.id)).toEqual(['1', '2'])
+    expect(filterItems(items, { categories: ['kiru', 'tabe'], mustOnly: false }).map((i) => i.id)).toEqual([
+      '1',
+      '2',
+    ])
     expect(filterItems(items, { categories: [], mustOnly: true }).map((i) => i.id)).toEqual(['1', '2', '3'])
     expect(filterItems(items, { categories: ['neru'], mustOnly: true }).map((i) => i.id)).toEqual(['3'])
   })
 
   it('残り点数と残り予算レンジを計算する（価格なし品目は金額に含めない）', () => {
     const items = [
-      item({ id: 'a', price: { low: 1000, high: 2000, unit: '1個（税込）', sources: [], checked: '2026-09-01' } }),
-      item({ id: 'b', price: { low: 500, high: 800, unit: '1個（税込）', sources: [], checked: '2026-09-01' } }),
+      item({
+        id: 'a',
+        price: {
+          low: 1000,
+          high: 2000,
+          unit: '1個（税込）',
+          sources: [],
+          checked: '2026-09-01',
+        },
+      }),
+      item({
+        id: 'b',
+        price: {
+          low: 500,
+          high: 800,
+          unit: '1個（税込）',
+          sources: [],
+          checked: '2026-09-01',
+        },
+      }),
       item({ id: 'c' }),
     ]
     const all = summarize(items, [])
-    expect(all).toMatchObject({ total: 3, remaining: 3, done: 0, remainingLow: 1500, remainingHigh: 2800, priced: 2 })
+    expect(all).toMatchObject({
+      total: 3,
+      remaining: 3,
+      done: 0,
+      remainingLow: 1500,
+      remainingHigh: 2800,
+      priced: 2,
+    })
 
     const oneDone = summarize(items, ['a'])
-    expect(oneDone).toMatchObject({ remaining: 2, done: 1, remainingLow: 500, remainingHigh: 800, priced: 1 })
+    expect(oneDone).toMatchObject({
+      remaining: 2,
+      done: 1,
+      remainingLow: 500,
+      remainingHigh: 800,
+      priced: 1,
+    })
 
     // 価格のわかる品目がすべて完了なら金額は 0
-    expect(summarize(items, ['a', 'b'])).toMatchObject({ remaining: 1, remainingLow: 0, remainingHigh: 0, priced: 0 })
+    expect(summarize(items, ['a', 'b'])).toMatchObject({
+      remaining: 1,
+      remainingLow: 0,
+      remainingHigh: 0,
+      priced: 0,
+    })
   })
 })

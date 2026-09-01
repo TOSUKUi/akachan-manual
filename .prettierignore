@@ -1,0 +1,19 @@
+# 生成物・キャッシュ
+dist/
+dist-dev/
+node_modules/
+src/generated/
+.urlcheck/
+.playwright-cli/
+.pi-subagents/
+
+# ベンダー（サードパーティ skill 一式）
+.agents/
+.claude/
+
+# コンテンツ（Markdown の整形は行わない。行構造が仕様/検証と結合している）
+*.md
+fact/
+fact-research/
+items/
+docs/

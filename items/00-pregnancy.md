@@ -139,12 +139,12 @@ items:
     whySources:
       - https://www.24028.jp/premama/preparation-item/newborn/
     price:
-      low: 1749
-      high: 2189
+      low: 1650
+      high: 2200
       unit: 2枚組（税込）
+      checked: "2026-09-02"
       sources:
         - https://shop.akachan.jp/shop/c/cb065/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: 短肌着
@@ -162,12 +162,12 @@ items:
       - https://www.24028.jp/premama/preparation-item/newborn/
       - https://www.24028.jp/premama/guide/babywear/
     price:
-      low: 2189
-      high: 3069
+      low: 1650
+      high: 2200
       unit: 2枚組（税込）
+      checked: "2026-09-02"
       sources:
         - https://shop.akachan.jp/shop/c/cb065/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: コンビ肌着
@@ -184,12 +184,12 @@ items:
     whySources:
       - https://www.24028.jp/premama/preparation-item/newborn/
     price:
-      low: 2051
-      high: 4290
+      low: 398
+      high: 2780
       unit: 1着
+      checked: "2026-09-02"
       sources:
         - https://www.amazon.co.jp/s?k=%E3%83%89%E3%83%AC%E3%82%B9%E3%82%AA%E3%83%BC%E3%83%AB%20%E8%82%8C%E7%9D%80%20%E8%B5%A4%E3%81%A1%E3%82%83%E3%82%93&language=ja_JP&currency=JPY
-      checked: "2026-09-02"
     shops:
       - kind: nishimatyaya
         q: ドレスオール
@@ -206,12 +206,12 @@ items:
     whySources:
       - https://www.24028.jp/premama/preparation-item/newborn/
     price:
-      low: 416
-      high: 1419
+      low: 638
+      high: 2739
       unit: 5枚組（税込）
+      checked: "2026-09-02"
       sources:
         - https://shop.akachan.jp/shop/c/cb071/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: ガーゼハンカチ
@@ -229,12 +229,12 @@ items:
       - https://shop.akachan.jp/shop/c/cb347/
       - https://www.cfa.go.jp/policies/boshihoken/kenkou/sids
     price:
-      low: 1648
-      high: 3839
+      low: 2178
+      high: 6028
       unit: 1枚（税込）
+      checked: "2026-09-02"
       sources:
         - https://shop.akachan.jp/shop/c/cb347/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: おくるみ
@@ -252,13 +252,13 @@ items:
       - https://www.24028.jp/premama/preparation-item/milkdiapers/
       - https://www.24028.jp/premama/guide/diapers/
     price:
-      low: 2178
-      high: 6152
+      low: 599
+      high: 3590
       unit: 1パック〜ケース（枚数差に注意・税込）
+      checked: "2026-09-02"
       sources:
         - https://shop.akachan.jp/shop/c/cb327/
         - https://www.24028-net.jp/category/EX_PAPERDIAPER/
-      checked: "2026-09-01"
     shops:
       - kind: amazon
         q: 紙おむつ 新生児
@@ -277,13 +277,13 @@ items:
     whySources:
       - https://www.24028.jp/premama/preparation-item/milkdiapers/
     price:
-      low: 196
-      high: 3839
+      low: 349
+      high: 2409
       unit: 1個〜ケース（税込）
+      checked: "2026-09-02"
       sources:
         - https://www.24028-net.jp/category/EX_WIPE/
         - https://shop.akachan.jp/shop/c/cb332/
-      checked: "2026-09-01"
     shops:
       - kind: amazon
         q: ベビー用 おしりふき
@@ -303,12 +303,12 @@ items:
       - https://www.24028.jp/premama/preparation-item/milkdiapers/
       - https://www.24028.jp/premama/guide/bottlenipple/
     price:
-      low: 658
-      high: 4488
+      low: 418
+      high: 3740
       unit: 1本（税込）
+      checked: "2026-09-02"
       sources:
         - https://shop.akachan.jp/shop/c/cb143/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: 哺乳瓶
@@ -326,12 +326,12 @@ items:
       - https://www.24028.jp/premama/preparation-item/milkdiapers/
       - https://www.24028.jp/premama/guide/bottlenipple/
     price:
-      low: 328
-      high: 3608
+      low: 363
+      high: 1738
       unit: 1点（税込）
+      checked: "2026-09-02"
       sources:
         - https://shop.akachan.jp/shop/c/cb146/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: 哺乳瓶 消毒
@@ -349,13 +349,13 @@ items:
       - https://www.24028.jp/premama/guide/babybath/
       - https://www.24028.jp/premama/preparation-item/bathsanitary/
     price:
-      low: 1408
-      high: 5049
+      low: 327
+      high: 2178
       unit: 浴用品1点（税込）
+      checked: "2026-09-02"
       sources:
         - https://shop.akachan.jp/shop/c/cb152/
         - https://www.24028-net.jp/category/SANI_BATH/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: ベビーバス
@@ -373,12 +373,12 @@ items:
       - https://www.24028.jp/premama/preparation-item/bedding/
       - https://www.cfa.go.jp/policies/boshihoken/kenkou/sids
     price:
-      low: 3000
-      high: 19200
+      low: 1786
+      high: 11999
       unit: 簡易ベッド1台
+      checked: "2026-09-02"
       sources:
         - https://www.amazon.co.jp/s?k=%E7%B0%A1%E6%98%93%E3%83%99%E3%83%93%E3%83%BC%E3%83%99%E3%83%83%E3%83%89&language=ja_JP&currency=JPY&p_36-price-min=3000&p_36-price-max=40000
-      checked: "2026-09-02"
     shops:
       - kind: nishimatyaya
         q: ベビーベッド
@@ -395,13 +395,13 @@ items:
     whySources:
       - https://www.24028.jp/premama/guide/childseat/
     price:
-      low: 15178
-      high: 86900
+      low: 13799
+      high: 71500
       unit: 1台（税込・新品）
+      checked: "2026-09-02"
       sources:
         - https://www.24028-net.jp/category/SEAT_BABY_CHILD/
         - https://shop.akachan.jp/shop/c/cb285/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: チャイルドシート
@@ -421,13 +421,13 @@ items:
       - https://www.24028.jp/premama/preparation-item/childcare/
       - https://pigeon.info/stroller/howtochoose/
     price:
-      low: 19798
-      high: 84700
+      low: 15999
+      high: 76890
       unit: 1台（税込・新品）
+      checked: "2026-09-02"
       sources:
         - https://www.24028-net.jp/category/TRIP_STROLLER/
         - https://shop.akachan.jp/shop/c/cb290/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: A型 ベビーカー
@@ -446,13 +446,13 @@ items:
     whySources:
       - https://www.24028.jp/premama/preparation-item/childcare/
     price:
-      low: 3848
-      high: 49500
+      low: 3499
+      high: 33000
       unit: 1点（税込）
+      checked: "2026-09-02"
       sources:
         - https://www.24028-net.jp/category/TRIP_BABYCARRIER/
         - https://shop.akachan.jp/shop/c/cb288/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: 抱っこ紐
@@ -485,12 +485,12 @@ items:
       - https://www.24028-net.jp/item_list.html?searchbox=1&q=%E6%8E%88%E4%B9%B3%E3%82%AF%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3
       - https://shop.akachan.jp/shop/c/cb028/
     price:
-      low: 1699
-      high: 13200
+      low: 2178
+      high: 9980
       unit: 1個（税込）
+      checked: "2026-09-02"
       sources:
         - https://shop.akachan.jp/shop/c/cb028/
-      checked: "2026-09-01"
     shops:
       - kind: nishimatyaya
         q: 授乳クッション

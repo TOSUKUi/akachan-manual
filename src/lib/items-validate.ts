@@ -43,34 +43,73 @@ export function validateItems(bands: ItemsBand[], now: Date = new Date()): Items
       continue
     }
     if (present.has(band.id)) {
-      errors.push({ file, code: 'items_band_duplicate', message: `band.id が重複しています（${band.id}）。同じ区分のファイルを 1 つに統合してください` })
+      errors.push({
+        file,
+        code: 'items_band_duplicate',
+        message: `band.id が重複しています（${band.id}）。同じ区分のファイルを 1 つに統合してください`,
+      })
       continue
     }
     present.add(band.id)
 
-    if (band.items.length === 0) errors.push({ file, code: 'items_empty', message: `${band.id} にアイテムが 1 件もありません` })
+    if (band.items.length === 0)
+      errors.push({ file, code: 'items_empty', message: `${band.id} にアイテムが 1 件もありません` })
     if (band.monthsFrom < MIN_MONTH || band.monthsTo > MAX_BAND_MONTH || band.monthsFrom > band.monthsTo) {
-      errors.push({ file, code: 'items_month_out_of_range', message: `band の対象月が不正です（${band.monthsFrom}〜${band.monthsTo}）`, hint: '-1〜24 の範囲で monthsFrom <= monthsTo' })
+      errors.push({
+        file,
+        code: 'items_month_out_of_range',
+        message: `band の対象月が不正です（${band.monthsFrom}〜${band.monthsTo}）`,
+        hint: '-1〜24 の範囲で monthsFrom <= monthsTo',
+      })
     }
 
     const bandUrls = new Set<string>()
     band.sources.forEach((source: FactSource, i: number) => {
-      if (!/^https?:\/\//.test(source.url)) errors.push({ file, code: 'items_source_url_invalid', message: `sources[${i}].url が http(s) URL ではありません（${source.url}）` })
-      if (bandUrls.has(source.url)) errors.push({ file, code: 'items_source_duplicate', message: `sources[${i}].url が band 内で重複しています（${source.url}）`, hint: '同じ出典は 1 回だけ登録する' })
+      if (!/^https?:\/\//.test(source.url))
+        errors.push({
+          file,
+          code: 'items_source_url_invalid',
+          message: `sources[${i}].url が http(s) URL ではありません（${source.url}）`,
+        })
+      if (bandUrls.has(source.url))
+        errors.push({
+          file,
+          code: 'items_source_duplicate',
+          message: `sources[${i}].url が band 内で重複しています（${source.url}）`,
+          hint: '同じ出典は 1 回だけ登録する',
+        })
       bandUrls.add(source.url)
       const stale = staleWarning(source.checked, `出典の鮮度（${source.name}）`)
       if (stale) warnings.push({ file, code: 'items_stale', message: stale })
       if (isFuture(source.checked))
-        errors.push({ file, code: 'items_checked_date_future', message: `sources[${i}].checked が未来日です（${source.checked}）。実際に確認した日を記入してください` })
+        errors.push({
+          file,
+          code: 'items_checked_date_future',
+          message: `sources[${i}].checked が未来日です（${source.checked}）。実際に確認した日を記入してください`,
+        })
     })
 
     const seenInBand = new Set<string>()
     band.items.forEach((item: Item) => {
-      const where = (message: string, code: string, hint?: string): ItemIssue => ({ file, item: item.id, code, message, hint })
-      if (seenInBand.has(item.id)) errors.push(where('item.id が band 内で重複しています', 'items_id_duplicate'))
+      const where = (message: string, code: string, hint?: string): ItemIssue => ({
+        file,
+        item: item.id,
+        code,
+        message,
+        hint,
+      })
+      if (seenInBand.has(item.id))
+        errors.push(where('item.id が band 内で重複しています', 'items_id_duplicate'))
       seenInBand.add(item.id)
       const owner = ownerOfItem.get(item.id)
-      if (owner) errors.push(where(`item.id がサイト全体で重複しています（${owner} にも同名があります）`, 'items_id_duplicate', 'id に接頭辞（例: s6-）を付けて区切る'))
+      if (owner)
+        errors.push(
+          where(
+            `item.id がサイト全体で重複しています（${owner} にも同名があります）`,
+            'items_id_duplicate',
+            'id に接頭辞（例: s6-）を付けて区切る',
+          ),
+        )
       else ownerOfItem.set(item.id, file)
 
       if (item.endMonth !== undefined && item.endMonth < item.startMonth) {
@@ -96,27 +135,60 @@ export function validateItems(bands: ItemsBand[], now: Date = new Date()): Items
 
       if (item.price) {
         const { low, high, unit, checked, sources } = item.price
-        if (!(low > 0) || high < low) errors.push(where(`price が 0 < low <= high の関係ではありません（low: ${low}, high: ${high}）`, 'items_price_invalid'))
+        if (!(low > 0) || high < low)
+          errors.push(
+            where(
+              `price が 0 < low <= high の関係ではありません（low: ${low}, high: ${high}）`,
+              'items_price_invalid',
+            ),
+          )
         if (!unit) errors.push(where('price.unit が空です', 'items_price_invalid'))
         if (sources.length === 0) errors.push(where('price.sources が空です', 'items_price_source_missing'))
         const stale = staleWarning(checked, `価格の鮮度（${item.name}）`)
         if (stale) warnings.push({ file, item: item.id, code: 'items_stale', message: stale })
         if (isFuture(checked))
-          errors.push(where(`price.checked が未来日です（${checked}）`, 'items_checked_date_future', '実際に価格を確認した日を記入する'))
+          errors.push(
+            where(
+              `price.checked が未来日です（${checked}）`,
+              'items_checked_date_future',
+              '実際に価格を確認した日を記入する',
+            ),
+          )
       }
 
       const text = [item.name, item.note ?? '', item.size ?? ''].join(' ')
       const leaked = text.match(/https?:\/\/\S+/)?.[0]
-      if (leaked) errors.push(where(`name / note / size に URL が混入しています（${leaked}）`, 'items_url_leak', '根拠は whySources / price.sources、販売先は shops の kind + q で書く'))
+      if (leaked)
+        errors.push(
+          where(
+            `name / note / size に URL が混入しています（${leaked}）`,
+            'items_url_leak',
+            '根拠は whySources / price.sources、販売先は shops の kind + q で書く',
+          ),
+        )
     })
 
     const seenSupport = new Set<string>()
     band.support.forEach((support) => {
-      const where = (message: string, code: string, hint?: string): ItemIssue => ({ file, item: support.id, code, message, hint })
-      if (seenSupport.has(support.id)) errors.push(where('support.id が band 内で重複しています', 'items_id_duplicate'))
+      const where = (message: string, code: string, hint?: string): ItemIssue => ({
+        file,
+        item: support.id,
+        code,
+        message,
+        hint,
+      })
+      if (seenSupport.has(support.id))
+        errors.push(where('support.id が band 内で重複しています', 'items_id_duplicate'))
       seenSupport.add(support.id)
       const leaked = `${support.title}${support.detail}`.match(/https?:\/\/\S+/)?.[0]
-      if (leaked) errors.push(where(`title / detail に URL が混入しています（${leaked}）`, 'items_url_leak', 'リンクは source フィールドに書く'))
+      if (leaked)
+        errors.push(
+          where(
+            `title / detail に URL が混入しています（${leaked}）`,
+            'items_url_leak',
+            'リンクは source フィールドに書く',
+          ),
+        )
     })
 
     // 出典参照の整合（未登録の参照 / 未使用の登録）は parse 段と同じ実装を再利用する
@@ -125,7 +197,11 @@ export function validateItems(bands: ItemsBand[], now: Date = new Date()): Items
 
   const missing = ITEM_BAND_IDS.filter((id) => !present.has(id))
   for (const id of missing) {
-    errors.push({ file: 'items/', code: 'items_band_missing', message: `band "${id}" のファイルがありません（8 区分すべてが必要です）` })
+    errors.push({
+      file: 'items/',
+      code: 'items_band_missing',
+      message: `band "${id}" のファイルがありません（8 区分すべてが必要です）`,
+    })
   }
 
   if (errors.length > 0) {
@@ -155,7 +231,7 @@ function localDateISO(d: Date): string {
   return `${d.getFullYear()}-${month}-${day}`
 }
 
-/** 検証済み band を画面用のデータ構造にまとめる。band は ITEM_BAND_IDS の順にソートする。 */
+/** 検証済み band を画面用のデータ構造にまとめる。band は ITEM_BAND_IDS の順、band 内は使い始め月の順にソートする。 */
 export function buildItemsData(bands: ItemsBand[]): ItemsData {
   const order = new Map<string, number>(ITEM_BAND_IDS.map((id, i) => [id, i]))
   const sorted = [...bands].sort((a, b) => (order.get(a.id) ?? 99) - (order.get(b.id) ?? 99))
@@ -169,9 +245,12 @@ export function buildItemsData(bands: ItemsBand[]): ItemsData {
       sources.push({ ...source, bandId: band.id })
     }
   }
+  const byMonth = (a: Item, b: Item): number => a.startMonth - b.startMonth
   return {
-    bands: sorted,
-    items: sorted.flatMap((band) => band.items.map((item) => ({ ...item, bandId: band.id }))),
+    bands: sorted.map((band) => ({ ...band, items: [...band.items].sort(byMonth) })),
+    items: sorted.flatMap((band) =>
+      [...band.items].sort(byMonth).map((item) => ({ ...item, bandId: band.id })),
+    ),
     sources,
   }
 }

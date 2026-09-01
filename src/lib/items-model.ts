@@ -22,16 +22,7 @@ export const ITEM_BAND_IDS = [
 ] as const
 export type ItemBandId = (typeof ITEM_BAND_IDS)[number]
 
-export const ITEM_CATEGORIES = [
-  'neru',
-  'kiru',
-  'tabe',
-  'arau',
-  'ugoku',
-  'anzen',
-  'asobi',
-  'karada',
-] as const
+export const ITEM_CATEGORIES = ['neru', 'kiru', 'tabe', 'arau', 'ugoku', 'anzen', 'asobi', 'karada'] as const
 export type ItemCategory = (typeof ITEM_CATEGORIES)[number]
 
 export const CATEGORY_LABELS: Record<ItemCategory, string> = {
@@ -89,6 +80,7 @@ export interface ItemPrice {
   checked: string
 }
 
+/** 販売先は kind + 検索語だけ持つ（URL はビルド／レンダ側で組み立て、商品直リンクは持たない）。 */
 export interface ShopLink {
   kind: ShopKind
   q: string
@@ -207,7 +199,14 @@ export interface BudgetSummary {
 /** 残り点数と残り予算レンジの集計（純関数）。 */
 export function summarize(items: readonly Item[], doneIds: readonly string[]): BudgetSummary {
   const done = new Set(doneIds)
-  const summary: BudgetSummary = { total: 0, remaining: 0, done: 0, remainingLow: 0, remainingHigh: 0, priced: 0 }
+  const summary: BudgetSummary = {
+    total: 0,
+    remaining: 0,
+    done: 0,
+    remainingLow: 0,
+    remainingHigh: 0,
+    priced: 0,
+  }
   for (const item of items) {
     summary.total += 1
     if (done.has(item.id)) {
@@ -223,7 +222,6 @@ export function summarize(items: readonly Item[], doneIds: readonly string[]): B
   }
   return summary
 }
-
 
 /** URL をこの band の出典名に解決する（未登録ならホスト名）。 */
 export function sourceLabel(sources: ReadonlyArray<{ url: string; name: string }>, url: string): string {

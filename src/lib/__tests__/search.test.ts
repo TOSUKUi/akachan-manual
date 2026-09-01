@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { parseFactFile } from '../fact-parse.ts'
 import { buildSearchIndex } from '../fact-validate.ts'
-import { searchIndex } from '../search.ts'
+import { loadSearchIndex, searchIndex } from '../search.ts'
 
 const RAW = `---
 title: 安全・事故防止
@@ -58,5 +58,27 @@ describe('searchIndex', () => {
   it('limit で上限を守る', () => {
     const hits = searchIndex(index(), 'テストソース', 1)
     expect(hits.length).toBeLessThanOrEqual(1)
+  })
+})
+
+describe('loadSearchIndex', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('fetch 失敗時は空配列（未処理の rejection にしない）', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.reject(new TypeError('Failed to parse URL'))),
+    )
+    await expect(loadSearchIndex()).resolves.toEqual([])
+  })
+
+  it('HTTP エラー時は空配列', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.resolve({ ok: false } as Response)),
+    )
+    await expect(loadSearchIndex()).resolves.toEqual([])
   })
 })

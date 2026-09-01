@@ -84,9 +84,7 @@ export function Component() {
           第 {chapter.order} 章 / 全 {SITE_DATA.chapters.length} 章
         </p>
         <h1 className="mt-1 font-heading text-2xl font-bold leading-snug">{chapter.title}</h1>
-        <p className="mt-2 text-xs text-muted-foreground">
-          この章の最終確認日: {chapter.lastVerified}
-        </p>
+        <p className="mt-2 text-xs text-muted-foreground">この章の最終確認日: {chapter.lastVerified}</p>
       </header>
 
       {/* モバイルのみ: 章タイトル + セクションジャンプ（spec-mobile.md §2.5）。

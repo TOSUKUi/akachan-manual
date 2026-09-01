@@ -117,13 +117,7 @@ export interface DiagramBlock {
 }
 
 export type Block =
-  | ParagraphBlock
-  | ListBlock
-  | TableBlock
-  | CalloutBlock
-  | ChecklistBlock
-  | FlowBlock
-  | DiagramBlock
+  ParagraphBlock | ListBlock | TableBlock | CalloutBlock | ChecklistBlock | FlowBlock | DiagramBlock
 
 export interface FactSection {
   level: 1 | 2 | 3

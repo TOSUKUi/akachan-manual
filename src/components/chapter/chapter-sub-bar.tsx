@@ -23,8 +23,7 @@ export default function ChapterSubBar({ chapter, activeId, className }: ChapterS
   const panelRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
 
-  const current =
-    chapter.sections.find((s) => s.anchor === activeId)?.heading ?? chapter.sections[0]?.heading
+  const current = chapter.sections.find((s) => s.anchor === activeId)?.heading ?? chapter.sections[0]?.heading
   const currentAnchor = activeId ?? chapter.sections[0]?.anchor
   // 先頭（intro・heading 空）のときは空表示にしない
   const currentLabel = current !== '' ? current : 'この章の先頭'
@@ -66,10 +65,7 @@ export default function ChapterSubBar({ chapter, activeId, className }: ChapterS
     >
       <div className="mx-auto w-full max-w-3xl px-4">
         {/* 章タイトル（視覚表示用。h1 は本文側 sr-only にあるので aria-hidden） */}
-        <p
-          aria-hidden="true"
-          className="truncate pt-2 font-heading text-base font-bold leading-tight"
-        >
+        <p aria-hidden="true" className="truncate pt-2 font-heading text-base font-bold leading-tight">
           {chapter.title}
         </p>
         <div className="relative">

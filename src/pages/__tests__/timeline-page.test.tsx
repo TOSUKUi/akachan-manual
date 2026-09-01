@@ -3,6 +3,9 @@
 // 月齢レール・カテゴリnav・品目カードはすべて name / role で指す（テキストのみ一致の取りこぼしを防ぐ）。
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+import { routes } from '@/App'
+import { useRoutes } from 'react-router-dom'
 import { Component as TimelinePage } from '../timeline'
 import { SITE_DATA } from '@/generated/site-data'
 import { ITEMS_DATA } from '@/generated/items-data'
@@ -28,6 +31,11 @@ const railLabel = (band: ItemsBand): string => monthLabel(band)
 const bandRegion = (label: string) => screen.getByRole('region', { name: label })
 const categoryNav = () => screen.getByRole('navigation', { name: 'カテゴリで絞り込む' })
 const monthRail = () => screen.getByRole('navigation', { name: '月齢で絞り込む' })
+
+/** アプリ本体と同じルート構成で描画する（ランドマーク検証用） */
+function AppRoutes() {
+  return useRoutes(routes)
+}
 
 /** 準備状況と目安予算バー（デスクトップ専用。モバイル側に同名ボタンがあるためスコープを切る） */
 const summaryBar = () => screen.getByRole('region', { name: '準備状況と目安予算' })
@@ -70,7 +78,7 @@ describe('/timeline', () => {
     }
   })
 
-  it('品目ごとに使い始め・なぜ今・価格と出典リンクを表示する（AC-2 / AC-4）', () => {
+  it('品目ごとに使い始め・なぜ今・価格と出典リンクを表示する（AC-5 / AC-6）', () => {
     render(<TimelinePage />)
     const band = data().bands[3]
     const item = band.items[0]
@@ -106,7 +114,23 @@ describe('/timeline', () => {
     expect(card.textContent).toContain(item.note)
   })
 
-  it('カテゴリで絞り込める（OR 条件・複数選択可）。件数は band ごとに出る（AC-3）', () => {
+  it('band 内の品目は使い始め月の昇順で、2 歳超の品月は「2 歳以降」表記になる（AC-2 / AC-13）', () => {
+    for (const band of data().bands) {
+      const starts = band.items.map((i) => i.startMonth)
+      expect(starts).toEqual([...starts].sort((a, b) => a - b))
+    }
+    render(<TimelinePage />)
+    const longRunners = data().items.filter((i) => (i.endMonth ?? 0) > 24)
+    expect(longRunners.length).toBeGreaterThan(0)
+    for (const item of longRunners) {
+      const card = screen.getByText(item.name).closest('li')
+      if (!card) throw new Error(`${item.name} のカードがありません`)
+      expect(card.textContent).toContain('2 歳以降も継続')
+      expect(card.textContent).not.toContain('84 か月')
+    }
+  })
+
+  it('カテゴリで絞り込める（OR 条件・複数選択可）。件数は band ごとに出る（AC-4）', () => {
     render(<TimelinePage />)
     const first = ITEMS_DATA.bands[0]
     const second = ITEMS_DATA.bands[1]
@@ -137,14 +161,16 @@ describe('/timeline', () => {
       expect(within(region).queryByText(item.name)).toBeNull()
     }
     // 件数が band の実数と一致
-    expect(within(region).getByText(`表示 ${inCategory.length} 品・残り ${inCategory.length} 品`)).toBeTruthy()
+    expect(
+      within(region).getByText(`表示 ${inCategory.length} 品・残り ${inCategory.length} 品`),
+    ).toBeTruthy()
     // 選択したカテゴリを持たない band は本文にそのカテゴリ名を出さない
     if (!second.items.some((i) => i.category === target)) {
       expect(within(bandRegion(second.label)).queryByText(targetLabel)).toBeNull()
     }
   })
 
-  it('カテゴリと必要度の絞り込みを組み合わせられる。該当 0 件ならその旨を出す（AC-3 / AC-6）', () => {
+  it('カテゴリと必要度の絞り込みを組み合わせられる。該当 0 件ならその旨を出す（AC-4）', () => {
     render(<TimelinePage />)
     const first = data().bands[0]
     // 妊娠中に存在しないカテゴリを選ぶと、その band だけ 0 件になる
@@ -152,7 +178,9 @@ describe('/timeline', () => {
     if (!absent) throw new Error('妊娠中に存在しないカテゴリがありません')
 
     fireEvent.click(categoryChip(CATEGORY_LABELS[absent]))
-    expect(within(bandRegion(first.label)).getByText('この時期で、いまの絞り込み条件に合う品目はありません。')).toBeTruthy()
+    expect(
+      within(bandRegion(first.label)).getByText('この時期で、いまの絞り込み条件に合う品目はありません。'),
+    ).toBeTruthy()
     // 他の band には品目があるので、全体では 0 件にならない
     expect(screen.queryByText(/条件に合う品目が 0 件です/)).toBeNull()
 
@@ -167,17 +195,21 @@ describe('/timeline', () => {
     expect(within(bandRegion(first.label)).getByText(first.items[0].name)).toBeTruthy()
   })
 
-  it('月齢を選ぶと該当 band だけが開き、前后はたたむ（AC-3 / AC-8）', () => {
+  it('月齢を選ぶと該当 band だけが開き、前後はたたむ（AC-3 / AC-9）', () => {
     // 妊娠中のチェックを 1 件復元するケース（loadDone の band ゼロ判定を同時に潰す）
     const targetBand = data().bands[2]
     const doneId = data().bands[0].items[0].id
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 1, done: [doneId] }))
     render(<TimelinePage />)
 
-    fireEvent.click(within(monthRail()).getByRole('button', { name: new RegExp(`^${railLabel(targetBand)}`) }))
+    fireEvent.click(
+      within(monthRail()).getByRole('button', { name: new RegExp(`^${railLabel(targetBand)}`) }),
+    )
 
     // 選択 band だけが開いている
-    expect(within(bandRegion(targetBand.label)).getAllByRole('checkbox')).toHaveLength(targetBand.items.length)
+    expect(within(bandRegion(targetBand.label)).getAllByRole('checkbox')).toHaveLength(
+      targetBand.items.length,
+    )
     for (const other of data().bands.filter((b) => b.id !== targetBand.id)) {
       const region = bandRegion(other.label)
       expect(within(region).queryAllByRole('checkbox')).toHaveLength(0)
@@ -189,9 +221,7 @@ describe('/timeline', () => {
 
     // 復元されたチェックが選択 band の集計に効いている
     const total = targetBand.items.length
-    expect(
-      within(bandRegion(targetBand.label)).getByText(`表示 ${total} 品・残り ${total} 品`),
-    ).toBeTruthy()
+    expect(within(bandRegion(targetBand.label)).getByText(`表示 ${total} 品・残り ${total} 品`)).toBeTruthy()
 
     // 選択 band の見出しに「いまの時期」が出る
     const heading = within(bandRegion(targetBand.label)).getByRole('heading', { level: 2 })
@@ -200,13 +230,17 @@ describe('/timeline', () => {
     expect(within(headingRow as HTMLElement).getByText('いまの時期')).toBeTruthy()
 
     // もう一度同じ chip を押すと全開に戻る
-    fireEvent.click(within(monthRail()).getByRole('button', { name: new RegExp(`^${railLabel(targetBand)}`) }))
+    fireEvent.click(
+      within(monthRail()).getByRole('button', { name: new RegExp(`^${railLabel(targetBand)}`) }),
+    )
     for (const band of data().bands) {
       expect(within(bandRegion(band.label)).getAllByRole('checkbox')).toHaveLength(band.items.length)
     }
 
     // 「この時期だけをたたむ」で選択 band だけ閉じると、チェックボックスはどこにも出ない
-    fireEvent.click(within(monthRail()).getByRole('button', { name: new RegExp(`^${railLabel(targetBand)}`) }))
+    fireEvent.click(
+      within(monthRail()).getByRole('button', { name: new RegExp(`^${railLabel(targetBand)}`) }),
+    )
     fireEvent.click(
       within(bandRegion(targetBand.label)).getByRole('button', { name: /この時期だけをたたむ/ }),
     )
@@ -216,7 +250,7 @@ describe('/timeline', () => {
     expect(screen.getAllByRole('checkbox')).toHaveLength(data().items.length)
   })
 
-  it('チェック状態が localStorage に保存され、再描画で復元される。壊れた値も復元できる（AC-8）', async () => {
+  it('チェック状態が localStorage に保存され、再描画で復元される。壊れた値も復元できる（AC-11）', async () => {
     const band = data().bands[0]
     const item = band.items[0]
 
@@ -234,7 +268,9 @@ describe('/timeline', () => {
     expect(checkboxIn(band.label, item.name).checked).toBe(true)
     // チェック済みは残り品目と予算から引かれる
     expect(
-      within(bandRegion(band.label)).getByText(`表示 ${band.items.length} 品・残り ${band.items.length - 1} 品`),
+      within(bandRegion(band.label)).getByText(
+        `表示 ${band.items.length} 品・残り ${band.items.length - 1} 品`,
+      ),
     ).toBeTruthy()
     cleanup()
 
@@ -267,7 +303,7 @@ describe('/timeline', () => {
     })
   })
 
-  it('合計目安金額が実データの集計と一致し、チェック分が引かれる（AC-5）', () => {
+  it('合計目安金額が実データの集計と一致し、チェック分が引かれる（AC-11）', () => {
     render(<TimelinePage />)
     // 期待値はコンテンツから算出（金額・品目数をテストに二重化しない）
     const baseline = summarize(data().items, [])
@@ -285,9 +321,11 @@ describe('/timeline', () => {
     expect(screen.getByText(/準備完了 1 品/)).toBeTruthy()
   })
 
-  it('章との関連リンクが fact/ の slug として解決できる（AC-9）', () => {
+  it('章との関連リンクが fact/ の slug として解決できる（AC-1）', () => {
     render(<TimelinePage />)
-    const related = screen.getAllByText(/を読む$/).filter((el) => el.closest('a')?.getAttribute('href')?.endsWith('.html'))
+    const related = screen
+      .getAllByText(/を読む$/)
+      .filter((el) => el.closest('a')?.getAttribute('href')?.endsWith('.html'))
     const slugs = SITE_DATA.chapters.map((c) => c.slug)
     expect(related.length).toBeGreaterThan(0)
     for (const el of related) {
@@ -345,15 +383,148 @@ describe('/timeline', () => {
           const anchor = links.find(
             (a) => a.getAttribute('href') === expected && (a.textContent ?? '').includes(item.name),
           )
-          if (!anchor)
-            throw new Error(
-              `${item.name}: 品目名を含む販売先リンクが見つかりません ${expected}`,
-            )
+          if (!anchor) throw new Error(`${item.name}: 品目名を含む販売先リンクが見つかりません ${expected}`)
           expect(anchor.getAttribute('href')).toMatch(templates[shop.kind])
           checkedShops += 1
         }
       }
     }
     expect(checkedShops).toBeGreaterThan(30)
+  })
+
+  it('band 内は使い始め月の順に並び、2 歳超の品月は数値を晒さない（AC-2 / AC-13）', () => {
+    render(<TimelinePage />)
+    const byId = new Map(data().items.map((i) => [`item-${i.id}`, i]))
+    for (const band of data().bands) {
+      const ids = within(bandRegion(band.label))
+        .getAllByRole('checkbox')
+        .map((cb) => (cb as HTMLInputElement).id)
+      expect(ids).toHaveLength(band.items.length)
+      const starts = ids.map((id) => byId.get(id)!.startMonth)
+      expect(starts).toEqual([...starts].sort((a, b) => a - b))
+    }
+
+    // endMonth が band の上限（24 か月）を超える品目は「2 歳以降」ラベルを使い、素の月数を画面に出さない
+    const longRunners = data().items.filter((i) => (i.endMonth ?? 0) > 24)
+    expect(longRunners.length).toBeGreaterThan(0)
+    for (const item of longRunners) {
+      const card = screen.getByText(item.name).closest('li')
+      if (!card) throw new Error(`${item.name} のカードがありません`)
+      expect(card.textContent).toContain('2 歳以降')
+      expect(card.textContent).not.toContain('84 か月')
+    }
+  })
+})
+
+describe('/timeline アクセシビリティ基線（spec 0001 / AC-12）', () => {
+  /** 外部に出るリンク（品目の販売先リンク）だけを対象にする */
+  const externalLinks = () =>
+    Array.from(document.querySelectorAll('a')).filter((a) => {
+      const href = a.getAttribute('href') ?? ''
+      return href.startsWith('http') && /amazon|24028-net|shop\.akachan|uniqlo/.test(href)
+    })
+
+  it('ランドマーク構造: banner / main / 章 nav / 月齢 nav / カテゴリ nav（アプリ全体）', () => {
+    if (!('IntersectionObserver' in globalThis)) {
+      // Layout の BackToTopButton が使うため jsdom 用にスタブを当てる
+      ;(globalThis as Record<string, unknown>).IntersectionObserver = class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      }
+    }
+    render(
+      <MemoryRouter initialEntries={['/timeline']}>
+        <AppRoutes />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('banner')).toBeTruthy()
+    expect(screen.getByRole('main')).toBeTruthy()
+    expect(screen.getByRole('navigation', { name: '章 navigation' })).toBeTruthy()
+    expect(screen.getByRole('navigation', { name: '月齢で絞り込む' })).toBeTruthy()
+    expect(screen.getByRole('navigation', { name: 'カテゴリで絞り込む' })).toBeTruthy()
+    // チップの導線が実在（spec 0003 AC-1）
+    expect(
+      within(screen.getByRole('banner'))
+        .getByRole('link', { name: /いつ・何を買う/ })
+        .getAttribute('href'),
+    ).toBe('./timeline.html')
+  })
+
+  it('見出し階層: h1 は1つ、band は h2 + region、品目名はチェックボックスの名前', () => {
+    render(<TimelinePage />)
+    const h1 = document.querySelectorAll('h1')
+    expect(h1).toHaveLength(1)
+    expect(h1[0].textContent).toContain('いつ、何を買う？')
+    for (const band of data().bands) {
+      const heading = document.getElementById(`${band.id}-heading`)
+      expect(heading?.tagName).toBe('H2')
+      const region = screen.getByRole('region', { name: band.label })
+      expect(region.contains(heading)).toBe(true)
+      for (const item of band.items) {
+        // 品目名は label 経由でチェックボックスの名前になる（タップしやすく SR にも読ませる）
+        expect(within(region).getByRole('checkbox', { name: item.name })).toBeTruthy()
+      }
+    }
+  })
+
+  it('価格差が2倍以上の品目は「幅が大きい」の注記を出す（AC-6）', () => {
+    render(<TimelinePage />)
+    const wide = data().items.filter((i) => i.price && i.price.high >= i.price.low * 2)
+    expect(wide.length).toBeGreaterThan(0)
+    for (const item of wide) {
+      const card = screen.getByRole('checkbox', { name: item.name }).closest('li')
+      expect(card?.textContent).toContain('幅が大きい')
+    }
+  })
+
+  it('外部リンクは noopener noreferrer + 新しいタブである旨を sr-only で伝える', () => {
+    render(<TimelinePage />)
+    const links = externalLinks()
+    expect(links.length).toBeGreaterThan(50)
+    for (const a of links) {
+      expect(a.getAttribute('target')).toBe('_blank')
+      const rel = a.getAttribute('rel') ?? ''
+      expect(rel).toContain('noopener')
+      expect(rel).toContain('noreferrer')
+      expect(a.textContent).toContain('新しいタブで開きます')
+    }
+    // sr-only 相当の目次誘導リンクも同じ.rel
+    for (const a of Array.from(document.querySelectorAll('a[href^="#item-index"]'))) {
+      expect(a.getAttribute('href')).toBe('#item-index')
+    }
+  })
+
+  it('タップ目標は 44px 以上（月齢レール・たたんだ band の見出しボタン）', () => {
+    render(<TimelinePage />)
+    const buttons = [
+      ...Array.from(monthRail().querySelectorAll('button')),
+      ...Array.from(categoryNav().querySelectorAll('button')),
+    ]
+    expect(buttons.length).toBeGreaterThan(0)
+    for (const b of buttons) {
+      expect(b.className).toMatch(/min-h-\[44px\]|min-h-11/)
+    }
+    // 閉じた band はボタン行として開ける（44px 以上）
+    fireEvent.click(within(summaryBar()).getByRole('button', { name: 'すべての時期を閉じる' }))
+    const collapsed = screen.getByRole('button', { name: '2〜3か月の品目を開く' })
+    expect(collapsed.className).toMatch(/min-h-\[44px\]|min-h-11/)
+  })
+
+  it('月齢レールとカテゴリ chip はトグル状態を aria-pressed で伝える', () => {
+    render(<TimelinePage />)
+    const all = within(monthRail()).getByRole('button', { name: /すべて見る/ })
+    expect(all.getAttribute('aria-pressed')).toBe('true')
+    const chip = within(monthRail()).getByRole('button', { name: new RegExp(railLabel(data().bands[3])) })
+    expect(chip.getAttribute('aria-pressed')).toBe('false')
+    fireEvent.click(chip)
+    expect(chip.getAttribute('aria-pressed')).toBe('true')
+  })
+
+  it('絞り込み結果の件数は aria-live で読み上げる', () => {
+    render(<TimelinePage />)
+    const live = document.querySelector('[aria-live="polite"]')
+    expect(live).toBeTruthy()
+    expect(live?.textContent).toContain('品目')
   })
 })

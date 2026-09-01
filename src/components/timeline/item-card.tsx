@@ -30,7 +30,7 @@ function SourceLinks({ urls, sources }: { urls: readonly string[]; sources: read
           key={url}
           href={url}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="break-all text-primary underline underline-offset-2 hover:opacity-80"
         >
           {sourceLabel(sources, url)}
@@ -58,7 +58,10 @@ export function ItemCard({ item, done, onToggle, sources, shops }: ItemCardProps
         />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <label htmlFor={`item-${item.id}`} className="font-heading text-[16px] font-bold leading-snug text-foreground">
+            <label
+              htmlFor={`item-${item.id}`}
+              className="font-heading text-[16px] font-bold leading-snug text-foreground"
+            >
               {item.name}
             </label>
             <span
@@ -99,6 +102,14 @@ export function ItemCard({ item, done, onToggle, sources, shops }: ItemCardProps
                   {item.price.unit}・{item.price.checked} 調査の目安
                 </span>
               </p>
+              {item.price.high >= item.price.low * 2 && (
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  <span className="rounded-full border border-border bg-background px-2 py-0.5">
+                    幅が大きい
+                  </span>
+                  クラスや容量で差が出ます。最初の1点を目立たない価格帯から選べば、たいてい足ります。
+                </p>
+              )}
               <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
                 価格の出典: <SourceLinks urls={item.price.sources} sources={sources} />
               </p>
@@ -113,14 +124,16 @@ export function ItemCard({ item, done, onToggle, sources, shops }: ItemCardProps
 
           {shops.length > 0 && (
             <div className="mt-3 border-t border-border pt-2">
-              <p className="text-[11px] text-muted-foreground">取り扱いの検索（価格・在庫は購入前に各店で確認）</p>
+              <p className="text-[11px] text-muted-foreground">
+                取り扱いの検索（価格・在庫は購入前に各店で確認）
+              </p>
               <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
                 {shops.map((shop) => (
                   <li key={`${shop.kind}:${shop.q}`}>
                     <a
                       href={shop.url}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="flex min-h-9 items-center text-[13px] text-primary underline underline-offset-2 hover:opacity-80 sm:min-h-0"
                     >
                       <span className="sr-only">{item.name}を</span>

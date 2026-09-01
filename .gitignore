@@ -6,3 +6,5 @@ npm-debug.log*
 .pi-subagents/
 src/generated/
 .playwright-cli/
+.urlcheck/
+.check/

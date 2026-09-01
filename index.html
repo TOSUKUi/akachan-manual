@@ -24,7 +24,10 @@
         function jump() {
           if (!location.hash) return
           var id = decodeURIComponent(location.hash.slice(1))
-          if (id === 'top') { window.scrollTo(0, 0); return }
+          if (id === 'top') {
+            window.scrollTo(0, 0)
+            return
+          }
           var el = document.getElementById(id)
           if (el) el.scrollIntoView()
         }

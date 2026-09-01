@@ -22,9 +22,7 @@ export interface FactIssue {
   message: string
 }
 
-export type FactParseResult =
-  | { ok: true; fact: Fact }
-  | { ok: false; issues: FactIssue[] }
+export type FactParseResult = { ok: true; fact: Fact } | { ok: false; issues: FactIssue[] }
 
 const SOURCE_LINE = /^\s*根拠[:：]\s+(.+)$/
 const SOURCE_LINK = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g
@@ -78,7 +76,8 @@ function coerceFrontmatter(
   const d = (data ?? {}) as Record<string, unknown>
   const str = (key: string): string => {
     const value = d[key]
-    const result = typeof value === 'string' ? value : value instanceof Date ? value.toISOString().slice(0, 10) : ''
+    const result =
+      typeof value === 'string' ? value : value instanceof Date ? value.toISOString().slice(0, 10) : ''
     if (!result) issues.push({ file: fileName, message: `frontmatter の ${key} が空です` })
     return result
   }
@@ -86,10 +85,14 @@ function coerceFrontmatter(
   const slug = str('slug')
   const orderRaw = d.order
   const order = typeof orderRaw === 'number' && Number.isInteger(orderRaw) ? orderRaw : 0
-  if (order === 0 && orderRaw !== 0) issues.push({ file: fileName, message: 'frontmatter の order が整数ではありません' })
+  if (order === 0 && orderRaw !== 0)
+    issues.push({ file: fileName, message: 'frontmatter の order が整数ではありません' })
   const lastVerified = str('last_verified')
   if (lastVerified && !isIsoDate(lastVerified)) {
-    issues.push({ file: fileName, message: `frontmatter の last_verified が YYYY-MM-DD 形式ではありません（${lastVerified}）` })
+    issues.push({
+      file: fileName,
+      message: `frontmatter の last_verified が YYYY-MM-DD 形式ではありません（${lastVerified}）`,
+    })
   }
   const sourcesRaw = d.sources
   const sources: FactSource[] = []
@@ -99,7 +102,10 @@ function coerceFrontmatter(
       const name = typeof value.name === 'string' ? value.name : ''
       const url = typeof value.url === 'string' ? value.url : ''
       if (!name || !url.startsWith('http')) {
-        issues.push({ file: fileName, message: `frontmatter の sources[${i}] に name と http(s) url が両方必要です` })
+        issues.push({
+          file: fileName,
+          message: `frontmatter の sources[${i}] に name と http(s) url が両方必要です`,
+        })
       } else sources.push({ name, url })
     }
   } else issues.push({ file: fileName, message: 'frontmatter の sources 配列が欠けています' })
@@ -108,7 +114,11 @@ function coerceFrontmatter(
   if (Array.isArray(mustRaw)) {
     for (const [i, value] of mustRaw.entries()) {
       if (typeof value === 'string' && ID.test(value)) must.push(value)
-      else issues.push({ file: fileName, message: `frontmatter の must[${i}] が kebab-case の ID ではありません` })
+      else
+        issues.push({
+          file: fileName,
+          message: `frontmatter の must[${i}] が kebab-case の ID ではありません`,
+        })
     }
   } else issues.push({ file: fileName, message: 'frontmatter の must 配列が欠けています（無い章は []）' })
   if (issues.length > 0) return { ok: false, issues }
@@ -129,7 +139,11 @@ function inlineIssue(text: string, file: string, section: string | undefined): F
   return undefined
 }
 
-function parseInline(text: string, file: string, section?: string): { spans: InlineSpan[]; issues: FactIssue[] } {
+function parseInline(
+  text: string,
+  file: string,
+  section?: string,
+): { spans: InlineSpan[]; issues: FactIssue[] } {
   const issue = inlineIssue(text, file, section)
   if (issue) return { spans: [], issues: [issue] }
   const spans: InlineSpan[] = []
@@ -155,18 +169,26 @@ function parseCells(line: string): string[] {
   return value.split('|').map((cell) => cell.trim())
 }
 
-function parseTable(lines: readonly string[], file: string, section?: string): { block?: TableBlock; issues: FactIssue[] } {
+function parseTable(
+  lines: readonly string[],
+  file: string,
+  section?: string,
+): { block?: TableBlock; issues: FactIssue[] } {
   const headers = parseCells(lines[0])
   const rows = lines.slice(2).map(parseCells)
   const issues: FactIssue[] = []
-  for (const cell of [ ...headers, ...rows.flat() ]) {
+  for (const cell of [...headers, ...rows.flat()]) {
     const result = parseInline(cell, file, section)
     issues.push(...result.issues)
   }
   return { block: issues.length === 0 ? { kind: 'table', headers, rows } : undefined, issues }
 }
 
-function parseList(lines: readonly string[], file: string, section?: string): { block?: ListBlock; issues: FactIssue[] } {
+function parseList(
+  lines: readonly string[],
+  file: string,
+  section?: string,
+): { block?: ListBlock; issues: FactIssue[] } {
   const entries: { indent: number; text: string }[] = []
   const issues: FactIssue[] = []
   for (const line of lines) {
@@ -198,23 +220,36 @@ function parseList(lines: readonly string[], file: string, section?: string): { 
   return { block: issues.length === 0 ? { kind: 'list', ordered: false, items: roots } : undefined, issues }
 }
 
-function parseChecklist(lines: readonly string[], id: string, file: string, section?: string): { block?: ChecklistBlock; issues: FactIssue[] } {
+function parseChecklist(
+  lines: readonly string[],
+  id: string,
+  file: string,
+  section?: string,
+): { block?: ChecklistBlock; issues: FactIssue[] } {
   const issues: FactIssue[] = []
-  const items = lines.filter((line) => line.trim().length > 0).map((line) => {
-    const match = line.match(/^\s*-\s+\[([ xX])\]\s+(.+)$/)
-    if (!match) {
-      issues.push({ file, section, message: 'checklist の項目は - [ ] または - [x] で記述してください' })
-      return { text: '', done: false }
-    }
-    const inline = parseInline(match[2].trim(), file, section)
-    issues.push(...inline.issues)
-    return { text: spanText(inline.spans), done: match[1].toLowerCase() === 'x' }
-  }).filter((item) => item.text.length > 0)
+  const items = lines
+    .filter((line) => line.trim().length > 0)
+    .map((line) => {
+      const match = line.match(/^\s*-\s+\[([ xX])\]\s+(.+)$/)
+      if (!match) {
+        issues.push({ file, section, message: 'checklist の項目は - [ ] または - [x] で記述してください' })
+        return { text: '', done: false }
+      }
+      const inline = parseInline(match[2].trim(), file, section)
+      issues.push(...inline.issues)
+      return { text: spanText(inline.spans), done: match[1].toLowerCase() === 'x' }
+    })
+    .filter((item) => item.text.length > 0)
   if (items.length === 0) issues.push({ file, section, message: 'checklist に項目がありません' })
   return { block: issues.length === 0 ? { kind: 'checklist', id, items } : undefined, issues }
 }
 
-function parseFlow(lines: readonly string[], id: string, file: string, section?: string): { block?: FlowBlock; issues: FactIssue[] } {
+function parseFlow(
+  lines: readonly string[],
+  id: string,
+  file: string,
+  section?: string,
+): { block?: FlowBlock; issues: FactIssue[] } {
   const issues: FactIssue[] = []
   const meaningful = lines.filter((line) => line.trim().length > 0)
   const rootLine = meaningful[0]?.match(/^\s*Q:\s*(.+)$/)
@@ -267,23 +302,33 @@ function parseFlow(lines: readonly string[], id: string, file: string, section?:
   }
   const references = new Set(nodes.map((node) => node.id))
   for (const node of nodes) {
-    for (const choice of node.choices) if (!references.has(choice.nextId)) {
-      issues.push({ file, section, message: `flow の行き先「${choice.nextId}」を解決できません` })
-    }
+    for (const choice of node.choices)
+      if (!references.has(choice.nextId)) {
+        issues.push({ file, section, message: `flow の行き先「${choice.nextId}」を解決できません` })
+      }
   }
   if (nodes.length < 2) issues.push({ file, section, message: 'flow は 2 ノード以上必要です' })
-  if (nodes[0].choices.length === 0) issues.push({ file, section, message: 'flow にルートの選択肢がありません' })
-  if (!nodes.some((node) => node.choices.length === 0)) issues.push({ file, section, message: 'flow には終端ノードが 1 つ以上必要です' })
+  if (nodes[0].choices.length === 0)
+    issues.push({ file, section, message: 'flow にルートの選択肢がありません' })
+  if (!nodes.some((node) => node.choices.length === 0))
+    issues.push({ file, section, message: 'flow には終端ノードが 1 つ以上必要です' })
   return { block: issues.length === 0 ? { kind: 'flow', id, nodes } : undefined, issues }
 }
 
-function markerBlock(lines: readonly string[], file: string, section?: string): { block?: Block; issues: FactIssue[] } {
+function markerBlock(
+  lines: readonly string[],
+  file: string,
+  section?: string,
+): { block?: Block; issues: FactIssue[] } {
   const opening = lines[0].match(/^:::(\S+)(?:\s+(.+))?$/)
   if (!opening) return { issues: [{ file, section, message: 'マーカーの形式が不正です' }] }
   const name = opening[1]
   const arg = opening[2]?.trim() ?? ''
   if (name === 'callout') {
-    if (!['note', 'warning', 'danger'].includes(arg)) return { issues: [{ file, section, message: 'callout の tone は note / warning / danger のいずれかです' }] }
+    if (!['note', 'warning', 'danger'].includes(arg))
+      return {
+        issues: [{ file, section, message: 'callout の tone は note / warning / danger のいずれかです' }],
+      }
     const text = lines
       .slice(1, -1)
       .filter((line) => line.trim())
@@ -292,7 +337,13 @@ function markerBlock(lines: readonly string[], file: string, section?: string): 
     const inline = parseInline(text, file, section)
     const issues = [...inline.issues]
     if (!text) issues.push({ file, section, message: 'callout に本文がありません' })
-    return { block: issues.length === 0 ? { kind: 'callout', tone: arg as CalloutBlock['tone'], inline: inline.spans } : undefined, issues }
+    return {
+      block:
+        issues.length === 0
+          ? { kind: 'callout', tone: arg as CalloutBlock['tone'], inline: inline.spans }
+          : undefined,
+      issues,
+    }
   }
   if (name === 'checklist') {
     if (!ID.test(arg)) return { issues: [{ file, section, message: 'checklist の ID が不正です' }] }
@@ -305,7 +356,11 @@ function markerBlock(lines: readonly string[], file: string, section?: string): 
   return { issues: [{ file, section, message: `未知のマーカー「:::${name}」です` }] }
 }
 
-function parseBlocks(lines: readonly string[], file: string, section?: string): { blocks: Block[]; issues: FactIssue[] } {
+function parseBlocks(
+  lines: readonly string[],
+  file: string,
+  section?: string,
+): { blocks: Block[]; issues: FactIssue[] } {
   const blocks: Block[] = []
   const issues: FactIssue[] = []
   let i = 0
@@ -320,11 +375,23 @@ function parseBlocks(lines: readonly string[], file: string, section?: string): 
   }
   while (i < lines.length) {
     const line = lines[i]
-    if (!line.trim()) { flushParagraph(); i += 1; continue }
+    if (!line.trim()) {
+      flushParagraph()
+      i += 1
+      continue
+    }
     const diagram = line.match(DIAGRAM_LINE)
-    if (diagram) { flushParagraph(); blocks.push({ kind: 'diagram', name: diagram[1] }); i += 1; continue }
+    if (diagram) {
+      flushParagraph()
+      blocks.push({ kind: 'diagram', name: diagram[1] })
+      i += 1
+      continue
+    }
     if (line === ':::') {
-      flushParagraph(); issues.push({ file, section, message: '対応する開始マーカーのない ::: です' }); i += 1; continue
+      flushParagraph()
+      issues.push({ file, section, message: '対応する開始マーカーのない ::: です' })
+      i += 1
+      continue
     }
     if (line.startsWith(':::')) {
       flushParagraph()
@@ -343,19 +410,31 @@ function parseBlocks(lines: readonly string[], file: string, section?: string): 
       continue
     }
     if (/^\s*-\s+\[[ xX]\]/.test(line)) {
-      flushParagraph(); issues.push({ file, section, message: 'タスクリストは :::checklist の中だけで使用できます' }); i += 1; continue
+      flushParagraph()
+      issues.push({ file, section, message: 'タスクリストは :::checklist の中だけで使用できます' })
+      i += 1
+      continue
     }
     if (/^\s*>/.test(line)) {
-      flushParagraph(); issues.push({ file, section, message: '引用記法は使用できません' }); i += 1; continue
+      flushParagraph()
+      issues.push({ file, section, message: '引用記法は使用できません' })
+      i += 1
+      continue
     }
     if (/^\s*\d+[.)]\s+/.test(line)) {
-      flushParagraph(); issues.push({ file, section, message: '番号付きリストは使用できません' }); i += 1; continue
+      flushParagraph()
+      issues.push({ file, section, message: '番号付きリストは使用できません' })
+      i += 1
+      continue
     }
     if (line.trim().startsWith('|') && i + 1 < lines.length && TABLE_SEPARATOR.test(lines[i + 1])) {
       flushParagraph()
       const tableLines = [line, lines[i + 1]]
       i += 2
-      while (i < lines.length && lines[i].trim().startsWith('|')) { tableLines.push(lines[i]); i += 1 }
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        tableLines.push(lines[i])
+        i += 1
+      }
       const result = parseTable(tableLines, file, section)
       issues.push(...result.issues)
       if (result.block) blocks.push(result.block)
@@ -364,14 +443,20 @@ function parseBlocks(lines: readonly string[], file: string, section?: string): 
     if (LIST_LINE.test(line)) {
       flushParagraph()
       const listLines: string[] = []
-      while (i < lines.length && lines[i].trim() && LIST_LINE.test(lines[i])) { listLines.push(lines[i]); i += 1 }
+      while (i < lines.length && lines[i].trim() && LIST_LINE.test(lines[i])) {
+        listLines.push(lines[i])
+        i += 1
+      }
       const result = parseList(listLines, file, section)
       issues.push(...result.issues)
       if (result.block) blocks.push(result.block)
       continue
     }
     if (/^#{1,6}\s+/.test(line)) {
-      flushParagraph(); issues.push({ file, section, message: '本文中の見出しは使用できません' }); i += 1; continue
+      flushParagraph()
+      issues.push({ file, section, message: '本文中の見出しは使用できません' })
+      i += 1
+      continue
     }
     paragraph.push(line)
     i += 1
@@ -419,9 +504,15 @@ function rawSections(body: string): RawSection[] {
     if (skipping) continue
     const section = ensure()
     const source = line.match(SOURCE_LINE)
-    if (source) { section.sources.push(...parseSourceLine(source[1])); continue }
+    if (source) {
+      section.sources.push(...parseSourceLine(source[1]))
+      continue
+    }
     const must = line.match(MUST_LINE)
-    if (must) { section.mustIds.push(...parseMustLine(must[1])); continue }
+    if (must) {
+      section.mustIds.push(...parseMustLine(must[1]))
+      continue
+    }
     section.lines.push(line)
   }
   return sections
@@ -461,18 +552,34 @@ export function parseFactFile(raw: string, fileName: string): FactParseResult {
 
 export function blockText(block: Block): string {
   switch (block.kind) {
-    case 'paragraph': return spanText(block.inline)
-    case 'list': return block.items.map((item) => `${spanText(item.inline)}\n${item.children.map((child) => spanText(child.inline)).join('\n')}`).join('\n')
-    case 'table': return [block.headers.join(' '), ...block.rows.map((row) => row.join(' '))].join('\n')
-    case 'callout': return spanText(block.inline)
-    case 'checklist': return block.items.map((item) => item.text).join('\n')
-    case 'flow': return block.nodes.map((node) => [node.text, ...node.choices.map((choice) => choice.label)].join('\n')).join('\n')
-    case 'diagram': return block.name
+    case 'paragraph':
+      return spanText(block.inline)
+    case 'list':
+      return block.items
+        .map(
+          (item) =>
+            `${spanText(item.inline)}\n${item.children.map((child) => spanText(child.inline)).join('\n')}`,
+        )
+        .join('\n')
+    case 'table':
+      return [block.headers.join(' '), ...block.rows.map((row) => row.join(' '))].join('\n')
+    case 'callout':
+      return spanText(block.inline)
+    case 'checklist':
+      return block.items.map((item) => item.text).join('\n')
+    case 'flow':
+      return block.nodes
+        .map((node) => [node.text, ...node.choices.map((choice) => choice.label)].join('\n'))
+        .join('\n')
+    case 'diagram':
+      return block.name
   }
 }
 
 export function sectionText(section: FactSection): string {
-  return [section.heading, ...section.blocks.map(blockText), ...section.sources.map((source) => source.name)].join('\n').trim()
+  return [section.heading, ...section.blocks.map(blockText), ...section.sources.map((source) => source.name)]
+    .join('\n')
+    .trim()
 }
 
 export function chapterFullText(sections: readonly FactSection[]): string {
@@ -480,7 +587,9 @@ export function chapterFullText(sections: readonly FactSection[]): string {
 }
 
 export function chapterDescription(sections: readonly FactSection[]): string {
-  const paragraph = sections.flatMap((section) => section.blocks).find((block): block is Extract<Block, { kind: 'paragraph' }> => block.kind === 'paragraph')
+  const paragraph = sections
+    .flatMap((section) => section.blocks)
+    .find((block): block is Extract<Block, { kind: 'paragraph' }> => block.kind === 'paragraph')
   const plain = paragraph ? spanText(paragraph.inline).trim() : ''
   return (plain.split(/[。.!]/)[0] ?? plain).slice(0, 120)
 }

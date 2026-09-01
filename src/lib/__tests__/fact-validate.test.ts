@@ -115,7 +115,8 @@ describe('validateFacts', () => {
     expect(report.errors.filter((e) => e.message.includes('図')).length).toBe(0)
   })
 
-  it('根拠行の無いセクションはエラー（AC-4）', () => {    const facts = [
+  it('根拠行の無いセクションはエラー（AC-4）', () => {
+    const facts = [
       makeFact(
         chapterRaw({
           body: ['intro。', '根拠: [S](https://e.com/a)', '', '## セクション', '根拠無し。'].join('\n'),
@@ -161,9 +162,15 @@ describe('validateFacts', () => {
       makeFact(
         chapterRaw({
           must: ['sids'],
-          body: ['intro。', '根拠: [S](https://e.com/a)', '', '## S', '内容。', '必須: [honey]', '根拠: [S](https://e.com/a)'].join(
-            '\n',
-          ),
+          body: [
+            'intro。',
+            '根拠: [S](https://e.com/a)',
+            '',
+            '## S',
+            '内容。',
+            '必須: [honey]',
+            '根拠: [S](https://e.com/a)',
+          ].join('\n'),
         }),
       ),
     ]
@@ -180,24 +187,26 @@ describe('validateFacts', () => {
   })
 
   it('checklist と flow の ID 重複は章内エラー', () => {
-    const fact = makeFact(chapterRaw({
-      must: [],
-      body: [
-        'intro。',
-        '根拠: [S](https://e.com/a)',
-        '',
-        '## 操作',
-        ':::checklist same',
-        '- [ ] 一つめ',
-        ':::',
-        '',
-        ':::flow same',
-        'Q: 質問',
-        '- はい → 終了',
-        ':::',
-        '根拠: [S](https://e.com/a)',
-      ].join('\n'),
-    }))
+    const fact = makeFact(
+      chapterRaw({
+        must: [],
+        body: [
+          'intro。',
+          '根拠: [S](https://e.com/a)',
+          '',
+          '## 操作',
+          ':::checklist same',
+          '- [ ] 一つめ',
+          ':::',
+          '',
+          ':::flow same',
+          'Q: 質問',
+          '- はい → 終了',
+          ':::',
+          '根拠: [S](https://e.com/a)',
+        ].join('\n'),
+      }),
+    )
     const report = validateFacts([fact], NOW)
     expect(report.errors.some((e) => e.message.includes('ブロック ID'))).toBe(true)
   })
@@ -208,24 +217,26 @@ describe('validateFacts', () => {
   })
 
   it('チェックリストとフローの本文を検索インデックスへ含める', () => {
-    const fact = makeFact(chapterRaw({
-      must: [],
-      body: [
-        'intro。',
-        '根拠: [S](https://e.com/a)',
-        '',
-        '## 操作',
-        ':::checklist tasks',
-        '- [ ] 出生届',
-        ':::',
-        '',
-        ':::flow route',
-        'Q: 泣いている',
-        '- 体調確認 → 相談する',
-        ':::',
-        '根拠: [S](https://e.com/a)',
-      ].join('\n'),
-    }))
+    const fact = makeFact(
+      chapterRaw({
+        must: [],
+        body: [
+          'intro。',
+          '根拠: [S](https://e.com/a)',
+          '',
+          '## 操作',
+          ':::checklist tasks',
+          '- [ ] 出生届',
+          ':::',
+          '',
+          ':::flow route',
+          'Q: 泣いている',
+          '- 体調確認 → 相談する',
+          ':::',
+          '根拠: [S](https://e.com/a)',
+        ].join('\n'),
+      }),
+    )
     const index = buildSearchIndex([fact])
     expect(index[0].fullText).toContain('出生届')
     expect(index[0].fullText).toContain('泣いている')

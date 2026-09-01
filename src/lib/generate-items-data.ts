@@ -14,7 +14,9 @@ export interface GeneratedItems {
   report: { errors: ItemIssue[]; warnings: ItemIssue[] }
 }
 
-export async function loadItems(itemsDir: string): Promise<{ bands: ItemsData['bands']; issues: ItemIssue[] }> {
+export async function loadItems(
+  itemsDir: string,
+): Promise<{ bands: ItemsData['bands']; issues: ItemIssue[] }> {
   const entries = await readdir(itemsDir, { withFileTypes: true })
   const files = entries
     .filter((e) => e.isFile() && e.name.endsWith('.md'))

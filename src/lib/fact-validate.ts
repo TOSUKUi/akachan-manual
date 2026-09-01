@@ -7,12 +7,7 @@ import {
   type SearchIndex,
   type SiteData,
 } from './fact-model.ts'
-import {
-  chapterDescription,
-  chapterFullText,
-  sectionText,
-  type FactIssue,
-} from './fact-parse.ts'
+import { chapterDescription, chapterFullText, sectionText, type FactIssue } from './fact-parse.ts'
 import { TIMELINE_SLUG } from './items-model.ts'
 
 /** last_verified の鮮度閾値（日）。超過は警告（AC-11）。 */
@@ -39,10 +34,7 @@ function daysBetween(fromIso: string, to: Date): number {
  * - 12 正規 ID のカバレッジ欠落（AC-5）
  * - last_verified が 180 日超過（AC-11、警告のみ）
  */
-export function validateFacts(
-  facts: readonly Fact[],
-  now: Date = new Date(),
-): ValidationReport {
+export function validateFacts(facts: readonly Fact[], now: Date = new Date()): ValidationReport {
   const errors: FactIssue[] = []
   const warnings: FactIssue[] = []
 
@@ -82,8 +74,7 @@ export function validateFacts(
       const label = sec.heading || 'intro（冒頭）'
 
       // 空セクションはスキップ（見出しの直後に次の見出しがある場合など）
-      const hasContent =
-        sec.blocks.length > 0 || sec.sources.length > 0 || sec.mustIds.length > 0
+      const hasContent = sec.blocks.length > 0 || sec.sources.length > 0 || sec.mustIds.length > 0
       if (!hasContent) continue
 
       // AC-4: 根拠リンクの無い事実はビルド失敗
@@ -119,7 +110,11 @@ export function validateFacts(
         }
         if (block.kind === 'checklist' || block.kind === 'flow') {
           if (blockIds.has(block.id)) {
-            errors.push({ file: fileName, section: label, message: `ブロック ID「${block.id}」が章内で重複しています。` })
+            errors.push({
+              file: fileName,
+              section: label,
+              message: `ブロック ID「${block.id}」が章内で重複しています。`,
+            })
           }
           blockIds.add(block.id)
         }
@@ -224,10 +219,7 @@ export function buildSearchIndex(facts: readonly Fact[]): SearchIndex {
 }
 
 /** サイト全体データ（トップ・章ページが読む）を組む。 */
-export function buildSiteData(
-  facts: readonly Fact[],
-  meta: SiteData['meta'],
-): SiteData {
+export function buildSiteData(facts: readonly Fact[], meta: SiteData['meta']): SiteData {
   const byOrder = [...facts].sort((a, b) => a.frontmatter.order - b.frontmatter.order)
   return {
     meta,

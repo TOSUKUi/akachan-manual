@@ -44,7 +44,11 @@ describe('parseFactFile', () => {
     expect(fact.sections.map((s) => s.level)).toEqual([1, 2, 3])
     expect(fact.sections[0].blocks[0]).toEqual({
       kind: 'paragraph',
-      inline: [{ text: 'intro の', bold: false }, { text: '段落', bold: true }, { text: 'です。', bold: false }],
+      inline: [
+        { text: 'intro の', bold: false },
+        { text: '段落', bold: true },
+        { text: 'です。', bold: false },
+      ],
     })
     expect(fact.sections[1].mustIds).toEqual(['sids'])
     expect(fact.sections[1].sources).toEqual([{ name: 'テストソース', url: 'https://example.com/a' }])
@@ -93,10 +97,14 @@ Q: 赤ちゃんが泣いている
     if (!result.ok) return
     const blocks = result.fact.sections[0].blocks
     expect(blocks[0]).toMatchObject({ kind: 'callout', tone: 'warning' })
-    expect(blocks[1]).toEqual({ kind: 'checklist', id: 'birth', items: [
-      { text: '出生届を出す', done: false },
-      { text: '保険を確認する', done: true },
-    ] })
+    expect(blocks[1]).toEqual({
+      kind: 'checklist',
+      id: 'birth',
+      items: [
+        { text: '出生届を出す', done: false },
+        { text: '保険を確認する', done: true },
+      ],
+    })
     const flow = blocks[2]
     expect(flow.kind).toBe('flow')
     if (flow.kind === 'flow') {
@@ -134,7 +142,10 @@ Q: 赤ちゃんが泣いている
       '`コード`',
       '**未閉じ',
     ]) {
-      const result = parseFactFile(withBody(`${body}\n根拠: [テストソース](https://example.com/a)`), '01-test.md')
+      const result = parseFactFile(
+        withBody(`${body}\n根拠: [テストソース](https://example.com/a)`),
+        '01-test.md',
+      )
       expect(result.ok, body).toBe(false)
     }
   })
@@ -145,7 +156,10 @@ Q: 赤ちゃんが泣いている
       ':::flow f\nQ: 泣いていますか\n- → 本文\n:::',
       ':::flow f\nQ: 泣いていますか\n- はい →\n:::',
     ]) {
-      const result = parseFactFile(withBody(`${flow}\n根拠: [テストソース](https://example.com/a)`), '01-test.md')
+      const result = parseFactFile(
+        withBody(`${flow}\n根拠: [テストソース](https://example.com/a)`),
+        '01-test.md',
+      )
       expect(result.ok, flow).toBe(false)
     }
   })
@@ -160,7 +174,10 @@ Q: 赤ちゃんが泣いている
       ':::flow f\nQ: 泣いていますか\n- はい → あやす\n  - 効く → そのまま様子を見る\n    - さらに → 離れる\n:::',
     ]
     for (const flow of cases) {
-      const result = parseFactFile(withBody(`${flow}\n根拠: [テストソース](https://example.com/a)`), '01-test.md')
+      const result = parseFactFile(
+        withBody(`${flow}\n根拠: [テストソース](https://example.com/a)`),
+        '01-test.md',
+      )
       expect(result.ok, flow).toBe(false)
     }
   })
@@ -175,7 +192,10 @@ Q: 赤ちゃんが泣いている
       '- いいえ → そのまま様子を見る',
       ':::',
     ].join('\n')
-    const result = parseFactFile(withBody(`${body}\n根拠: [テストソース](https://example.com/a)`), '01-test.md')
+    const result = parseFactFile(
+      withBody(`${body}\n根拠: [テストソース](https://example.com/a)`),
+      '01-test.md',
+    )
     expect(result.ok).toBe(true)
     if (!result.ok) return
     const flow = result.fact.sections[0].blocks.find((b) => b.kind === 'flow')
@@ -194,18 +214,24 @@ Q: 赤ちゃんが泣いている
 
 describe('parseSections', () => {
   it('## Gaps セクションは公開対象外として除外される', () => {
-    const sections = parseSections('## Gaps\n調査不足の項目。\n\n## 本番\n内容。\n根拠: [S](https://e.com/a)\n')
+    const sections = parseSections(
+      '## Gaps\n調査不足の項目。\n\n## 本番\n内容。\n根拠: [S](https://e.com/a)\n',
+    )
     expect(sections.map((s) => s.heading)).toEqual(['本番'])
   })
 
   it('同名見出しにアンカーの重複回避が付く', () => {
-    const sections = parseSections('## 同名\nA\n根拠: [S](https://e.com/a)\n\n## 同名\nB\n根拠: [S](https://e.com/a)\n')
+    const sections = parseSections(
+      '## 同名\nA\n根拠: [S](https://e.com/a)\n\n## 同名\nB\n根拠: [S](https://e.com/a)\n',
+    )
     expect(sections[0].anchor).toBe('同名')
     expect(sections[1].anchor).toBe('同名-2')
   })
 
   it('diagram マーカーは DiagramBlock として抽出される', () => {
-    const sections = parseSections('## スケジュール\n:::diagram vaccine-schedule:::\n\n下表のとおり。\n根拠: [S](https://e.com/a)\n')
+    const sections = parseSections(
+      '## スケジュール\n:::diagram vaccine-schedule:::\n\n下表のとおり。\n根拠: [S](https://e.com/a)\n',
+    )
     expect(sections[0].blocks[0]).toEqual({ kind: 'diagram', name: 'vaccine-schedule' })
   })
 })

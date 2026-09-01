@@ -25,7 +25,8 @@ function TimelineCard() {
             <ArrowRight className="size-4 shrink-0 text-primary" aria-hidden="true" />
           </span>
           <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
-            妊娠中から 2 歳まで、月齢順に「この時期に揃えるもの」を縦並びで確認できます。目安金額や西松屋・アカチャンホンポなどの検索先、品川区の給付・健診も同じ時間軸に載せています。
+            妊娠中から 2
+            歳まで、月齢順に「この時期に揃えるもの」を縦並びで確認できます。目安金額や西松屋・アカチャンホンポなどの検索先、品川区の給付・健診も同じ時間軸に載せています。
           </span>
           <span className="mt-2 block font-mono text-xs text-muted-foreground">
             全 {total} 品目（うち必須 {mustCount} 品） / 8 ステージ
@@ -57,9 +58,7 @@ function MustChecklist() {
                   必須
                 </Badge>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[15px] font-medium group-hover:text-primary">
-                    {item.label}
-                  </span>
+                  <span className="block text-[15px] font-medium group-hover:text-primary">{item.label}</span>
                   <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">
                     {item.chapterTitle}
                   </span>
@@ -108,9 +107,13 @@ function DobChecklist() {
               </Badge>
               <span className="min-w-0 flex-1">
                 <span className="block text-[15px] font-medium group-hover:text-primary">{item.label}</span>
-                <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">1. 出産直前から直後までやる手続き</span>
+                <span className="mt-0.5 block truncate text-xs text-muted-foreground sm:hidden">
+                  1. 出産直前から直後までやる手続き
+                </span>
               </span>
-              <span className="ml-auto hidden shrink-0 truncate text-xs text-muted-foreground sm:block">1. 出産直前から直後までやる手続き</span>
+              <span className="ml-auto hidden shrink-0 truncate text-xs text-muted-foreground sm:block">
+                1. 出産直前から直後までやる手続き
+              </span>
             </a>
           </li>
         ))}

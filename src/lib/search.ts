@@ -18,11 +18,16 @@ export interface SearchIndexChapter {
   sections: { anchor: string; heading: string; text: string }[]
 }
 
-/** search-index.json を読み込む（相対パス。base: './' 静的配信前提）。 */
+/** search-index.json を読み込む（相対パス。base: './' 静的配信前提）。取得・解析に失敗したら空配列。 */
 export async function loadSearchIndex(): Promise<SearchIndexChapter[]> {
-  const res = await fetch('./search-index.json', { cache: 'force-cache' })
-  if (!res.ok) return []
-  return (await res.json()) as SearchIndexChapter[]
+  try {
+    const res = await fetch('./search-index.json', { cache: 'force-cache' })
+    if (!res.ok) return []
+    return (await res.json()) as SearchIndexChapter[]
+  } catch {
+    // ネットワークエラー・未取得（ファイル欠損/offline/非ブラウザ環境）は検索不可として扱う
+    return []
+  }
 }
 
 function makeSnippet(text: string, query: string): string {
@@ -34,11 +39,7 @@ function makeSnippet(text: string, query: string): string {
 }
 
 /** クエリで章・セクションを走査し、ヒットを新しい順に最大 limit 件返す。 */
-export function searchIndex(
-  index: readonly SearchIndexChapter[],
-  query: string,
-  limit = 8,
-): SearchHit[] {
+export function searchIndex(index: readonly SearchIndexChapter[], query: string, limit = 8): SearchHit[] {
   const q = query.trim().toLowerCase()
   if (q.length < 1) return []
   const hits: SearchHit[] = []

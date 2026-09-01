@@ -1,5 +1,5 @@
-// 販売先リンクの組み立て。特定商品への直リンクは持たず、検索ページのみを生成する。
-// 書式は docs/research/item-timeline/03-links-and-disclosure.md で 2026-09-02 に実測確認済み。
+// 販売先リンクの組み立て。特定商品への直リンクは持たず、各店の「検索ページ」のみを生成する。
+// 各書式は 2026-09-02 に実ブラウザ / HTTP で到達確認済み（docs/research/item-timeline/03, 05）。
 // 生データ（items/*.md）には { kind, q } だけを持たせ、URL はここでの組み立て結果のみを画面に出す。
 import { SHOP_KINDS, type ShopKind, type ShopLink } from './items-model.ts'
 
@@ -14,7 +14,9 @@ function query(value: string): string {
 const TEMPLATES: Record<ShopKind, (q: string) => string> = {
   amazon: (q) => `https://www.amazon.co.jp/s?k=${query(q)}`,
   rakuten: (q) => `https://search.rakuten.co.jp/search/mall/${query(q)}/`,
+  // 西松屋: この形式のみ検索結果が描画される（/search/?q= は404、/products/search?keywords= も404）
   nishimatyaya: (q) => `https://www.24028-net.jp/item_list.html?searchbox=1&q=${query(q)}`,
+  // アカチャンホンポ: /shop/search?keyword= は404。検索の正規エンドポイントは goods/search.aspx
   akachan: (q) => `https://shop.akachan.jp/shop/goods/search.aspx?keyword=${query(q)}`,
   uniqlo: (q) => `https://www.uniqlo.com/jp/ja/search/?q=${query(q)}`,
 }

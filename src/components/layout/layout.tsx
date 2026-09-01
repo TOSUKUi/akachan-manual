@@ -70,8 +70,7 @@ export default function Layout() {
               aria-controls={sheetOpen ? 'chapter-sheet' : undefined}
               className="inline-flex h-11 min-w-11 shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3 font-heading text-sm font-bold text-foreground active:bg-accent lg:hidden focus-visible:outline-2 focus-visible:outline-ring"
             >
-              <Menu className="size-4" aria-hidden="true" />
-              章
+              <Menu className="size-4" aria-hidden="true" />章
             </button>
           </div>
           <div className="hidden py-2.5 lg:block">
@@ -100,9 +99,7 @@ export default function Layout() {
             </a>{' '}
             を見てください。
           </p>
-          <p>
-            全項目の最終確認日: {SITE_DATA.meta.siteLastVerified}（更新は各章ごとにその章の日にちを参照）
-          </p>
+          <p>全項目の最終確認日: {SITE_DATA.meta.siteLastVerified}（更新は各章ごとにその章の日にちを参照）</p>
         </div>
       </footer>
     </div>

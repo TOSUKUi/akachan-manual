@@ -232,3 +232,19 @@ describe('validateFacts', () => {
     expect(index[0].fullText).toContain('相談する')
   })
 })
+
+describe('予約 slug（spec 0003 AC-1）', () => {
+  it('章 slug に timeline は使えない（/timeline.html と衝突するため）', () => {
+    const facts = [makeFact(chapterRaw({ slug: 'timeline' }))]
+    const report = validateFacts(facts, NOW)
+    expect(report.ok).toBe(false)
+    expect(report.errors.some((e) => e.message.includes('timeline'))).toBe(true)
+  })
+
+  it('timeline 以外の slug は通常どおり通る', () => {
+    const facts = [makeFact(chapterRaw({ slug: 'timeline-notes', must: [...CANONICAL_MUST_IDS] }))]
+    const report = validateFacts(facts, NOW)
+    expect(report.errors.filter((e) => e.message.includes('timeline'))).toEqual([])
+    expect(report.ok).toBe(true)
+  })
+})

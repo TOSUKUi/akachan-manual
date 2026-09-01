@@ -111,7 +111,14 @@ sources:
   - name: アカチャンホンポ「抱き枕・授乳クッション」
     url: https://shop.akachan.jp/shop/c/cb028/
     checked: "2026-09-01"
+  - name: 品川区 出産育児一時金
+    url: https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-kenkouhoken/procedure-kenkouhoken-hokenkyuuhu/hpg000001524.html
+    checked: "2026-09-02"
 support:
+  - id: shussan-ichikikin
+    title: 出産育児一時金（出生1人あたり50万円）
+    detail: 品川区の国民健康保険に加入して出産した場合は、出生児1人あたり50万円。「直接支払制度」「受取代理制度」（出産予定日の2か月前から受付）を使うと、退院時に窓口で支払う差額だけを済ませられます。妊娠4か月（85日）以上の死産・流産・人工妊娠中絶も対象。申請は出産日の翌日から2年以内で、担当は国保医療年金課給付係（03-5742-6677）。会社の健康保険組合に加入している人は組合の基準（原則同額）を先に確認してください。
+    source: https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-kenkouhoken/procedure-kenkouhoken-hokenkyuuhu/hpg000001524.html
   - id: shinpu-kyufu-5man
     title: 妊婦のための支援給付金（妊娠時）5万円
     detail: 令和7年4月1日以降に妊娠届出と妊婦給付認定の申請をし、助産師・保健師等の面談を受けると給付されます。申請期限は胎児の心拍が確認されてから2年間。区が配布する案内の二次元コードから申請します。

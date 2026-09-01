@@ -2,7 +2,15 @@
 // 開閉モデル: expandedBands === null が「全開」（初期状態）。月齢を選ぶと未選択 band が accordion に、
 // 「この時期だけをたたむ」で開いている band だけ閉じられる（閉じている band を accordion にしない）。
 // 月齢は複数選択可。チェック状態は checklist-view.tsx と同じ localStorage キー設計で復元する。
-import { useEffect, useMemo, useState } from 'react'
+import {
+  forwardRef,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+  type Ref,
+} from 'react'
 import { ArrowRight, Baby, ChevronDown, ChevronUp, Gift, RotateCcw } from 'lucide-react'
 import { ItemCard } from '@/components/timeline/item-card'
 import { HOJOKIN_URL } from '@/config'
@@ -12,6 +20,7 @@ import {
   CATEGORY_LABELS,
   ITEM_CATEGORIES,
   filterItems,
+  monthLabel,
   monthPoint,
   summarize,
   yen,
@@ -96,9 +105,7 @@ const POSITION_LABELS: Record<BandPosition, string> = {
   future: 'これからの時期',
 }
 
-const monthLabel = (band: ItemsBand): string =>
-  `${band.monthsFrom === -1 ? '妊娠中' : `生後${band.monthsFrom}か月`}〜${band.monthsTo}か月`
-
+/** chips 上の月齢ラベル（spec 0003 AC-3）: 「妊娠期」「新生児 0〜1か月」「生後2〜3か月」 */
 function MonthRail({
   bands,
   selectedBands,
@@ -157,12 +164,15 @@ function CategoryBar({
   mustOnly,
   onToggleCategory,
   onToggleMustOnly,
+  actions,
 }: {
   items: readonly Item[]
   categories: readonly ItemCategory[]
   mustOnly: boolean
   onToggleCategory: (category: ItemCategory) => void
   onToggleMustOnly: () => void
+  /** モバイルでは「必要だけ」と同じ行に並べる（絞り込み行がそのまま唯一の操作バーになる） */
+  actions?: ReactNode
 }) {
   const countBy = useMemo(() => {
     const map = new Map<ItemCategory, number>()
@@ -192,6 +202,7 @@ function CategoryBar({
             必要だけ
           </button>
         </li>
+        {actions && <li className="contents">{actions}</li>}
         {ITEM_CATEGORIES.map((c) => (
           <li key={c}>
             <button
@@ -223,23 +234,33 @@ interface BandSectionProps {
   filters: ItemFilters
   doneSet: ReadonlySet<string>
   shopsByItem: ReadonlyMap<string, ResolvedShopLink[]>
+  /** 次 band との境界ラベル（モバイルの「▼ 品目へ」ジャンプで「読み飛ばす量」を伝える） */
+  boundaryLabel: string | null
+  onJumpToNextItem: () => void
+  onBackToIndex: () => void
   onToggle: (id: string, done: boolean) => void
   onExpand: () => void
   onCollapse: () => void
 }
 
-function BandSection({
-  band,
-  position,
-  expanded,
-  collapsible,
-  filters,
-  doneSet,
-  shopsByItem,
-  onToggle,
-  onExpand,
-  onCollapse,
-}: BandSectionProps) {
+function BandSectionInner(
+  {
+    band,
+    position,
+    expanded,
+    collapsible,
+    filters,
+    doneSet,
+    shopsByItem,
+    boundaryLabel,
+    onJumpToNextItem,
+    onBackToIndex,
+    onToggle,
+    onExpand,
+    onCollapse,
+  }: BandSectionProps,
+  ref: Ref<HTMLElement>,
+) {
   const items = useMemo(() => filterItems(band.items, filters), [band.items, filters])
   const summary = summarize(items, [...doneSet])
   const related = RELATED_CHAPTERS[band.id] ?? []
@@ -248,6 +269,7 @@ function BandSection({
 
   return (
     <section
+      ref={ref}
       id={band.id}
       aria-labelledby={headingId}
       className={`relative border-l-2 pl-4 sm:pl-6 ${
@@ -325,18 +347,33 @@ function BandSection({
                 この時期で、いまの絞り込み条件に合う品目はありません。
               </p>
             ) : (
-              <ul className="mt-4 space-y-3">
-                {items.map((item) => (
-                  <ItemCard
-                    key={item.id}
-                    item={item}
-                    done={doneSet.has(item.id)}
-                    onToggle={onToggle}
-                    sources={band.sources}
-                    shops={shopsByItem.get(item.id) ?? []}
-                  />
-                ))}
-              </ul>
+              <>
+                {/* 見出し・intro・区の支援を過ぎたところへ 1 タップで飛ぶ（モバイルだけ。デスクトップは左スパイが見出しリスト） */}
+                <p className="mt-4 flex lg:hidden">
+                  <button
+                    type="button"
+                    onClick={onJumpToNextItem}
+                    className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-primary/30 bg-primary/5 px-3 text-sm font-bold text-primary active:bg-primary/10"
+                  >
+                    <span aria-hidden="true">▼</span>
+                    {boundaryLabel
+                      ? `${band.label}の品目へ（次： ${boundaryLabel}）`
+                      : `${band.label}の品目へ`}
+                  </button>
+                </p>
+                <ul className="mt-3 space-y-3 lg:mt-4">
+                  {items.map((item) => (
+                    <ItemCard
+                      key={item.id}
+                      item={item}
+                      done={doneSet.has(item.id)}
+                      onToggle={onToggle}
+                      sources={band.sources}
+                      shops={shopsByItem.get(item.id) ?? []}
+                    />
+                  ))}
+                </ul>
+              </>
             )}
 
             <p className="mt-3 rounded-lg bg-secondary/70 p-3 text-sm leading-relaxed text-foreground">
@@ -371,6 +408,28 @@ function BandSection({
                 ))}
               </ul>
             )}
+
+            {/* 時期をまたぐ移動（モバイルだけ） */}
+            <p className="mt-3 flex gap-4 lg:hidden">
+              <button
+                type="button"
+                onClick={onBackToIndex}
+                className="inline-flex min-h-11 items-center gap-1.5 text-sm text-primary underline underline-offset-2 hover:opacity-80"
+              >
+                <span aria-hidden="true">∨</span>
+                品目インデックスに戻る
+              </button>
+              {boundaryLabel && (
+                <button
+                  type="button"
+                  onClick={onJumpToNextItem}
+                  className="inline-flex min-h-11 items-center gap-1.5 text-sm text-primary underline underline-offset-2 hover:opacity-80"
+                >
+                  {boundaryLabel}の品目へ
+                  <span aria-hidden="true">∧</span>
+                </button>
+              )}
+            </p>
           </>
         ) : (
           <button
@@ -403,6 +462,8 @@ function BandSection({
     </section>
   )
 }
+
+const BandSection = forwardRef(BandSectionInner)
 
 export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
   const [selectedBands, setSelectedBands] = useState<readonly ItemBandId[]>([])
@@ -469,6 +530,29 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
     )
   }
 
+  /* --- band 間スクロール（任意地点から period 先頭へ戻す / 次の period 先頭を跨ぐ） --- */
+
+  const bandRefs = useRef(new Map<ItemBandId, HTMLElement>())
+  const registerBand = (bandId: ItemBandId) => (el: HTMLElement | null) => {
+    if (el) bandRefs.current.set(bandId, el)
+    else bandRefs.current.delete(bandId)
+  }
+  // ヘッダー分だけ引いて見出し位置へ。reduced-motion のときは即移動。
+  const scrollToBand = (bandId: ItemBandId) => {
+    const el = bandRefs.current.get(bandId)
+    if (!el) return
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+    const header = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--header-h') || '0',
+    )
+    const top = el.getBoundingClientRect().top + window.scrollY - header - 12
+    window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' })
+  }
+  const backToIndex = () => {
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
+  }
+
   // 販売先URL・価格調査日のレンジ・band 位置はすべてデータから算出（ハードコードしない）
   const shopsByItem = useMemo(
     () =>
@@ -518,6 +602,50 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
     [data, filters, expandedBands],
   )
 
+  const resetFilters = () => {
+    setCategories([])
+    setMustOnly(false)
+  }
+
+  // 開閉・リセット系操作。デスクトップは集計バー内、モバイルはカテゴリ絞り込み行に出す
+  // （同一要素を幅によってどちらかにしか表示しない）。
+  const barActions = (
+    <>
+      <button
+        type="button"
+        onClick={expandedBands === null ? collapseAllBands : expandAllBands}
+        className="inline-flex min-h-11 items-center gap-1 text-sm text-primary underline underline-offset-2 hover:opacity-80 lg:min-h-9"
+      >
+        {expandedBands === null ? (
+          <ChevronUp className="size-4 shrink-0" aria-hidden="true" />
+        ) : (
+          <ChevronDown className="size-4 shrink-0" aria-hidden="true" />
+        )}
+        {expandedBands === null ? 'すべての時期を閉じる' : 'すべての時期を開く'}
+      </button>
+      {filterActive && (
+        <button
+          type="button"
+          onClick={resetFilters}
+          className="inline-flex min-h-11 items-center gap-1 text-sm text-primary underline underline-offset-2 hover:opacity-80 lg:min-h-9"
+        >
+          <RotateCcw className="size-4 shrink-0" aria-hidden="true" />
+          絞り込みをもどす
+        </button>
+      )}
+      {done.length > 0 && (
+        <button
+          type="button"
+          onClick={() => setDone([])}
+          className="inline-flex min-h-11 items-center gap-1 text-sm text-primary underline underline-offset-2 hover:opacity-80 lg:min-h-9"
+        >
+          <RotateCcw className="size-4 shrink-0" aria-hidden="true" />
+          チェックをすべて外す
+        </button>
+      )}
+    </>
+  )
+
   return (
     <div className="space-y-6">
       <header>
@@ -552,11 +680,17 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
         mustOnly={mustOnly}
         onToggleCategory={toggleCategory}
         onToggleMustOnly={() => setMustOnly((v) => !v)}
+        actions={
+          /* モバイルでは絞り込み行が操作バーを兼ねる（集計値は出さない） */
+          <div className="contents lg:hidden">{barActions}</div>
+        }
       />
 
+      {/* 準備状況と目安予算のサマリー：画面が広くなり十分に見えている band 数も分かるデスクトップ専用。
+          モバイルでは常時表示すると「品目の頭」が画面から落ち続けるため、band 行の要約で代用する。 */}
       <section
         aria-label="準備状況と目安予算"
-        className="sticky top-[var(--header-h)] z-30 rounded-lg border border-border bg-card/95 p-3 backdrop-blur"
+        className="sticky top-[var(--header-h)] z-30 hidden rounded-lg border border-border bg-card/95 p-3 backdrop-blur lg:block"
       >
         <p aria-live="polite" className="text-sm text-foreground">
           {`全 ${summary.total} 品目のうち`}
@@ -579,43 +713,7 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
             <>残り品に価格つきの品目はありません</>
           )}
         </p>
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-          <button
-            type="button"
-            onClick={expandedBands === null ? collapseAllBands : expandAllBands}
-            className="inline-flex min-h-11 items-center gap-1 text-primary underline underline-offset-2 hover:opacity-80 lg:min-h-9"
-          >
-            {expandedBands === null ? (
-              <ChevronUp className="size-4 shrink-0" aria-hidden="true" />
-            ) : (
-              <ChevronDown className="size-4 shrink-0" aria-hidden="true" />
-            )}
-            {expandedBands === null ? 'すべての時期を閉じる' : 'すべての時期を開く'}
-          </button>
-          {filterActive && (
-            <button
-              type="button"
-              onClick={() => {
-                setCategories([])
-                setMustOnly(false)
-              }}
-              className="inline-flex min-h-11 items-center gap-1 text-primary underline underline-offset-2 hover:opacity-80 lg:min-h-9"
-            >
-              <RotateCcw className="size-4 shrink-0" aria-hidden="true" />
-              絞り込みをもどす
-            </button>
-          )}
-          {done.length > 0 && (
-            <button
-              type="button"
-              onClick={() => setDone([])}
-              className="inline-flex min-h-11 items-center gap-1 text-primary underline underline-offset-2 hover:opacity-80 lg:min-h-9"
-            >
-              <RotateCcw className="size-4 shrink-0" aria-hidden="true" />
-              チェックをすべて外す
-            </button>
-          )}
-        </div>
+        <div className="mt-2 hidden flex-wrap items-center gap-x-3 gap-y-1 text-sm lg:flex">{barActions}</div>
       </section>
 
       {filterActive && visibleCount === 0 && (
@@ -625,8 +723,9 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
       )}
 
       <div>
-        {data.bands.map((band) => {
+        {data.bands.map((band, i) => {
           const expanded = expandedBands === null ? true : expandedBands.includes(band.id)
+          const next = data.bands[i + 1]
           return (
             <BandSection
               key={band.id}
@@ -637,6 +736,9 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
               filters={filters}
               doneSet={doneSet}
               shopsByItem={shopsByItem}
+              boundaryLabel={next ? `${next.monthsFrom}か月〜` : null}
+              onJumpToNextItem={() => next && scrollToBand(next.id)}
+              onBackToIndex={backToIndex}
               onToggle={toggle}
               onExpand={() => {
                 setExpandedBands((current) => [
@@ -645,6 +747,7 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
                 ])
               }}
               onCollapse={() => collapseBand(band.id)}
+              ref={registerBand(band.id)}
             />
           )
         })}

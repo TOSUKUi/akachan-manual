@@ -3,6 +3,13 @@
 // fact の根拠ゲートとは別の強さで検証する（詳細: docs/specs/0003-item-timeline-page.md）。
 import type { FactSource } from './fact-model.ts'
 
+/**
+ * 品目タイムラインページの slug。生成物は /timeline.html。
+ * 章（fact/）と同じ slug を許すとページに辿れなくなるため fact-validate で禁止する（spec 0003 AC-1）。
+ * app 側（nav.ts）とビルド側（fact-validate.ts）の両方から参照される唯一の定義元。
+ */
+export const TIMELINE_SLUG = 'timeline'
+
 export const ITEM_BAND_IDS = [
   'pregnancy',
   'newborn',
@@ -157,6 +164,13 @@ export function monthRangeLabel(startMonth: number, endMonth?: number): string {
 }
 
 /** 金額表示（千区切り）。 */
+/** 月齢レールの chip 文言（spec 0003 AC-3）。テストも同じ関数を使う。 */
+export function monthLabel(band: ItemsBand): string {
+  if (band.monthsFrom < 0) return '妊娠期'
+  const range = `${band.monthsFrom}〜${band.monthsTo}か月`
+  return band.id === 'newborn' ? `新生児 ${range}` : `生後${range}`
+}
+
 export function yen(amount: number): string {
   return `${Math.round(amount).toLocaleString('ja-JP')}円`
 }

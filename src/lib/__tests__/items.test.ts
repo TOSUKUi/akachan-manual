@@ -225,6 +225,17 @@ describe('validateItems', () => {
     expect(report.errors.some((e) => e.code === 'items_source_unreferenced')).toBe(true)
   })
 
+  it('調査日が未来日の出典・価格は失敗扱いにする（未実施の確認を「済」にしない）', () => {
+    const band = mutate((b) => {
+      b.sources[0] = { ...b.sources[0], checked: '2999-01-01' }
+      b.items[0].price = { ...b.items[0].price!, checked: '2999-01-01' }
+    })
+    const report = validateItems(allBands({ 'm4-6': band }), now)
+    expect(report.ok).toBe(false)
+    const codes = report.errors.filter((e) => e.code === 'items_checked_date_future').map((e) => e.item)
+    expect(codes).toContain('m46-spoon')
+  })
+
   it('価格の調査日が 180 日超なら警告（失敗はしない）', () => {
     const band = mutate((b) => {
       b.items[0].price = { ...b.items[0].price!, checked: '2025-01-01' }

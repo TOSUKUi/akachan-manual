@@ -8,16 +8,16 @@ caution: 沐浴は石けんを泡立てて手早く。体についた石けん�
 sources:
   - name: 品川区 すくすく赤ちゃん訪問事業
     url: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/hpg000022461.html
-    checked: "2026-09-07"
+    checked: "2026-09-02"
   - name: 品川区 電話授乳相談
     url: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/hpg000033270.html
-    checked: "2026-09-07"
+    checked: "2026-09-02"
   - name: 品川区 産後ケア事業（訪問型）
     url: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/20240328204226.html
-    checked: "2026-09-07"
+    checked: "2026-09-02"
   - name: ピジョン はじめての育児 新生児〜ねんねの頃（0〜2か月）
     url: https://pigeon.info/growth/baby0-2months.html
-    checked: "2026-09-07"
+    checked: "2026-09-02"
   - name: Amazon.co.jp 検索「母乳パッド」
     url: https://www.amazon.co.jp/s?k=%E6%AF%8D%E4%B9%B3%E3%83%91%E3%83%83%E3%83%89
     checked: "2026-09-01"
@@ -29,14 +29,35 @@ sources:
     checked: "2026-09-01"
   - name: 環境省 WBGT 公開ページ（熱中症予防情報）
     url: https://www.wbgt.env.go.jp/
-    checked: "2026-09-07"
+    checked: "2026-09-02"
   - name: Amazon.co.jp 検索「温湿度計 子供 部屋」
     url: https://www.amazon.co.jp/s?k=%E6%B8%A9%E6%B9%BF%E5%BA%A6%E8%A8%88%20%E5%AD%90%E4%BE%9B%20%E9%83%A8%E5%B1%8B
     checked: "2026-09-01"
   - name: Amazon.co.jp 検索「ベビー 日焼け止め 0か月」
     url: https://www.amazon.co.jp/s?k=%E3%83%99%E3%83%93%E3%83%BC%20%E6%97%A5%E7%84%BC%E3%81%91%E6%AD%A2%E3%82%81%200%E3%81%8B%E6%9C%88
     checked: "2026-09-01"
+  - name: 品川区 0歳児見守り・子育てサポート事業（見守りおむつ定期便）
+    url: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-service/20231002181840.html
+    checked: "2026-09-02"
+  - name: 品川区 子どもすこやか医療費助成
+    url: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000017744.html
+    checked: "2026-09-02"
+  - name: 品川区 児童手当
+    url: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000027168.html
+    checked: "2026-09-02"
 support:
+  - id: nb-mimamori
+    title: 見守りおむつ定期便（0歳児・満1歳まで月1回）
+    detail: 品川区在住の0歳児と養育者が対象で、満1歳になる月まで月1回程度（最大12回）、見守り支援員が家庭を訪問し、対面で見守りをしたうえでオムツ等の育児用品を無償で受け取れます。妊娠届を提出すると案内書類一式が郵送され、記載の二次元コードから登録し、出生届の提出後に訪問日と育児用品を選びます。育児用品だけの申請や配達、玄関先より奥への入室はできません。毎月オムツ代が浮く計算になるので、他の出費に回せます。
+    source: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-service/20231002181840.html
+  - id: nb-iryofu-shosei
+    title: 子ども医療証（窓口の自己負担が不要に）
+    detail: 「子どもすこやか医療費助成」は0歳〜18歳（高校3年生相当年齢）が対象。都内の医療機関の窓口で健康保険証（マイナ保険証）といっしょに医療証を提示すると、医療費の自己負担分（未就学児は2割）の支払いが不要になります。健康診断・予防接種・薬の容器代・入院の差額ベッド代は対象外で、入院時の食事の標準負担額は支給申請で戻ります。出生日（転入日）から6か月以内に申請すれば出生日にさかのぼって資格が発生するので、出生届と同じタイミングで手続きすると損しません。医療証の有効期間は毎年9月30日までで、9月下旬頃に新しい医療証が郵送されます。
+    source: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000017744.html
+  - id: nb-jidouteate
+    title: 児童手当（0〜3歳未満は月15,000円）
+    detail: 0歳〜3歳未満は児童1人あたり月額15,000円、第3子以降は月額30,000円。初めての子は受給資格が生じた日の翌日から15日以内に申請します（出生日や転入日が月末に近い場合、翌月になっても15日以内ならその翌月分から支給される「15日特例」あり）。品川区では子育て応援課 手当医療助成担当（区役所本庁舎7階、03-5742-6721）へ窓口・郵送・電子申請のいずれかで申請できます。0歳期は月15,000円が入るため、ベビーベッドやチャイルドシートなどの大きな出費と相殺できます。
+    source: https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000027168.html
   - id: sukurabu-shiho
     title: すくすく赤ちゃん訪問
     detail: 助産師または保健師が生後4か月になる前までのご家庭を訪問し、発育測定・母乳相談・子育ての心配事を聞いてくれます。訪問を希望する場合は区のこども家庭庁の窓口へ連絡します。

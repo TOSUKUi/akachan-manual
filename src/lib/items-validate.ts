@@ -7,6 +7,7 @@
 //   - band.sources[] に登録しているだけで誰も参照していない出典がある
 //   - 価格の低くさ > 高くさ、価格単位が空
 //   - note / size / intro / caution / detail への URL 混入（直リンクは専用フィールドにだけ書く）
+//   - 出典の checked / 価格の checked が未来日（実施していない確認を「済」にできない）
 // 警告（＝警告して続行、fact の AC-11 と同じ考え方）:
 //   - 出典の checked / 価格の checked が ITEMS_STALE_DAYS より古い
 import { checkSourceReferences, type ItemIssue } from './items-parse.ts'
@@ -59,6 +60,8 @@ export function validateItems(bands: ItemsBand[], now: Date = new Date()): Items
       bandUrls.add(source.url)
       const stale = staleWarning(source.checked, `出典の鮮度（${source.name}）`)
       if (stale) warnings.push({ file, code: 'items_stale', message: stale })
+      if (isFuture(source.checked))
+        errors.push({ file, code: 'items_checked_date_future', message: `sources[${i}].checked が未来日です（${source.checked}）。実際に確認した日を記入してください` })
     })
 
     const seenInBand = new Set<string>()
@@ -98,6 +101,8 @@ export function validateItems(bands: ItemsBand[], now: Date = new Date()): Items
         if (sources.length === 0) errors.push(where('price.sources が空です', 'items_price_source_missing'))
         const stale = staleWarning(checked, `価格の鮮度（${item.name}）`)
         if (stale) warnings.push({ file, item: item.id, code: 'items_stale', message: stale })
+        if (isFuture(checked))
+          errors.push(where(`price.checked が未来日です（${checked}）`, 'items_checked_date_future', '実際に価格を確認した日を記入する'))
       }
 
       const text = [item.name, item.note ?? '', item.size ?? ''].join(' ')
@@ -135,6 +140,19 @@ export function validateItems(bands: ItemsBand[], now: Date = new Date()): Items
       ? `${label}が古い: 調査日 ${checked} は ${Math.floor(age)} 日前（${ITEMS_STALE_DAYS} 日超）`
       : undefined
   }
+
+  /** 調査日が当日より後なら「未実施の確認を済ませた」ことになる。ISO 日付以外は無視（形式は parse 段で弾く）。 */
+  function isFuture(checked: string | undefined): boolean {
+    if (!ISO_DATE.test(checked ?? '')) return false
+    return (checked as string) > localDateISO(now)
+  }
+}
+
+/** Date をローカルタイムゾーンの YYYY-MM-DD に。データの日付はローカル基準で書かれているため UTC と混在させない。 */
+function localDateISO(d: Date): string {
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${d.getFullYear()}-${month}-${day}`
 }
 
 /** 検証済み band を画面用のデータ構造にまとめる。band は ITEM_BAND_IDS の順にソートする。 */

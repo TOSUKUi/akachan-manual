@@ -6,8 +6,9 @@ import ChapterToc from '@/components/chapter-toc'
 import { Separator } from '@/components/ui/separator'
 import FactSectionView from '@/components/fact/fact-section-view'
 import IndexPage from '@/pages/index'
+import TimelinePage from '@/pages/timeline'
 import { useScrollSpy } from '@/lib/use-scroll-spy'
-import { chapterHref } from '@/lib/nav'
+import { chapterHref, TIMELINE_SLUG } from '@/lib/nav'
 import { SITE_DATA } from '@/generated/site-data'
 
 export function Component() {
@@ -32,6 +33,11 @@ export function Component() {
   const activeId = useScrollSpy(ids, 180)
   // /index.html はトップページとして描画（review full の minor）
   if (cleanSlug === '') return <IndexPage />
+  // /timeline.html は章ではなく品目タイムライン（spec 0003 AC-1）。
+  // SSG は静的ルート /timeline として描画するが、ブラウザの URL は /timeline.html のため
+  // クライアント側ではこの :slug ルートにマッチする。ここで同じページを描画しないと
+  // ハイドレーション不一致（React #418）になり、ページが真っ白になる。
+  if (cleanSlug === TIMELINE_SLUG) return <TimelinePage />
   if (!chapter) {
     return <p>章が見つかりません。</p>
   }

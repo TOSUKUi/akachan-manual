@@ -10,6 +10,7 @@ import { shopUrl } from '@/lib/shop-links'
 import {
   CATEGORY_LABELS,
   ITEM_CATEGORIES,
+  monthLabel,
   summarize,
   yen,
   type ItemCategory,
@@ -21,13 +22,15 @@ const STORAGE_KEY = 'items-timeline:v1'
 const data = () => ITEMS_DATA
 
 /** 月齢 chip のラベルはページの実装と同じ組み立て（文言をテストに固定しない） */
-const railLabel = (band: ItemsBand): string =>
-  `${band.monthsFrom === -1 ? '妊娠中' : `生後${band.monthsFrom}か月`}〜${band.monthsTo}か月`
+const railLabel = (band: ItemsBand): string => monthLabel(band)
 
 /** band のセクション（region）。見出し名で絞り込む */
 const bandRegion = (label: string) => screen.getByRole('region', { name: label })
 const categoryNav = () => screen.getByRole('navigation', { name: 'カテゴリで絞り込む' })
 const monthRail = () => screen.getByRole('navigation', { name: '月齢で絞り込む' })
+
+/** 準備状況と目安予算バー（デスクトップ専用。モバイル側に同名ボタンがあるためスコープを切る） */
+const summaryBar = () => screen.getByRole('region', { name: '準備状況と目安予算' })
 /** カテゴリ chip。テキストだけだと band 本文の「ねる」等に先行マッチするため button + 語句で絞る */
 const categoryChip = (label: string) =>
   within(categoryNav()).getByRole('button', { name: new RegExp(`^${label}\\s*\\d+品$`) })
@@ -158,7 +161,7 @@ describe('/timeline', () => {
     expect(screen.getByText(/条件に合う品目が 0 件です/)).toBeTruthy()
 
     // 絞り込みをもどす（月齢はそのまま）→ さらに「すべて見る」で全開
-    fireEvent.click(screen.getByRole('button', { name: '絞り込みをもどす' }))
+    fireEvent.click(within(summaryBar()).getByRole('button', { name: '絞り込みをもどす' }))
     expect(screen.queryByText(/条件に合う品目が 0 件です/)).toBeNull()
     fireEvent.click(within(monthRail()).getByRole('button', { name: /^すべて見る/ }))
     expect(within(bandRegion(first.label)).getByText(first.items[0].name)).toBeTruthy()
@@ -208,8 +211,8 @@ describe('/timeline', () => {
       within(bandRegion(targetBand.label)).getByRole('button', { name: /この時期だけをたたむ/ }),
     )
     expect(screen.queryAllByRole('checkbox')).toHaveLength(0)
-    expect(screen.getByRole('button', { name: /すべての時期を開く/ })).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: /すべての時期を開く/ }))
+    expect(within(summaryBar()).getByRole('button', { name: /すべての時期を開く/ })).toBeTruthy()
+    fireEvent.click(within(summaryBar()).getByRole('button', { name: /すべての時期を開く/ }))
     expect(screen.getAllByRole('checkbox')).toHaveLength(data().items.length)
   })
 
@@ -255,7 +258,7 @@ describe('/timeline', () => {
     // チェックを入れてからまとめて外す
     fireEvent.click(checkboxIn(band.label, item.name))
     expect(checkboxIn(band.label, item.name).checked).toBe(true)
-    fireEvent.click(screen.getByRole('button', { name: 'チェックをすべて外す' }))
+    fireEvent.click(within(summaryBar()).getByRole('button', { name: 'チェックをすべて外す' }))
     expect(checkboxIn(band.label, item.name).checked).toBe(false)
     await waitFor(() => {
       const raw = window.localStorage.getItem(STORAGE_KEY)

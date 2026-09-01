@@ -13,6 +13,7 @@ import {
   sectionText,
   type FactIssue,
 } from './fact-parse.ts'
+import { TIMELINE_SLUG } from './items-model.ts'
 
 /** last_verified の鮮度閾値（日）。超過は警告（AC-11）。 */
 export const STALE_DAYS = 180
@@ -44,6 +45,16 @@ export function validateFacts(
 ): ValidationReport {
   const errors: FactIssue[] = []
   const warnings: FactIssue[] = []
+
+  // 予約 slug: /timeline.html は品目タイムライン専用（spec 0003 AC-1）。
+  // 同じ slug の章を作るとページに辿りつけなくなる。
+  for (const f of facts) {
+    if (f.frontmatter.slug === TIMELINE_SLUG)
+      errors.push({
+        file: f.fileName,
+        message: `slug「${TIMELINE_SLUG}」は品目タイムライン専用ページが使用しているため使えません。別の slug にしてください`,
+      })
+  }
 
   // slug 重複
   const seenSlugs = new Map<string, string>()

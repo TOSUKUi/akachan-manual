@@ -258,6 +258,21 @@ describe('validateItems', () => {
     expect(codes).toContain('m46-spoon')
   })
 
+  it('CI（UTC ランナー）でも JST の調査日を未来日として誤検知しない', () => {
+    // JST 2026-09-02 06:16 = UTC 2026-09-01 21:16。UTC で「今日」を計算すると 09-02 が未来になる
+    const band = mutate((b) => {
+      b.sources[0] = { ...b.sources[0], checked: '2026-09-02' }
+      b.items[0].price = { ...b.items[0].price!, checked: '2026-09-02' }
+    })
+    const ciNow = new Date('2026-09-01T21:16:00Z')
+    const ok = validateItems(allBands({ 'm4-6': band }), ciNow)
+    expect(ok.errors.map((e) => e.code)).not.toContain('items_checked_date_future')
+
+    // 本当に未来日は弾く（JST 2026-09-01 時点では 09-02 は未来）
+    const report = validateItems(allBands({ 'm4-6': band }), new Date('2026-09-01T00:00:00Z'))
+    expect(report.errors.map((e) => e.code)).toContain('items_checked_date_future')
+  })
+
   it('価格の調査日が 180 日超なら警告（失敗はしない）', () => {
     const band = mutate((b) => {
       b.items[0].price = { ...b.items[0].price!, checked: '2025-01-01' }

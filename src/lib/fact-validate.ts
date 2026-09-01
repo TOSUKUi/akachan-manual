@@ -7,6 +7,7 @@ import {
   type SearchIndex,
   type SiteData,
 } from './fact-model.ts'
+import { daysFromIsoToJstDay } from './date.ts'
 import { chapterDescription, chapterFullText, sectionText, type FactIssue } from './fact-parse.ts'
 import { TIMELINE_SLUG } from './items-model.ts'
 
@@ -20,9 +21,7 @@ export interface ValidationReport {
 }
 
 function daysBetween(fromIso: string, to: Date): number {
-  const [y, m, d] = fromIso.split('-').map(Number)
-  const from = Date.UTC(y, m - 1, d)
-  return Math.floor((to.getTime() - from) / 86_400_000)
+  return daysFromIsoToJstDay(fromIso, to)
 }
 
 /**

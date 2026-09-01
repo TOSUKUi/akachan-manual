@@ -10,6 +10,7 @@
 //   - 出典の checked / 価格の checked が未来日（実施していない確認を「済」にできない）
 // 警告（＝警告して続行、fact の AC-11 と同じ考え方）:
 //   - 出典の checked / 価格の checked が ITEMS_STALE_DAYS より古い
+import { daysFromIsoToJstDay, jstDateISO } from './date.ts'
 import { checkSourceReferences, type ItemIssue } from './items-parse.ts'
 import type { FactSource } from './fact-model.ts'
 import {
@@ -211,24 +212,17 @@ export function validateItems(bands: ItemsBand[], now: Date = new Date()): Items
 
   function staleWarning(checked: string | undefined, label: string): string | undefined {
     if (!ISO_DATE.test(checked ?? '')) return undefined
-    const age = (now.getTime() - new Date(`${checked}T00:00:00Z`).getTime()) / 86_400_000
+    const age = daysFromIsoToJstDay(checked as string, now)
     return age > ITEMS_STALE_DAYS
-      ? `${label}が古い: 調査日 ${checked} は ${Math.floor(age)} 日前（${ITEMS_STALE_DAYS} 日超）`
+      ? `${label}が古い: 調査日 ${checked} は ${age} 日前（${ITEMS_STALE_DAYS} 日超）`
       : undefined
   }
 
   /** 調査日が当日より後なら「未実施の確認を済ませた」ことになる。ISO 日付以外は無視（形式は parse 段で弾く）。 */
   function isFuture(checked: string | undefined): boolean {
     if (!ISO_DATE.test(checked ?? '')) return false
-    return (checked as string) > localDateISO(now)
+    return (checked as string) > jstDateISO(now)
   }
-}
-
-/** Date をローカルタイムゾーンの YYYY-MM-DD に。データの日付はローカル基準で書かれているため UTC と混在させない。 */
-function localDateISO(d: Date): string {
-  const month = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${d.getFullYear()}-${month}-${day}`
 }
 
 /** 検証済み band を画面用のデータ構造にまとめる。band は ITEM_BAND_IDS の順、band 内は使い始め月の順にソートする。 */

@@ -89,7 +89,8 @@ describe('scrollToElementTop', () => {
     h.flush(4, 7000)
 
     expect(h.scrolls).toHaveLength(1)
-    expect(h.scrolls[0].top).toBe(7956) // 7000 + 5000 - 44（実行時点の固定帯高）
+    // offset は実行時点の値で計算される（収縮前=120 なら 7880 になって不一致になる）
+    expect(h.scrolls[0].top).toBe(7956) // 3000 + 5000 - 44
     expect(offset).toHaveBeenCalled()
   })
 

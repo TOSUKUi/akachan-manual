@@ -255,3 +255,20 @@ items:
 - `docs/research/item-timeline/04-shinagawa-support.md` — 品川区・東京都の支援（公式本文照合）
 - `docs/research/item-timeline/05-link-price-verification.md` — 全URLの生死 sweep、死URLの置換履歴、価格 61 件の再導出手法（2026-09-02 実測）
 - 既存: `docs/specs/0001-baby-guide-static-site.md`, `docs/specs/0002-react-component-rendering.md`, `docs/uiux/spec-mobile.md`, `docs/uiux/spec-desktop.md`
+
+## Implementation log (append-only)
+
+### 2026-09-03 Post-merge fixes (merged PR #1) and deployed verification
+
+- `/check review` の指摘どおり **AC-8 の localStorage 初回挙動**を実装。localStorage 読み出しを `useEffect` に移し、初回描画（SSG/SSR ハイドレーション）は「全 band 全開・未チェック・絞り込みなし」で確定させる。`itemCardId()` を `src/lib/items-model.ts` に export し、カードとハイドレートの id 生成を一元化した。
+- 月チップ選択後の自動スクロールを `src/lib/scroll.ts` の `scrollToElementTop()` に分離。`documentElement.scrollHeight` が収束するまで rAF で待ってからスクロールするため、ヘッダー収縮で固定帯の高さが変わっても見出しが固定帯に隠れない。収束待ちだけを実行時点のオフセットで計算する回帰テストを追加。
+- **モバイル最適化**: 月チップを 2〜3列グリッド化（タップ目標 44px 以上を担保）、カテゴリ行を横スクロール strip 化、`sticky top-[var(--subbar-h)]` の**モバイル専用サマリーバー**（残り品数＋compact 表記の残価額）を追加。デスクトップは 2 列グリッド＋band 内の sticky 目次を維持しつつ、広画面では目次を流して本文幅を守り、サマリーバーを 1 行に圧縮。`--header-h` はヘッダー常時1行化に合わせて 191px → **103px**、`--timeline-rail-top` は `.rail-sticky` の相対値に置換。
+- **リンク規律の修正**: 月チップ・章リンク・トップカードを `.html` 形式に統一（`:5173/timeline.html` を実ブラウザで開き、URL 正規化で相対リンクが壊れないことを確認）。デプロイ済み GitHub Pages の `<a name>` 計測で band 見出し id が `m0-pregnancy`〜`m19-24`、旧 `#m0` / `#84m` は不在と確認。
+- 販売先リンクを全 81 品目から抽出し、Amazon / 楽天 / 西松屋 / アカチャンホンポ / ユニクロの**検索 URL を実際に開いて 0 件にならないことを実測**。アカチャンホンポの月齢絞り込み（`Search[age]`）は 0 件を返すため仕様どおりキーワード検索へフォールバックさせ、`src/lib/shop-links.ts` のコメントに「月齢引数は保持せずキーワードのみ渡す」旨を明記。楽天は mallId を含む仕様どおりの URL を維持。
+- **デプロイ済みページの実ブラウザ検証**（`https://tosukui.github.io/akachan-manual/timeline.html`、GitHub Actions deploy 完了後）: 390×844 / 768×1024 / 1024×768 / 1194×834 / 1440×900 の 5 ビューポートで、h1=1・band 8・全開・静的チェックボックス 81・外部リンクの `rel="noopener noreferrer"`・横向き overflow なし・ヘッダー高さと月齢レールの高さ上限（レールは横向きスクロール化により 196px → 68px）を確認。チェック → reload 復元 → 月チップ 1 クリックで選択 band 単独展開 → 固定帯の下に着地 → 再読込で band 全開、まで**クリック操作で**検証。コンソールエラー 0 件。
+- **月齢の目盛り追加**: 「服のサイズ買い足し」「哺乳びん乳首の交換」「おむつのパンツタイプ／ビッグへの切替」「B型ベビーカー検討」「チャイルドシートの前向き切替」「はいはい期の安全対策」など 10 品目を追加（71 → 81 品目、価格つき 78）。根拠は西松屋サイズ表・乳首サイズ表・おむつ選び方ガイド・育児グッズ準備品リスト、ピジョンお部屋づくり、NITE（すべて 2026-09-03 実測。サイズ別実売はカテゴリページを実ブラウザ描画して税込価格を全件抽出）。旧引用 `hpg000045106` は 404 化したため、東京都福祉局の液体ミルク特集と品川区の避難所備蓄ページに張替えた。詳細は `docs/research/item-timeline/01`「サイズアウト・切り替えの目盛り」と `05` §7。
+
+### Next
+
+- `/sync` を実行して `AGENTS.md` に `items/` 層・タイムラインページ・`src/lib/scroll.ts` を追記し、`docs/uiux/*` を現在のレイアウトに合わせる。
+- チェック済み進捗の URL 共有（AC-11 のスコープ拡大）と、2 歳以降 band の追加は未着手（`MAX_END_MONTH = 84` の制約内）。

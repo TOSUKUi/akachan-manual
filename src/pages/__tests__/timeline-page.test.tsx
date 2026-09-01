@@ -200,7 +200,9 @@ describe('/timeline', () => {
     const rail = monthRail().textContent ?? ''
     // 最後の band を含む全 band が chip として並ぶ
     for (const band of data().bands) expect(rail).toContain(monthLabel(band))
-    expect(rail).toContain('全 71品')
+    // 総品目はハードコードせずデータから算出（品目増減でテストが偽失敗しないようにする）
+    const total = data().bands.reduce((sum, band) => sum + band.items.length, 0)
+    expect(rail).toContain(`全 ${total}品`)
     // 24 か月超の raw 月齢（25〜84）を画面に出さない
     expect(rail).not.toMatch(/(^|[^0-9])(2[5-9]|[3-9][0-9])\s*か月/)
     expect(rail).not.toContain('84')
@@ -385,6 +387,7 @@ describe('/timeline', () => {
     const allowed = [
       'amazon.co.jp',
       'city.shinagawa.tokyo.jp',
+      'metro.tokyo.lg.jp',
       'pigeon.info',
       '24028-net.jp',
       '24028.jp',

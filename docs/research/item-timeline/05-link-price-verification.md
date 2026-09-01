@@ -160,7 +160,7 @@
 | --- | --- |
 | `www.pigeon.info`（`Location: https://pigeon.info/...` で毎回301） | 全30箇所を `pigeon.info` へ正規化（ピヨコミラーの実URL） |
 | `pigeon.info/products/item/920`（ベビーワセリン） | `products.pigeon.co.jp` へ外部転送されるため、解説として `pigeon.info/baby/care/newborn-care/` に張替え |
-| 液体ミルク（非常用備蓄）の why 出典 | 沐浴ページだったため `品川区 災害への備え（乳幼児等がいる世帯）`（hpg000045106）へ修正。品川区は「液体ミルクは備蓄が望ましい、賞味期限の管理・ローリングストック」まで明記している页面を実確認 |
+| 液体ミルク（非常用備蓄）の why 出典 | 沐浴ページだったため `品川区 災害への備え（乳幼児等がいる世帯）`（hpg000045106）へ修正。品川区は「液体ミルクは備蓄が望ましい、賞味期限の管理・ローリングストック」まで記載を実確認 |
 | `http://www.city.shinagawa.tokyo.jp/...` | `https://` へ修正（http は https へ301） |
 | 廃止された内部検索ホスト（旧 `nishimatsuya-network.com` / 旧 `search.akachan.jp` 系） | 引用から完全削除。現在の店舗導線は `src/lib/shop-links.ts` の検索URL生成のみ（実HTTPで 200 / 683件・966件のヒットを確認） |
 

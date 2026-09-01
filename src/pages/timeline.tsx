@@ -113,7 +113,7 @@ function MonthRail({
   onShowAll: () => void
 }) {
   const chipClass = (active: boolean) =>
-    `flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-lg border px-1 text-center text-[11px] leading-tight whitespace-nowrap lg:min-h-9 lg:flex-row lg:gap-1.5 lg:px-3 lg:text-sm ${
+    `flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-lg border px-2 text-center text-[11px] leading-tight whitespace-nowrap lg:min-h-9 lg:flex-row lg:gap-1.5 lg:px-3 lg:text-sm ${
       active
         ? 'border-primary bg-primary text-primary-foreground'
         : 'border-border bg-card text-foreground hover:border-primary active:bg-accent'
@@ -122,8 +122,9 @@ function MonthRail({
   return (
     <nav aria-label="月齢で絞り込む" className="mt-6">
       <h2 className="font-heading text-sm font-bold text-foreground">いまはどこ？ 月齢えらび</h2>
-      {/* モバイルは 4 列グリッドに月齢のみ（+品数）でcompact表示。横スクロールは作らず、全 band を常時見える */}
-      <ul className="mt-2 grid grid-cols-4 gap-1.5 lg:flex lg:flex-wrap lg:gap-2">
+      {/* 全 band を折り返しで常時見えるようにする。等幅グリッドにすると広い画面で
+          カラムが引き伸ばされて間延びするので、チップは内容幅のまま折り返す。 */}
+      <ul className="mt-2 flex flex-wrap gap-1.5 lg:gap-2">
         <li>
           <button
             type="button"
@@ -701,6 +702,41 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
         onToggleBand={selectBand}
         onShowAll={showAllBands}
       />
+      {/* 準備状況と目安予算のサマリー：画面が広くなり十分に見えている band 数も分かるデスクトップ専用（AC-7）。
+          月齢レールは流す（吸着させると 1024px 幅では画面の 4 割を塞ぐため）。レールへはバー内の
+          「月齢えらびに戻る」で跳ね返る。モバイルでは常時表示すると「品目の頭」が画面から落ち続ける
+          ため、band 行の要約（mobile-summary）で代用する。 */}
+      <section
+        aria-label="準備状況と目安予算"
+        ref={desktopBarRef}
+        data-testid="desktop-summary"
+        className="sticky top-[var(--header-h)] z-30 mt-4 hidden flex-wrap items-baseline gap-x-5 gap-y-1 rounded-lg border border-border bg-card/95 px-4 py-2 backdrop-blur lg:flex"
+      >
+        <p aria-live="polite" className="text-sm text-foreground">
+          {`全 ${summary.total} 品目のうち`}
+          <span className="font-heading font-bold"> 残り {summary.remaining} 品</span>
+          <span className="text-muted-foreground">（準備完了 {summary.done} 品）</span>
+          {filterActive && (
+            <span className="text-muted-foreground">／ いまの条件で {visibleCount} 品目を表示中</span>
+          )}
+        </p>
+        <p className="mt-1 text-sm leading-relaxed whitespace-nowrap text-muted-foreground lg:mt-0">
+          {summary.remainingHigh > 0 ? (
+            <>
+              残り品の目安予算{' '}
+              <span className="font-mono text-foreground">
+                {`${yen(summary.remainingLow)}〜${yen(summary.remainingHigh)}`}
+              </span>{' '}
+              （価格がわかる {summary.priced} 品目・税込）
+            </>
+          ) : (
+            <>残り品に価格つきの品目はありません</>
+          )}
+        </p>
+        <div className="mt-2 hidden flex-wrap items-center gap-x-3 gap-y-1 text-sm lg:mt-0 lg:flex">
+          {barActions}
+        </div>
+      </section>
 
       {/* モバイル用の吸着バー：全局の残り品数と残価額を 1 行で常時出す（AC-7）。
           デスクトップ専用のサマリーバーは幅が広すぎるため、こちらは省略形のレンジ表記。 */}
@@ -735,38 +771,6 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
           <div className="contents lg:hidden">{barActions}</div>
         }
       />
-
-      {/* 準備状況と目安予算のサマリー：画面が広くなり十分に見えている band 数も分かるデスクトップ専用。
-          モバイルでは常時表示すると「品目の頭」が画面から落ち続けるため、band 行の要約で代用する。 */}
-      <section
-        aria-label="準備状況と目安予算"
-        ref={desktopBarRef}
-        data-testid="desktop-summary"
-        className="sticky top-[var(--header-h)] z-30 hidden rounded-lg border border-border bg-card/95 p-3 backdrop-blur lg:block"
-      >
-        <p aria-live="polite" className="text-sm text-foreground">
-          {`全 ${summary.total} 品目のうち`}
-          <span className="font-heading font-bold"> 残り {summary.remaining} 品</span>
-          <span className="text-muted-foreground">（準備完了 {summary.done} 品）</span>
-          {filterActive && (
-            <span className="text-muted-foreground">／ いまの条件で {visibleCount} 品目を表示中</span>
-          )}
-        </p>
-        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-          {summary.remainingHigh > 0 ? (
-            <>
-              残り品の目安予算{' '}
-              <span className="font-mono text-foreground">
-                {`${yen(summary.remainingLow)}〜${yen(summary.remainingHigh)}`}
-              </span>{' '}
-              （価格がわかる {summary.priced} 品目・税込）
-            </>
-          ) : (
-            <>残り品に価格つきの品目はありません</>
-          )}
-        </p>
-        <div className="mt-2 hidden flex-wrap items-center gap-x-3 gap-y-1 text-sm lg:flex">{barActions}</div>
-      </section>
 
       {filterActive && visibleCount === 0 && (
         <p className="rounded-lg border border-dashed border-border bg-card p-4 text-sm leading-relaxed text-muted-foreground">

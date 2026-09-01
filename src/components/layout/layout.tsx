@@ -8,18 +8,25 @@ import { HOJOKIN_URL, SITE_NAME } from '@/config'
 import { chapterHref, useClientSlug } from '@/lib/nav'
 import { SITE_DATA } from '@/generated/site-data'
 
-/** 章チップ（ポインター環境の lg 以上のみ表示、ラップして全 9 章を見せる）。 */
+/** 章チップ（ポインター環境の lg 以上のみ表示）。
+ *  章タイトルは「予防接種：いつ打つか・費用・忘れたらどうするか」のように長いので、
+ *  ナビでは「：」より前だけを出す（フルタイトルは title 属性とシートに出す）。
+ *  1 行に収まらない幅では横スクロール（折り返してヘッダーを高くしない）。 */
+function navLabel(title: string): string {
+  return title.split('：')[0] ?? title
+}
+
 function ChapterNav() {
   const currentSlug = useClientSlug()
   return (
     <nav aria-label="章 navigation" className="pb-1">
-      <ul className="flex flex-wrap gap-1.5">
-        <li>
+      <ul className="no-scrollbar flex items-center gap-1.5 overflow-x-auto">
+        <li className="shrink-0">
           <a
             href="./timeline.html"
             aria-current={currentSlug === 'timeline' ? 'page' : undefined}
             className={[
-              'rounded-full border px-2.5 py-1 text-xs transition-colors motion-reduce:duration-0',
+              'inline-block shrink-0 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs transition-colors motion-reduce:duration-0',
               currentSlug === 'timeline'
                 ? 'border-primary bg-primary text-primary-foreground'
                 : 'border-primary/40 bg-primary/5 text-primary hover:bg-primary/10',
@@ -29,18 +36,19 @@ function ChapterNav() {
           </a>
         </li>
         {SITE_DATA.chapters.map((c) => (
-          <li key={c.slug}>
+          <li key={c.slug} className="shrink-0">
             <a
               href={chapterHref(c.slug)}
+              title={c.title}
               aria-current={currentSlug === c.slug ? 'page' : undefined}
               className={[
-                'rounded-full border px-2.5 py-1 text-xs transition-colors motion-reduce:duration-0',
+                'inline-block shrink-0 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs transition-colors motion-reduce:duration-0',
                 currentSlug === c.slug
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border bg-card text-foreground hover:bg-accent',
               ].join(' ')}
             >
-              {c.order}. {c.title}
+              {c.order}. {navLabel(c.title)}
             </a>
           </li>
         ))}

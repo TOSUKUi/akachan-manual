@@ -78,6 +78,21 @@ describe('scrollToElementTop', () => {
     expect(h.scrolls[0].top).toBe(700)
   })
 
+  it('ヘッダー収縮のように固定帯の高さが途中で変わっても、実行時点の高さで計算する', () => {
+    const h = setup({ scrollY: 3000, height: 9000 })
+    let headerBottom = 120 // 依頼時点はヘッダーが高い → スクロールで収縮する
+    const offset = vi.fn(() => headerBottom)
+    scrollToElementTop(h.element(5000), { offset, smooth: true })
+
+    h.flush(1, 7000) // 高さの変化とヘッダー収縮が同時進行する
+    headerBottom = 44
+    h.flush(4, 7000)
+
+    expect(h.scrolls).toHaveLength(1)
+    expect(h.scrolls[0].top).toBe(7956) // 7000 + 5000 - 44（実行時点の固定帯高）
+    expect(offset).toHaveBeenCalled()
+  })
+
   it('cancel 後はスクロールしない', () => {
     const h = setup()
     const cancel = scrollToElementTop(h.element(1000), { offset: () => 0, smooth: true })

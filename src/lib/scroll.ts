@@ -9,15 +9,28 @@
  * sticky 要素は「吸着後」その位置に留まるので、未到達状態の rect.bottom を使うと
  * 本来より大きく引いて目標位置がずれる。`top` が length の場合は
  * `top + 高さ`（= 吸着後の下端）を用いる。`top: auto` は現在の位置をそのまま使う。
+ *
+ * 吸着しているのは計測対象自身とは限らない（月齢レールとサマリーのように
+ * 親ラッパ側が sticky なケースがある）ので、自身から順に sticky な祖先を探す。
  */
+function stickyAncestor(element: HTMLElement): HTMLElement | null {
+  let node: HTMLElement | null = element
+  while (node) {
+    if (getComputedStyle(node).position === 'sticky') return node
+    node = node.parentElement
+  }
+  return null
+}
+
 export function stickyBottom(candidates: readonly (Element | null)[]): number {
   let bottom = 0
   for (const el of candidates) {
-    if (!el) continue
-    const rect = el.getBoundingClientRect()
+    if (!(el instanceof HTMLElement)) continue
+    const sticky = stickyAncestor(el)
+    if (!sticky) continue
+    const rect = sticky.getBoundingClientRect()
     if (rect.height <= 0) continue // 折返し前で非表示（hidden lg:block 等）の帯は無視
-    const style = getComputedStyle(el)
-    if (style.position !== 'sticky') continue
+    const style = getComputedStyle(sticky)
     const top = Number.parseFloat(style.top)
     bottom = Math.max(bottom, Number.isFinite(top) ? top + rect.height : rect.bottom)
   }

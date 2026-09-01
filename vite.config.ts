@@ -5,6 +5,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { factPlugin } from './src/lib/vite-plugin-fact.ts'
+import { itemsPlugin } from './src/lib/vite-plugin-items.ts'
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')
@@ -23,11 +24,18 @@ function loadSiteData() {
   }
 }
 
+// /timeline のメタ（章ではない固定ページなのでここで管理。spec 0003）。
+const TIMELINE_META = {
+  title: 'いつ・何を買う？月齢別タイムライン',
+  description:
+    '妊娠中から 2 歳まで、月齢顺着に「この時期に揃えるもの」を縦並びでまとめたタイムライン。サイズ・数量の目安、価格帯の目安、西松屋・アカチャンホンポなどの検索先、品川区の給付・健診も同じ時間軸で確認できます。',
+}
+
 // GitHub Pages（サブディレクトリ配信）対応のため相対 base。
 // base: './' にすることで dist/ 内のリンク・アセットがすべて相対パスになる。
 export default defineConfig({
   base: './',
-  plugins: [react(), tailwindcss(), factPlugin()],
+  plugins: [react(), tailwindcss(), factPlugin(), itemsPlugin()],
   // ローカル開発用プレビュー（vite preview）のみに効くホスト許可。
   // LAN hostname（例: worker4-ai）や IP からアクセスできるようにする。
   // 本番（GitHub Pages 配信の静的 dist/）には影響しない。
@@ -48,6 +56,16 @@ export default defineConfig({
     // index.html の既定 title/description はトップページ用にしておく。
     onBeforePageRender(route, indexHTML) {
       const normalized = route.startsWith('/') ? route : `/${route}`
+      if (normalized === '/timeline') {
+        indexHTML = indexHTML.replace(
+          /<title>[\s\S]*?<\/title>/,
+          `<title>${escapeHtml(`${TIMELINE_META.title} | ${loadSiteData().meta.siteName}`)}</title>`,
+        )
+        return indexHTML.replace(
+          /<head>/,
+          `<head>\n    <meta name="description" content="${escapeHtml(TIMELINE_META.description)}">`,
+        )
+      }
       const data = loadSiteData()
       const chapter = data.chapters.find((c) => `/${c.slug}` === normalized)
       if (!chapter) return indexHTML

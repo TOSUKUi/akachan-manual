@@ -7,7 +7,7 @@
     "dev": "npm run gen && vite",
     "build": "npm run gen && tsc -b && vite-react-ssg build",
     "preview": "vite preview",
-    "gen": "tsx scripts/gen-site-data.mts",
+    "gen": "tsx scripts/gen-site-data.mts && tsx scripts/gen-items-data.mts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -b",

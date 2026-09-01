@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { ChevronLeft, ChevronRight, Home, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Home, ShoppingBasket, X } from 'lucide-react'
 import { chapterHref, useClientSlug } from '@/lib/nav'
 import { SITE_DATA } from '@/generated/site-data'
 
@@ -96,6 +96,15 @@ export default function MobileChapterSheet({ open, onClose }: MobileChapterSheet
             <a href="./index.html" onClick={onClose} className={rowClass}>
               <Home className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
               <span className="font-medium">トップページ</span>
+            </a>
+            <a
+              href="./timeline.html"
+              onClick={onClose}
+              aria-current={currentSlug === 'timeline' ? 'page' : undefined}
+              className={`${rowClass} ${currentSlug === 'timeline' ? 'bg-primary/10 font-bold' : ''}`}
+            >
+              <ShoppingBasket className="size-4 shrink-0 text-primary" aria-hidden="true" />
+              <span className="font-medium">月齢別・買うものタイムライン</span>
             </a>
             {(prev || next) && (
               <div className="mt-1 grid grid-cols-2 gap-1">

@@ -1,9 +1,40 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ShoppingBasket } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { chapterHref } from '@/lib/nav'
+import { ITEMS_DATA } from '@/generated/items-data'
 import { SITE_DATA } from '@/generated/site-data'
+
+/** 月齢別タイムラインへの入口（spec 0003 AC-1）。トップ最上部の 1 枚カード。 */
+function TimelineCard() {
+  const total = ITEMS_DATA.items.length
+  const mustCount = ITEMS_DATA.items.filter((i) => i.need === 'must').length
+  return (
+    <a
+      href="./timeline.html"
+      className="block rounded-lg border border-primary/40 bg-primary/5 p-4 transition-colors motion-reduce:duration-0 hover:border-primary hover:bg-primary/10 active:bg-primary/10"
+    >
+      <div className="flex items-start gap-3">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
+          <ShoppingBasket className="size-5 text-primary" aria-hidden="true" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="flex items-center gap-1.5 font-heading text-base font-bold text-foreground">
+            いつ、何を買う？ 月齢別タイムライン
+            <ArrowRight className="size-4 shrink-0 text-primary" aria-hidden="true" />
+          </span>
+          <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+            妊娠中から 2 歳まで、月齢順に「この時期に揃えるもの」を縦並びで確認できます。目安金額や西松屋・アカチャンホンポなどの検索先、品川区の給付・健診も同じ時間軸に載せています。
+          </span>
+          <span className="mt-2 block font-mono text-xs text-muted-foreground">
+            全 {total} 品目（うち必須 {mustCount} 品） / 8 ステージ
+          </span>
+        </span>
+      </div>
+    </a>
+  )
+}
 
 /** 最重要チェックリスト（AC-1）。必須 12 項目をバッジ付きで一覧。 */
 function MustChecklist() {
@@ -136,6 +167,8 @@ export function Component() {
           </a>
         </div>
       </section>
+
+      <TimelineCard />
 
       <MustChecklist />
       <DobChecklist />

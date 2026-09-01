@@ -14,6 +14,20 @@ function ChapterNav() {
   return (
     <nav aria-label="章 navigation" className="pb-1">
       <ul className="flex flex-wrap gap-1.5">
+        <li>
+          <a
+            href="./timeline.html"
+            aria-current={currentSlug === 'timeline' ? 'page' : undefined}
+            className={[
+              'rounded-full border px-2.5 py-1 text-xs transition-colors motion-reduce:duration-0',
+              currentSlug === 'timeline'
+                ? 'border-primary bg-primary text-primary-foreground'
+                : 'border-primary/40 bg-primary/5 text-primary hover:bg-primary/10',
+            ].join(' ')}
+          >
+            いつ・何を買う？
+          </a>
+        </li>
         {SITE_DATA.chapters.map((c) => (
           <li key={c.slug}>
             <a

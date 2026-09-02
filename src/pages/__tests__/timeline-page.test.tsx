@@ -377,6 +377,31 @@ describe('/timeline', () => {
     }
   })
 
+  it('候補比較（compare）の各行と出典リンクが初期 HTML に出る', () => {
+    render(
+      <MemoryRouter initialEntries={['/timeline']}>
+        <TimelinePage />
+      </MemoryRouter>,
+    )
+    const targets = data()
+      .bands.flatMap((band) => band.items.map((item) => ({ band, item })))
+      .filter((row) => row.item.compare)
+    expect(targets.length).toBeGreaterThan(0)
+    for (const { band, item } of targets) {
+      const compare = item.compare
+      if (!compare) continue
+      const card = within(bandRegion(band.label)).getByText(item.name).closest('li')
+      if (!(card instanceof HTMLElement)) throw new Error(`${item.name} のカードがない`)
+      expect(within(card).getByText(compare.caption)).toBeTruthy()
+      for (const row of compare.rows) {
+        expect(within(card).getByText(row.name, { selector: 'dt' })).toBeTruthy()
+        expect(within(card).getByText(row.point, { selector: 'dd' })).toBeTruthy()
+        const hrefs = Array.from(card.querySelectorAll('a')).map((a) => a.getAttribute('href'))
+        expect(hrefs).toContain(row.source)
+      }
+    }
+  })
+
   it('販売先は各サイトの検索 URL のみ（商品直リンク・生の EC ドメインを晒さない）', () => {
     render(<TimelinePage />)
     const hosts = new Set<string>()
@@ -389,12 +414,15 @@ describe('/timeline', () => {
       'city.shinagawa.tokyo.jp',
       'metro.tokyo.lg.jp',
       'pigeon.info',
+      'pigeon.co.jp',
       '24028-net.jp',
       '24028.jp',
       'rakuten.co.jp',
       'akachan.jp',
       'uniqlo.com',
       'nite.go.jp',
+      'milton.jp',
+      'kao.com',
       'wbgt.env.go.jp',
       'cfa.go.jp',
       'tosukui.github.io',
@@ -402,7 +430,10 @@ describe('/timeline', () => {
       'example.jp',
     ]
     for (const host of hosts) {
-      expect(allowed.some((d) => host === d || host.endsWith(`.${d}`))).toBe(true)
+      expect(
+        allowed.some((d) => host === d || host.endsWith(`.${d}`)),
+        `許可されていないホスト: ${host}`,
+      ).toBe(true)
     }
     // 存在しない EC ドメインを拾わない
     expect(hosts.has('nishimatsuya-website.net')).toBe(false)

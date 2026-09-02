@@ -157,7 +157,10 @@ export function validateItems(bands: ItemsBand[], now: Date = new Date()): Items
           )
       }
 
-      const text = [item.name, item.note ?? '', item.size ?? ''].join(' ')
+      const compareText = item.compare
+        ? item.compare.caption + item.compare.rows.map((r) => `${r.name}${r.point}`).join('')
+        : ''
+      const text = [item.name, item.note ?? '', item.size ?? '', compareText].join(' ')
       const leaked = text.match(/https?:\/\/\S+/)?.[0]
       if (leaked)
         errors.push(

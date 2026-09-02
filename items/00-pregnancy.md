@@ -114,6 +114,21 @@ sources:
   - name: 品川区 出産育児一時金
     url: https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-kenkouhoken/procedure-kenkouhoken-hokenkyuuhu/hpg000001524.html
     checked: "2026-09-02"
+  - name: ピジョン「洗浄→消毒のやり方を知っておきましょう！」
+    url: https://pigeon.info/cleanbottle/howto.html
+    checked: "2026-09-02"
+  - name: ピジョン「電子レンジ除菌『不可』表示への変更について」
+    url: https://support.pigeon.co.jp/notice/microwave/
+    checked: "2026-09-02"
+  - name: キョーリンリメディオ「Milton CP の使い方」
+    url: https://milton.jp/miltonbrand/howto/index.html
+    checked: "2026-09-02"
+  - name: 西松屋オンライン『除菌』検索（実売価格）
+    url: https://www.24028-net.jp/item_list.html?searchbox=1&q=%E9%99%A4%E8%8F%8C
+    checked: "2026-09-02"
+  - name: 西松屋オンライン『消毒』検索（実売価格）
+    url: https://www.24028-net.jp/item_list.html?searchbox=1&q=%E6%B6%88%E6%AF%92
+    checked: "2026-09-02"
 support:
   - id: shussan-ichikikin
     title: 出産育児一時金（出生1人あたり50万円）
@@ -314,29 +329,78 @@ items:
         q: 哺乳瓶
       - kind: akachan
         q: 哺乳びん
+  - id: pre-bottle-wash
+    name: 哺乳びんの洗浄（洗剤・ブラシ）
+    category: arau
+    need: must
+    startMonth: -1
+    endMonth: 12
+    size: 洗剤1本＋ボトルブラシ・乳首ブラシ各1本
+    note: >-
+      消毒の前に洗浄が必須です。使ったらすぐ水につけ、パーツに分解して洗います。びん底とびんの肩（口）部分は汚れが残りやすいので念入りに。乳首は穴を内側から押さえて洗います。耐熱ガラスびんには汚れを落とせるナイロンブラシ、プラスチックびんには傷をつけにくいスポンジブラシが向きます。泡で出るタイプは泵いりより手早く済みます。
+    whySources:
+      - https://pigeon.info/cleanbottle/howto.html
+      - https://www.24028.jp/premama/guide/bottlenipple/
+      - https://shop.akachan.jp/shop/c/cb332/
+    price:
+      low: 1480
+      high: 2945
+      unit: 初期分（洗剤＋ブラシ）の目安・税込
+      checked: "2026-09-02"
+      sources:
+        - https://www.24028-net.jp/item_list.html?searchbox=1&q=%E9%99%A4%E8%8F%8C
+        - https://shop.akachan.jp/shop/c/cb332/
+    shops:
+      - kind: nishimatyaya
+        q: 哺乳瓶 洗剤
+      - kind: rakuten
+        q: 哺乳瓶 洗い 洗剤 ブラシ
   - id: pre-bottle-sterilize
-    name: 哺乳びんの洗浄・除菌用品
+    name: 哺乳びんの除菌・消毒（方式くらべ）
     category: tabe
     need: must
     startMonth: -1
     endMonth: 12
-    size: 洗剤1個・ブラシ1本・除菌用品1セット
-    note: 使ったその場で洗う動線を退院前に作っておくと、出産後に困りません。煮沸・薬液・スチームは製品の説明書に従います。
+    size: 1方式ぶん（薬液セット／レンジ式ケース／電動器のいずれか）
+    note: >-
+      洗浄だけでは菌を取り除ききれないため、洗ったあとに消毒・除菌します。方式は煮沸・薬液（つけおき）・電子レンジ式スチーム・電動スチーム（乾燥つき）の4つで、効果の差より初期費用と毎回の時間の違いで選びます。薬液はつけておくだけで、つくった溶液は24時間使用可。煮沸は費用ほぼゼロですが毎回お湯を沸かします。ピジョンの対象製品は2024年2月頃から電子レンジ除菌『不可』表示に変わっているため、レンジ式は対応製品か表示で確認します。生後6か月ごろ以降は消毒を段階的に簡略化し、1歳までに洗浄中心へ（ミルトンは1歳くらいまでの除菌を推奨）。
     whySources:
-      - https://www.24028.jp/premama/preparation-item/milkdiapers/
+      - https://pigeon.info/cleanbottle/howto.html
+      - https://support.pigeon.co.jp/notice/microwave/
+      - https://milton.jp/miltonbrand/howto/index.html
       - https://www.24028.jp/premama/guide/bottlenipple/
     price:
-      low: 363
-      high: 1738
-      unit: 1点（税込）
+      low: 2990
+      high: 17380
+      unit: 初期費用の目安・税込（薬液セット〜電動乾燥器）
       checked: "2026-09-02"
       sources:
+        - https://www.24028-net.jp/item_list.html?searchbox=1&q=%E6%B6%88%E6%AF%92
+        - https://www.24028-net.jp/item_list.html?searchbox=1&q=%E9%99%A4%E8%8F%8C
         - https://shop.akachan.jp/shop/c/cb146/
+    compare:
+      caption: 消毒・除菌の方式くらべ（同じ目的でここまで金額が変わる・税込）
+      rows:
+        - name: 煮沸（家の鍋）
+          point: 道具を追加で買わずに済む。水をかぶせて沸騰後3〜5分＋冷ます時間。毎回沸騰させ、取り出すハサミも必要。最も安いが最も手が掛かる
+          source: https://www.24028.jp/premama/guide/bottlenipple/
+        - name: 薬液・つけおき（Milton CP など）
+          point: 最低ラインは容器＋薬剤で2,990円（西松屋のママセット）。4Lに2錠を溶かし1時間以上つけるだけ、溶液は24時間使えてすすぎ不要。金属・メラミン樹脂・ウレタンは使えない
+          source: https://milton.jp/miltonbrand/howto/index.html
+        - name: 電子レンジ式スチーム
+          point: 専用ケース 2,066円（西松屋の除菌じょ〜ずEX・SALE実測）。水を入れてレンジ（500〜700W）で約5分。庫内のサイズ確認が必要。ピジョンの対象商品はレンジ除菌不可表示に変わったため要確認
+          source: https://www.24028-net.jp/item_list.html?searchbox=1&q=%E9%99%A4%E8%8F%8C
+        - name: 電動スチーム除菌器（乾燥なし）
+          point: 水だけ入れて約15分、びん2本まで。本体3,298円（西松屋PB・SALE実測）。乾燥機能がないので取り出して乾かす一手間が残る
+          source: https://www.24028-net.jp/item_list.html?searchbox=1&q=%E9%99%A4%E8%8F%8C
+        - name: 電動スチーム除菌・乾燥器
+          point: 10,780円（アカチャンホンポのスチームメイト）〜17,380円（ピジョン ポチット）。除菌約12分＋自動乾燥で薬液や薬液の交換が不要。場所と電源を取るため出番がなくなると置き場所が悩み
+          source: https://shop.akachan.jp/shop/c/cb146/
     shops:
       - kind: nishimatyaya
         q: 哺乳瓶 消毒
       - kind: rakuten
-        q: 哺乳瓶 除菌
+        q: 哺乳瓶 除菌 乾燥器
   - id: pre-mokuyoku-set
     name: 沐浴セット（ベビーバス・湯温計・ベビーソープ）
     category: arau

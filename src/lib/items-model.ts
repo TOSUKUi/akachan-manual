@@ -80,6 +80,20 @@ export interface ItemPrice {
   checked: string
 }
 
+/** 「どれがどう使いやすいか」比較の 1 行。point は実測価格を単位つきで書く。 */
+export interface CompareRow {
+  name: string
+  point: string
+  /** band の sources[] に登録済みの URL（画面では name 表記でリンクする） */
+  source: string
+}
+
+/** 同一カテゴリに複数ある品目の買い替え・方式比較（1品目の枠で候補を並べる） */
+export interface ItemCompare {
+  caption: string
+  rows: CompareRow[]
+}
+
 /** 販売先は kind + 検索語だけ持つ（URL はビルド／レンダ側で組み立て、商品直リンクは持たない）。 */
 export interface ShopLink {
   kind: ShopKind
@@ -99,6 +113,8 @@ export interface Item {
   size?: string
   /** なぜこの時期か。個人差・製品表示優先の但し書きを含める。 */
   note: string
+  /** 候補が複数ある品目の比較表（缺失時は出さない） */
+  compare?: ItemCompare
   /** 月齢・サイズ・必要性の根拠 URL。必ず band の sources[] に含まれる。 */
   whySources: string[]
   price?: ItemPrice
@@ -155,7 +171,6 @@ export function monthRangeLabel(startMonth: number, endMonth?: number): string {
   return `${monthPoint(startMonth)}〜${monthPoint(endMonth)}ごろ`
 }
 
-/** 金額表示（千区切り）。 */
 /** 月齢レールの chip 文言（spec 0003 AC-3）。テストも同じ関数を使う。 */
 export function monthLabel(band: ItemsBand): string {
   if (band.monthsFrom < 0) return '妊娠期'
@@ -175,6 +190,11 @@ export function monthLabelCompact(band: ItemsBand): string {
 
 export function yen(amount: number): string {
   return `${Math.round(amount).toLocaleString('ja-JP')}円`
+}
+
+/** 比較表を持つ品目か（カードを列幅いっぱいに使う判断に使う） */
+export function hasCompare(item: Item): boolean {
+  return (item.compare?.rows.length ?? 0) > 0
 }
 
 /** 吸着バーなど幅の狭い場所向けのレンジ表記（例: 10.2万〜48.3万円）。 */

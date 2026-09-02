@@ -4,6 +4,7 @@ import {
   CATEGORY_LABELS,
   NEED_LABELS,
   SHOP_SEARCH_LABELS,
+  hasCompare,
   monthRangeLabel,
   sourceLabel,
   yen,
@@ -46,7 +47,7 @@ export function ItemCard({ item, done, onToggle, sources, shops }: ItemCardProps
     <li
       className={`list-none rounded-xl border bg-card p-4 ${
         done ? 'border-border opacity-80' : 'border-primary/40'
-      }`}
+      } ${hasCompare(item) ? 'md:col-span-2' : ''}`}
     >
       <div className="flex items-start gap-3">
         {/* モバイルでのタップ目標を 44×44px 確保（視覚サイズは 24px のまま）。タップ領域を広げるための label で、
@@ -96,6 +97,33 @@ export function ItemCard({ item, done, onToggle, sources, shops }: ItemCardProps
           </dl>
 
           {item.note && <p className="mt-2 text-sm leading-relaxed text-foreground">{item.note}</p>}
+
+          {item.compare && (
+            <div className="mt-3 rounded-lg border border-border bg-background/70 p-3">
+              <p className="text-[11px] font-bold tracking-wide text-muted-foreground">
+                {item.compare.caption}
+              </p>
+              <dl className="mt-2 space-y-2 sm:space-y-1.5">
+                {item.compare.rows.map((row) => (
+                  <div key={row.name} className="sm:grid sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-x-3">
+                    <dt className="text-[13px] font-bold text-foreground">{row.name}</dt>
+                    <dd className="mt-0.5 text-[13px] leading-relaxed text-muted-foreground sm:mt-0">
+                      {row.point}
+                      <a
+                        href={row.source}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-1 whitespace-nowrap text-[11px] text-primary underline underline-offset-2 hover:opacity-80"
+                      >
+                        {sourceLabel(sources, row.source)}
+                        <span className="sr-only">（新しいタブで開きます）</span>
+                      </a>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
 
           {item.price && (
             <div className="mt-3 rounded-lg bg-secondary/70 p-3">

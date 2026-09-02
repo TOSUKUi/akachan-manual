@@ -129,6 +129,98 @@ describe('parseItemsFile', () => {
   })
 })
 
+/** compare（候補比較）付き品目を作るための補助 */
+function compareFixture(rowsYaml: string, caption = '消毒・除菌の方式くらべ'): string {
+  return MINIMAL.replace(
+    '    price:\n',
+    `    compare:\n      caption: ${caption}\n      rows:\n${rowsYaml}    price:\n`,
+  )
+}
+const ROW_BOIL =
+  '        - name: 煮沸（家の鍋で）\n          point: 追加出費はほぼゼロ。毎回3〜5分沸騰させる\n          source: https://www.24028.jp/example/\n'
+const ROW_LIQUID =
+  '        - name: 薬液（つけおき）\n          point: 容器と薬剤で2,990円（税込）。1時間以上つけおき\n          source: https://www.24028.jp/example/\n'
+
+describe('候補比較（compare）', () => {
+  it('compare を省略した品目は compare を持たない', () => {
+    expect(bandOf(MINIMAL).items[0].compare).toBeUndefined()
+  })
+
+  it('compare の caption と rows を解釈する', () => {
+    const compare = bandOf(compareFixture(ROW_BOIL + ROW_LIQUID)).items[0].compare
+    expect(compare?.caption).toBe('消毒・除菌の方式くらべ')
+    expect(compare?.rows).toHaveLength(2)
+    expect(compare?.rows[0].name).toBe('煮沸（家の鍋で）')
+    expect(compare?.rows[1].point).toContain('2,990円')
+    expect(compare?.rows[1].source).toBe('https://www.24028.jp/example/')
+  })
+
+  it('rows は 2 件以上必要（1 件なら弾く）', () => {
+    const result = parseItemsFile(compareFixture(ROW_BOIL), 'test.md')
+    expect(!result.ok).toBe(true)
+    if (!result.ok) expect(result.issues.some((i) => i.message.includes('rows'))).toBe(true)
+  })
+
+  it('compare / rows の未知フィールドは弾く', () => {
+    const badCaption = compareFixture(ROW_BOIL + ROW_LIQUID).replace(
+      'caption: 消毒・除菌の方式くらべ',
+      'label: 消毒・除菌の方式くらべ',
+    )
+    const captionIssue = parseItemsFile(badCaption, 'test.md')
+    expect(!captionIssue.ok).toBe(true)
+    if (!captionIssue.ok)
+      expect(
+        captionIssue.issues.some((i) => i.file.includes('compare') && i.message.includes('"label"')),
+      ).toBe(true)
+
+    const badRow = ROW_BOIL.replace('          source: ', '          url: ')
+    const rowIssue = parseItemsFile(compareFixture(badRow + ROW_LIQUID), 'test.md')
+    expect(!rowIssue.ok).toBe(true)
+    if (!rowIssue.ok) {
+      expect(rowIssue.issues.some((i) => i.file.includes('rows[0]') && i.message.includes('"url"'))).toBe(
+        true,
+      )
+      // source が消えた行なので、source 欠落も同時に報告される
+      expect(rowIssue.issues.some((i) => i.message.includes('source が http(s) URL'))).toBe(true)
+    }
+  })
+
+  it('rows の source が band の sources[] に無いなら失敗する', () => {
+    const result = parseItemsFile(
+      compareFixture(
+        ROW_BOIL + ROW_LIQUID.replace('https://www.24028.jp/example/', 'https://example.com/elsewhere'),
+      ),
+      'test.md',
+    )
+    expect(!result.ok).toBe(true)
+    if (!result.ok)
+      expect(
+        result.issues.some((i) => i.code === 'items_source_not_registered' && i.item === 'm46-spoon'),
+      ).toBe(true)
+  })
+
+  it('rows の point が空なら失敗する', () => {
+    const result = parseItemsFile(
+      compareFixture(
+        ROW_BOIL + ROW_LIQUID.replace('point: 容器と薬剤で2,990円（税込）。1時間以上つけおき', 'point:'),
+      ),
+      'test.md',
+    )
+    expect(!result.ok).toBe(true)
+    if (!result.ok) expect(result.issues.some((i) => i.message.includes('point が空'))).toBe(true)
+  })
+
+  it('実データの compare 行はすべて登録済み出典 only でエラー 0 件', () => {
+    const withCompare = ITEMS_DATA.bands.flatMap((b) => b.items.filter((i) => i.compare))
+    expect(withCompare.length).toBeGreaterThan(0)
+    expect(validateItems(ITEMS_DATA.bands).errors).toHaveLength(0)
+    for (const item of withCompare) {
+      const registered = new Set(ITEMS_DATA.bands.flatMap((b) => b.sources.map((s) => s.url)))
+      for (const row of item.compare?.rows ?? []) expect(registered.has(row.source)).toBe(true)
+    }
+  })
+})
+
 describe('validateItems', () => {
   const now = new Date('2026-09-01T00:00:00Z')
 

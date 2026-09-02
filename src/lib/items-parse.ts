@@ -10,9 +10,11 @@ import {
   MAX_END_MONTH,
   MIN_MONTH,
   SHOP_KINDS,
+  type CompareRow,
   type Item,
   type ItemBandId,
   type ItemCategory,
+  type ItemCompare,
   type ItemNeed,
   type ItemsBand,
   type SupportItem,
@@ -220,6 +222,7 @@ const ITEM_FIELDS = [
   'endMonth',
   'size',
   'note',
+  'compare',
   'whySources',
   'price',
   'shops',
@@ -351,6 +354,100 @@ function parseShops(value: unknown, file: string, itemLabel: string, issues: Ite
   return shops
 }
 
+const COMPARE_FIELDS = ['caption', 'rows'] as const
+const COMPARE_ROW_FIELDS = ['name', 'point', 'source'] as const
+
+/** 候補が複数ある品目の比較表（2 行以上・各行に出典 URL 必須） */
+function parseCompare(
+  value: unknown,
+  file: string,
+  itemLabel: string,
+  issues: ItemIssue[],
+): ItemCompare | undefined {
+  if (value === undefined) return undefined
+  const at = `${itemLabel}.compare`
+  if (!isRecord(value)) {
+    issues.push({
+      file,
+      item: itemLabel,
+      code: 'items_compare_invalid',
+      message: 'compare は caption / rows を持つマップです',
+      hint: 'caption: 見出し / rows: [{name, point, source}]',
+    })
+    return undefined
+  }
+  rejectUnknownKeys(value, COMPARE_FIELDS, `${file}#${at}`, issues)
+  const before = issues.length
+  const caption = toText(value.caption)
+  if (!caption)
+    issues.push({
+      file,
+      item: at,
+      code: 'items_field_missing',
+      message: 'compare.caption が空です',
+      hint: '例: 消毒・除菌の方式くらべ',
+    })
+
+  const rows: CompareRow[] = []
+  if (!Array.isArray(value.rows) || value.rows.length < 2) {
+    issues.push({
+      file,
+      item: at,
+      code: 'items_compare_invalid',
+      message: 'compare.rows は候補を 2 件以上並べます',
+      hint: '1 件なら compare を削って note に書く',
+    })
+  } else {
+    value.rows.forEach((row, index) => {
+      const rat = `${at}.rows[${index}]`
+      if (!isRecord(row)) {
+        issues.push({
+          file,
+          item: rat,
+          code: 'items_compare_invalid',
+          message: '比較行は name / point / source を持つマップです',
+          hint: '- name: 候補名 / point: 使いやすさと実測価格 / source: 出典 URL',
+        })
+        return
+      }
+      rejectUnknownKeys(row, COMPARE_ROW_FIELDS, `${file}#${rat}`, issues)
+      const name = toText(row.name)
+      const point = toText(row.point)
+      const source = toText(row.source)
+      const rowBefore = issues.length
+      if (!name)
+        issues.push({
+          file,
+          item: rat,
+          code: 'items_field_missing',
+          message: '比較行の name が空です',
+          hint: '例: 煮沸消毒（家の鍋で）',
+        })
+      if (!point)
+        issues.push({
+          file,
+          item: rat,
+          code: 'items_field_missing',
+          message: `比較行 "${name || rat}" の point が空です`,
+          hint: '手間・時間・実売価格（税込と単位）を書く',
+        })
+      if (!/^https?:\/\//.test(source))
+        issues.push({
+          file,
+          item: rat,
+          code: 'items_source_url_invalid',
+          message: `比較行 "${name || rat}" の source が http(s) URL ではありません`,
+          hint: 'band の sources[] に登録した URL を書く',
+        })
+      if (issues.length > rowBefore) return
+      rows.push({ name, point, source })
+    })
+  }
+
+  if (issues.length > before) return undefined
+  return { caption, rows }
+}
+
 function parseItem(value: unknown, file: string, index: number, issues: ItemIssue[]): Item | undefined {
   const at = `items[${index}]`
   if (!isRecord(value)) {
@@ -375,6 +472,7 @@ function parseItem(value: unknown, file: string, index: number, issues: ItemIssu
   const endMonth = value.endMonth === undefined ? undefined : toMonth(value.endMonth)
   const size = toText(value.size)
   const note = toText(value.note)
+  const compare = parseCompare(value.compare, file, label, issues)
 
   if (!ID_PATTERN.test(id))
     issues.push({
@@ -484,6 +582,7 @@ function parseItem(value: unknown, file: string, index: number, issues: ItemIssu
   }
   if (endMonth !== undefined) item.endMonth = endMonth
   if (size) item.size = size
+  if (compare) item.compare = compare
   if (price) item.price = price
   return item
 }
@@ -663,6 +762,20 @@ export function checkSourceReferences(band: ItemsBand, file: string): ItemIssue[
           message: `whySources の URL が band の sources[] にありません（${url}）`,
           hint: '出典は band の sources[] に name 付きで登録する（画面に出る出典一覧がこの URL を参照します）',
         })
+      }
+    }
+    if (item.compare) {
+      for (const row of item.compare.rows) {
+        usedUrls.add(row.source)
+        if (!registeredUrls.has(row.source)) {
+          issues.push({
+            file,
+            item: item.id,
+            code: 'items_source_not_registered',
+            message: `compare.rows の URL が band の sources[] にありません（${row.source}）`,
+            hint: '比較行の出典も band の sources[] に登録する',
+          })
+        }
       }
     }
     if (item.price) {

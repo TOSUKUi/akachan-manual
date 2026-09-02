@@ -84,6 +84,21 @@ sources:
   - name: アカチャンホンポ 沐浴徹底ガイド（お湯の温度）
     url: https://chirashi.akachan.jp/special_lp/bath_care
     checked: "2026-09-02"
+  - name: ピジョン 赤ちゃんの部屋の室温・湿度の目安
+    url: https://pigeon.info/baby/theme/room.html
+    checked: "2026-09-02"
+  - name: 西松屋 ベビー・キッズ用バスタオル
+    url: https://www.24028-net.jp/category/BATH_BATHTOWEL/
+    checked: "2026-09-02"
+  - name: Amazon.co.jp 検索「加湿器」
+    url: https://www.amazon.co.jp/s?k=%E5%8A%A0%E6%B9%BF%E5%99%A8
+    checked: "2026-09-02"
+  - name: アカチャンホンポ 検索「加湿器」
+    url: 'https://shop.akachan.jp/shop/goods/search.aspx?search=x&keyword=%E5%8A%A0%E6%B9%BF%E5%99%A8'
+    checked: "2026-09-02"
+  - name: 西松屋オンラインストア バスマット 商品検索
+    url: 'https://www.24028-net.jp/item_list.html?searchbox=1&q=%E3%83%90%E3%82%B9%E3%83%9E%E3%83%83%E3%83%88'
+    checked: "2026-09-02"
 support:
   - id: nb-mimamori
     title: 見守りおむつ定期便（0歳児・満1歳まで月1回）
@@ -345,4 +360,78 @@ items:
         q: バスサーモ
       - kind: akachan
         q: バスサーモ
+  - id: nb-humidifier
+    name: 加湿器
+    category: karada
+    need: useful
+    startMonth: 0
+    endMonth: 24
+    size: 対象床面積が部屋に合うもの1台
+    note: 赤ちゃんの部屋の湿度は50〜60%が目安で、空気が乾燥すると肌やのどが乾きやすいため、乾燥する季節は加湿器や洗濯物の室内干しで調整します（ピジョン）。空気清浄機は空気をきれいにするもので湿度は上がらないため、目的に合うのは加湿器です。洗濯物の室内干しでも代用できるので、まず家にあるもので足りるか確認してからで間に合います。
+    whySources:
+      - https://pigeon.info/baby/theme/room.html
+    price:
+      low: 3390
+      high: 5500
+      unit: 1台（税込）
+      checked: "2026-09-02"
+      sources:
+        - https://www.amazon.co.jp/s?k=%E5%8A%A0%E6%B9%BF%E5%99%A8
+        - 'https://shop.akachan.jp/shop/goods/search.aspx?search=x&keyword=%E5%8A%A0%E6%B9%BF%E5%99%A8'
+    shops:
+      - kind: amazon
+        q: 加湿器
+      - kind: rakuten
+        q: 加湿器
+      - kind: nishimatyaya
+        q: 加湿器
+  - id: nb-bath-towel
+    name: バスタオル（沐浴後の体をふく・敷く用）
+    category: arau
+    need: must
+    startMonth: 0
+    endMonth: 24
+    size: 正方形2〜3枚（洗濯ローテーション分）
+    note: 沐浴後に赤ちゃんの体をふくタオルは、お着替えと一緒に事前に敷いておくと湯冷めせずスムーズにケアできます（アカチャンホンポ）。西松屋の正方形バスタオルは399〜966円で、洗濯ローテーション分を揃えられます。大人用バスタオルで代用できますが、赤ちゃん用は小さくて扱いやすいです。
+    whySources:
+      - https://chirashi.akachan.jp/special_lp/bath_care
+      - https://www.24028-net.jp/category/BATH_BATHTOWEL/
+    price:
+      low: 399
+      high: 966
+      unit: 1枚（税込）
+      checked: "2026-09-02"
+      sources:
+        - https://www.24028-net.jp/category/BATH_BATHTOWEL/
+    shops:
+      - kind: nishimatyaya
+        q: ベビー バスタオル
+      - kind: akachan
+        q: ベビー バスタオル
+      - kind: amazon
+        q: ベビー バスタオル
+  - id: nb-bath-mat
+    name: バスマット（沐浴〜入浴後の敷く用）
+    category: arau
+    need: useful
+    startMonth: 0
+    endMonth: 12
+    size: 1枚（60×40cm前後）
+    note: 沐浴後や入浴後に赤ちゃんを寝かせて着替えさせる場所として、浴室まわりに敷くと体が冷えにくく、親の膝や床を濡らしません。抗菌加工のものはタオル類よりカビにくく、毎日使う浴室まわりで扱いやすいです（一般的な知識ベース）。バスタオルを敷いて代用もできます。
+    whySources:
+      - https://chirashi.akachan.jp/special_lp/bath_care
+    price:
+      low: 499
+      high: 1699
+      unit: 1枚（税込）
+      checked: "2026-09-02"
+      sources:
+        - 'https://www.24028-net.jp/item_list.html?searchbox=1&q=%E3%83%90%E3%82%B9%E3%83%9E%E3%83%83%E3%83%88'
+    shops:
+      - kind: amazon
+        q: バスマット 赤ちゃん
+      - kind: rakuten
+        q: バスマット 赤ちゃん
+      - kind: nishimatyaya
+        q: バスマット
 ---

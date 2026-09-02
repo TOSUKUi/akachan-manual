@@ -337,19 +337,18 @@ items:
     endMonth: 12
     size: 洗剤1本＋ボトルブラシ・乳首ブラシ各1本
     note: >-
-      消毒の前に洗浄が必須です。使ったらすぐ水につけ、パーツに分解して洗います。びん底とびんの肩（口）部分は汚れが残りやすいので念入りに。乳首は穴を内側から押さえて洗います。耐熱ガラスびんには汚れを落とせるナイロンブラシ、プラスチックびんには傷をつけにくいスポンジブラシが向きます。泡で出るタイプは泵いりより手早く済みます。
+      消毒の前に洗浄が必須です。使ったらすぐ水につけ、パーツに分解して洗います。びん底とびんの肩（口）部分は汚れが残りやすいので念入りに。乳首は穴を内側から押さえて洗います。耐熱ガラスびんには汚れを落とせるナイロンブラシ、プラスチックびんには傷をつけにくいスポンジブラシが向きます。泡で出るタイプは泵いりより手早く済みます（西松屋では泡タイプの哺乳瓶洗い用洗剤437円＋スポンジブラシ308円から揃います）。
     whySources:
       - https://pigeon.info/cleanbottle/howto.html
       - https://www.24028.jp/premama/guide/bottlenipple/
       - https://shop.akachan.jp/shop/c/cb332/
     price:
-      low: 1480
-      high: 2945
-      unit: 初期分（洗剤＋ブラシ）の目安・税込
+      low: 745
+      high: 1628
+      unit: 洗剤＋ブラシ1セットの目安・税込
       checked: "2026-09-02"
       sources:
         - https://www.24028-net.jp/item_list.html?searchbox=1&q=%E9%99%A4%E8%8F%8C
-        - https://shop.akachan.jp/shop/c/cb332/
     shops:
       - kind: nishimatyaya
         q: 哺乳瓶 洗剤

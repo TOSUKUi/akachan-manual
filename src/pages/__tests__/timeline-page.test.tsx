@@ -402,6 +402,23 @@ describe('/timeline', () => {
     }
   })
 
+  it('band 見出しは吸着用の帯に月齢ラベルと残り品数まとめて含み、h2 の id を守る（AC-3 / AC-7）', () => {
+    render(
+      <MemoryRouter initialEntries={['/timeline']}>
+        <TimelinePage />
+      </MemoryRouter>,
+    )
+    for (const band of data().bands) {
+      const region = bandRegion(band.label)
+      const head = region.querySelector('.band-head')
+      expect(head, `band-head が無い (${band.id})`).not.toBeNull()
+      // 吸着させても region ランドマークの aria-labelledby（band の h2）を壊さない
+      expect(head!.querySelector('h2')?.id).toBe(region.getAttribute('aria-labelledby'))
+      expect(head!.textContent).toContain(band.label)
+      expect(head!.textContent).toContain(`残り ${band.items.length} 品`)
+    }
+  })
+
   it('販売先は各サイトの検索 URL のみ（商品直リンク・生の EC ドメインを晒さない）', () => {
     render(<TimelinePage />)
     const hosts = new Set<string>()

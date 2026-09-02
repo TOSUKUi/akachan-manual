@@ -542,6 +542,31 @@ export function Component({ data = ITEMS_DATA }: { data?: ItemsData } = {}) {
     )
   }
 
+  /**
+   * 吸着バー（モバイル: 残り情報バー / lg以上: サマリーバー）の実測高さを --tl-bar-h に反映する。
+   * band 見出し (.band-head) の吸着位置の単一出所で、バーは折返しで高さが変わる
+   * （実測 390px: 48px / 768px: 31px / lg: 81px）ため CSS 固定値には置かない。
+   * 未実行の間は index.css のフォールバック値が効く。
+   */
+  useEffect(() => {
+    const bars = [summaryBarRef.current, desktopBarRef.current]
+    const apply = () => {
+      const visible = bars.find((bar) => bar !== null && bar.getBoundingClientRect().height > 0)
+      if (!visible) return
+      const height = Math.round(visible.getBoundingClientRect().height)
+      document.documentElement.style.setProperty('--tl-bar-h', `${height}px`)
+    }
+    apply()
+    // jsdom など ResizeObserver が無い環境では resize イベントのみで追従する
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(apply)
+    if (observer) for (const bar of bars) if (bar) observer.observe(bar)
+    window.addEventListener('resize', apply)
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener('resize', apply)
+    }
+  }, [])
+
   /* --- band 間スクロール（任意地点から period 先頭へ戻す / 次の period 先頭を跨ぐ） --- */
 
   const bandRefs = useRef(new Map<ItemBandId, HTMLElement>())

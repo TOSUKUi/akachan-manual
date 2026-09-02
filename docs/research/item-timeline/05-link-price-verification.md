@@ -199,3 +199,12 @@
 - 横スクロールなし（docW == vw）、コンソールエラー 0
 
 検証中に `.check/live-check.mjs` の期待値が旧仕様（71 品目・`stored.checked`・`data-collapsed` 属性・chip 8 個）のままだったため、現行マークアップに合わせて修正した。
+
+## 9. 加湿器・バスまわり3品目＋13〜18か月の買い足し4品目追加時の検証（2026-09-02）
+
+並列delegate（glm5.3-flash:high）で実売を確認し、親が `npm run gen` のゲートで機械検証した。
+
+- 追加7品目: `nb-humidifier`（3,390〜5,500円）/ `nb-bath-towel`（399〜966円）/ `nb-bath-mat`（499〜1,699円）/ `m1318-baby-carrier`（4,290〜66,000円）/ `m1318-bed-quilt`（2,739〜6,600円）/ `m1318-diaper-tape`（1,694〜3,550円）/ `m1318-hand-hygiene`（140〜987円）
+- 合計 90品目・価格つき87品目・警告0件。lint / typecheck / test 121件 / build すべて green
+- 本番反映後の実ブラウザ検証（390 / 1024）: 90品目・全bandが初期HTMLに存在、加湿器とバスマットの価格レンジ表示、band見出しの吸着位置（モバイル101px / デスクトップ184px = 吸着バーの下端と一致）、横スクロールなし → 全項目PASS（`.check/live5.mjs`）
+- 19〜24か月への追加（散歩用品一式・遊具の購入vsレンタル・用水着・防犯ブザー・散髪用品）は、担当したagentが途中で停止したため未掲載。見送判断と根拠URLの調査結果は次回の課題として `docs/research/item-timeline/01-monthly-needs.md` §7 に引き継ぐ

@@ -288,26 +288,32 @@ function BandSectionInner(
         }`}
       />
       <div className="pb-10">
-        {/* 見出しは展開/折りたたみの両状態で常時描画（ランドマーク名と跳び先リンクのため） */}
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-          <h2 id={headingId} className="font-heading text-xl font-bold text-foreground sm:text-2xl">
-            {band.label}
-          </h2>
-          <span className="font-mono text-xs text-muted-foreground">
-            {monthPoint(band.monthsFrom)} 〜 {monthPoint(band.monthsTo)}
-          </span>
-          {position === 'current' && (
-            <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
-              いまの時期
+        {/* 見出しは展開/折りたたみの両状態で常時描画（ランドマーク名と跳び先リンクのため）。
+            band をまたいでスクロールしている間は、月齢ラベルと残り品数を吸着させて
+            いまどの band を見ているかわかるようにする（吸着位置は index.css の .band-head）。 */}
+        <div className="band-head">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+            <h2 id={headingId} className="font-heading text-xl font-bold text-foreground sm:text-2xl">
+              {band.label}
+            </h2>
+            <span className="font-mono text-xs text-muted-foreground">
+              {monthPoint(band.monthsFrom)} 〜 {monthPoint(band.monthsTo)}
             </span>
+            {position === 'current' && (
+              <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
+                いまの時期
+              </span>
+            )}
+          </div>
+          {expanded && (
+            <p className="mt-1 text-xs text-muted-foreground">
+              表示 {items.length} 品・残り {summary.remaining} 品
+            </p>
           )}
         </div>
 
         {expanded ? (
           <>
-            <p className="mt-1 text-xs text-muted-foreground">
-              表示 {items.length} 品・残り {summary.remaining} 品
-            </p>
             <p className="mt-2 max-w-2xl leading-7 text-foreground">{band.intro}</p>
 
             {band.support.length > 0 && (

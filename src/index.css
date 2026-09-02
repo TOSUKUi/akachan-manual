@@ -115,12 +115,31 @@
 :root {
   --header-h: 53px;
   --subbar-h: 73px;
+  /* /timeline の吸着バーの高さ（モバイル: 残り情報バー）。ブラウザ実測値。 */
+  --tl-bar-h: 48px;
 }
 @media (min-width: 1024px) {
   :root {
     --header-h: 103px;
     --subbar-h: 0px;
+    /* デスクトップはサマリーバー（準備状況と目安予算）の分だけ下がる */
+    --tl-bar-h: 81px;
   }
+}
+
+/*
+ * /timeline の band 見出し（月齢ラベル + 表示/残り品数）の吸着。
+ * site ヘッダーと吸着バーの直下に留め、band をまたぐと次の見出しに押し出される。
+ * 背景を敷かないと品目カードが見出しの下を透けて読めなくなるため不透明寄りにする。
+ */
+.band-head {
+  position: sticky;
+  top: calc(var(--header-h) + var(--tl-bar-h));
+  z-index: 25;
+  padding-block: 0.375rem;
+  background: color-mix(in oklab, var(--background) 96%, transparent);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--border) 70%, transparent);
 }
 
 /* スクロールバーを隠す（カテゴリ行の横スクロール用。iOS の慣習に合わせ指スクロールのみ） */

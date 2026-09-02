@@ -362,7 +362,7 @@ function BandSectionInner(
                   </button>
                 </p>
                 {/* デスクトップは 2 列にしてスクロール量を半減（モバイルは 1 列のまま） */}
-                <ul className="mt-3 space-y-3 lg:mt-4 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
+                <ul className="mt-3 space-y-3 md:mt-4 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
                   {items.map((item) => (
                     <ItemCard
                       key={item.id}

@@ -113,7 +113,7 @@ export function ItemCard({ item, done, onToggle, sources, shops }: ItemCardProps
                         href={row.source}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="ml-1 whitespace-nowrap text-[11px] text-primary underline underline-offset-2 hover:opacity-80"
+                        className="ml-1 text-[11px] text-primary underline underline-offset-2 hover:opacity-80"
                       >
                         {sourceLabel(sources, row.source)}
                         <span className="sr-only">（新しいタブで開きます）</span>

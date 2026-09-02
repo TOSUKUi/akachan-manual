@@ -114,13 +114,13 @@ sources:
   - name: 品川区 出産育児一時金
     url: https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-kenkouhoken/procedure-kenkouhoken-hokenkyuuhu/hpg000001524.html
     checked: "2026-09-02"
-  - name: ピジョン「洗浄→消毒のやり方を知っておきましょう！」
+  - name: ピジョン 洗浄と消毒のやり方
     url: https://pigeon.info/cleanbottle/howto.html
     checked: "2026-09-02"
   - name: ピジョン「電子レンジ除菌『不可』表示への変更について」
     url: https://support.pigeon.co.jp/notice/microwave/
     checked: "2026-09-02"
-  - name: キョーリンリメディオ「Milton CP の使い方」
+  - name: ミルトン つけおき除菌の使い方
     url: https://milton.jp/miltonbrand/howto/index.html
     checked: "2026-09-02"
   - name: 西松屋オンライン『除菌』検索（実売価格）

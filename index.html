@@ -9,6 +9,10 @@
       name="description"
       content="生まれる予定の男性向け。出産当日の動き方から 2 歳までの育児知識・手続きを 9 章でまとめ、全事実に公式ソースへのリンクを付けている。品川区在住の世帯向け。"
     />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,23 +22,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      // ハッシュジャンプ（SSG + 水合対策）：初期レイアウト後と水合後に各 1 回。
-      ;(function () {
-        function jump() {
-          if (!location.hash) return
-          var id = decodeURIComponent(location.hash.slice(1))
-          if (id === 'top') {
-            window.scrollTo(0, 0)
-            return
-          }
-          var el = document.getElementById(id)
-          if (el) el.scrollIntoView()
-        }
-        requestAnimationFrame(jump)
-        setTimeout(jump, 600)
-      })()
-    </script>
+    <script src="./hash-jump.js" defer></script>
     <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>

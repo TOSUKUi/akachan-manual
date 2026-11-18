@@ -17,7 +17,7 @@ export function SourceLine({ sources }: { sources: readonly FactSource[] }) {
       {sources.map((s, i) => (
         <span key={`${s.url}-${i}`}>
           {i > 0 && '、'}
-          <a href={s.url} target="_blank" rel="noreferrer" className="underline hover:text-primary">
+          <a href={s.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
             {s.name}
           </a>
         </span>

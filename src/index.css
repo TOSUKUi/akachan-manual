@@ -173,6 +173,45 @@
        各 section の scroll-mt-28 は撤去済み（二重オフセットになるため）。 */
     scroll-padding-top: calc(var(--header-h) + var(--subbar-h) + 12px);
   }
+
+  .reco {
+    display: grid;
+    gap: 4px;
+    margin: 10px 0;
+    padding: 10px 12px;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    background: color-mix(in oklab, var(--primary) 7%, var(--card));
+  }
+
+  .reco-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .reco-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--foreground);
+    text-underline-offset: 2px;
+    overflow-wrap: anywhere;
+  }
+
+  .reco-price {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+  }
+
+  .reco-why {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--muted-foreground);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;

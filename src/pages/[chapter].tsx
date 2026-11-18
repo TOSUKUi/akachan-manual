@@ -112,7 +112,7 @@ export function Component() {
                   <a
                     href={s.url}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="flex min-h-9 items-center underline hover:text-primary sm:min-h-0 sm:block"
                   >
                     {s.name}

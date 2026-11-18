@@ -94,6 +94,19 @@ export interface ItemCompare {
   rows: CompareRow[]
 }
 
+/**
+ * 「買ってから失敗した」という声をもとに選んだ一品。
+ * url は調査日に実取得で実在と価格を確認できた商品ページに限る（推測・記憶での記入は不可）。
+ */
+export interface Recommend {
+  name: string
+  url: string
+  /** 販売元の税込表示どおりの実測価格（「~~円〜」「在庫なし・要問合せ」可） */
+  price: string
+  /** 実測値と評価件数を根拠として書く */
+  note: string
+}
+
 /** 販売先は kind + 検索語だけ持つ（URL はビルド／レンダ側で組み立て、商品直リンクは持たない）。 */
 export interface ShopLink {
   kind: ShopKind
@@ -119,6 +132,8 @@ export interface Item {
   whySources: string[]
   price?: ItemPrice
   shops: ShopLink[]
+  /** 買ってから失敗したという声をもとに選んだ一品（未選定なら省略） */
+  recommend?: Recommend
 }
 
 export interface SupportItem {

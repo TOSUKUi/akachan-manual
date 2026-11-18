@@ -26,6 +26,8 @@ export type FactParseResult = { ok: true; fact: Fact } | { ok: false; issues: Fa
 
 const SOURCE_LINE = /^\s*根拠[:：]\s+(.+)$/
 const SOURCE_LINK = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g
+// 「根拠:」行に https 以外のスキームのリンクが混ざっていたら握りつぶさずエラーにする
+const BAD_SOURCE_LINK = /\[[^\]]+\]\((?!https:\/\/)[^\s)]+\)/
 const MUST_LINE = /^\s*(?:⭐\s*)?必須[:：]\s+(.+)$/
 const MUST_ID = /\[([a-z][a-z0-9-]*)\]/g
 const DIAGRAM_LINE = /^:::diagram\s+([a-z][a-z0-9-]*)\s*:::\s*$/
@@ -55,6 +57,11 @@ export function anchorFor(heading: string, taken: ReadonlySet<string>): string {
 
 function parseSourceLine(rest: string): FactSource[] {
   return [...rest.matchAll(SOURCE_LINK)].map((m) => ({ name: m[1].trim(), url: m[2].trim() }))
+}
+
+/** 「根拠:」行に https 以外スキームのリンクがないか（あれば検証エラー扱い） */
+export function hasBadSourceLink(rest: string): boolean {
+  return BAD_SOURCE_LINK.test(rest)
 }
 
 function parseMustLine(rest: string): string[] {
@@ -101,10 +108,10 @@ function coerceFrontmatter(
       const value = (source ?? {}) as Record<string, unknown>
       const name = typeof value.name === 'string' ? value.name : ''
       const url = typeof value.url === 'string' ? value.url : ''
-      if (!name || !url.startsWith('http')) {
+      if (!name || !/^https:\/\/\S+$/.test(url)) {
         issues.push({
           file: fileName,
-          message: `frontmatter の sources[${i}] に name と http(s) url が両方必要です`,
+          message: `frontmatter の sources[${i}] に name と https の url が両方必要です`,
         })
       } else sources.push({ name, url })
     }
@@ -472,6 +479,8 @@ interface RawSection {
   lines: string[]
   sources: FactSource[]
   mustIds: string[]
+  /** 「根拠:」行にあった https 以外スキームのリンク数（握りつぶさずエラーにする） */
+  badSourceLinks: number
 }
 
 function rawSections(body: string): RawSection[] {
@@ -482,7 +491,15 @@ function rawSections(body: string): RawSection[] {
   let skipping = false
   const ensure = (): RawSection => {
     if (!current) {
-      current = { level: 1, heading: '', anchor: 'top', lines: [], sources: [], mustIds: [] }
+      current = {
+        level: 1,
+        heading: '',
+        anchor: 'top',
+        lines: [],
+        sources: [],
+        mustIds: [],
+        badSourceLinks: 0,
+      }
       sections.push(current)
     }
     return current
@@ -496,7 +513,7 @@ function rawSections(body: string): RawSection[] {
       if (level === 2) skipping = /^gaps\b/i.test(heading)
       if (skipping) continue
       const anchor = anchorFor(heading, taken)
-      current = { level, heading, anchor, lines: [], sources: [], mustIds: [] }
+      current = { level, heading, anchor, lines: [], sources: [], mustIds: [], badSourceLinks: 0 }
       sections.push(current)
       taken.add(anchor)
       continue
@@ -506,6 +523,7 @@ function rawSections(body: string): RawSection[] {
     const source = line.match(SOURCE_LINE)
     if (source) {
       section.sources.push(...parseSourceLine(source[1]))
+      if (hasBadSourceLink(source[1])) section.badSourceLinks += 1
       continue
     }
     const must = line.match(MUST_LINE)
@@ -537,6 +555,13 @@ export function parseFactFile(raw: string, fileName: string): FactParseResult {
   const sections = rawSections(content.trim()).map((section) => {
     const result = parseBlocks(section.lines, fileName, section.heading || undefined)
     issues.push(...result.issues)
+    if (section.badSourceLinks > 0) {
+      issues.push({
+        file: fileName,
+        section: section.heading || 'intro（冒頭）',
+        message: `根拠行に https 以外のスキームのリンクが ${section.badSourceLinks} 件あります（出典は https の絶対 URL にしてください）`,
+      })
+    }
     return {
       level: section.level,
       heading: section.heading,

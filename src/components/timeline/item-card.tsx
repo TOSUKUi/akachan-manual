@@ -98,6 +98,17 @@ export function ItemCard({ item, done, onToggle, sources, shops }: ItemCardProps
 
           {item.note && <p className="mt-2 text-sm leading-relaxed text-foreground">{item.note}</p>}
 
+          {item.recommend && (
+            <div className="reco">
+              <span className="reco-tag">選ぶならこれ</span>
+              <a className="reco-name" href={item.recommend.url} target="_blank" rel="noopener noreferrer">
+                {item.recommend.name}
+              </a>
+              <span className="reco-price">{item.recommend.price}</span>
+              <p className="reco-why">{item.recommend.note}</p>
+            </div>
+          )}
+
           {item.compare && (
             <div className="mt-3 rounded-lg border border-border bg-background/70 p-3">
               <p className="text-[11px] font-bold tracking-wide text-muted-foreground">

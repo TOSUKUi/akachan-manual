@@ -181,7 +181,7 @@ describe('候補比較（compare）', () => {
         true,
       )
       // source が消えた行なので、source 欠落も同時に報告される
-      expect(rowIssue.issues.some((i) => i.message.includes('source が http(s) URL'))).toBe(true)
+      expect(rowIssue.issues.some((i) => i.message.includes('source が https の絶対 URL'))).toBe(true)
     }
   })
 

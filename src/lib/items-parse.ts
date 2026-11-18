@@ -11,6 +11,7 @@ import {
   MIN_MONTH,
   SHOP_KINDS,
   type CompareRow,
+  type Recommend,
   type Item,
   type ItemBandId,
   type ItemCategory,
@@ -126,12 +127,12 @@ function parseSources(value: unknown, file: string, issues: ItemIssue[]): FactSo
         message: '出典の name が空です',
         hint: '例: 西松屋「ベビーウェア選び方ガイド」',
       })
-    if (!/^https?:\/\//.test(url)) {
+    if (!/^https:\/\/\S+$/.test(url)) {
       issues.push({
         file,
         item: at,
         code: 'items_source_url_invalid',
-        message: `url が http(s) URL ではありません（${url || '(空)'}）`,
+        message: `url が https の絶対 URL ではありません（${url || '(空)'}）`,
         hint: 'https:// から始める',
       })
     }
@@ -199,12 +200,12 @@ function parseSupport(value: unknown, file: string, issues: ItemIssue[]): Suppor
         message: `支援 "${id || at}" の detail が空です`,
         hint: 'いくら出て、いつ・どう申請するかを書く',
       })
-    if (!/^https?:\/\//.test(source))
+    if (!/^https:\/\/\S+$/.test(source))
       issues.push({
         file,
         item: id || at,
         code: 'items_source_url_invalid',
-        message: `支援 "${id || at}" の source が http(s) URL ではありません`,
+        message: `支援 "${id || at}" の source が https の絶対 URL ではありません`,
         hint: 'band の sources[] に登録した区の公式ページ URL を書く',
       })
     if (issues.length > before) return
@@ -226,9 +227,69 @@ const ITEM_FIELDS = [
   'whySources',
   'price',
   'shops',
+  'recommend',
 ] as const
 const PRICE_FIELDS = ['low', 'high', 'unit', 'sources', 'checked'] as const
+const RECOMMEND_FIELDS = ['name', 'url', 'price', 'note'] as const
 const SHOP_FIELDS = ['kind', 'q'] as const
+
+function parseRecommend(
+  value: unknown,
+  file: string,
+  itemLabel: string,
+  issues: ItemIssue[],
+): Recommend | undefined {
+  if (value === undefined) return undefined
+  const at = `item "${itemLabel}".recommend`
+  if (!isRecord(value)) {
+    issues.push({
+      file,
+      item: itemLabel,
+      code: 'items_invalid_yaml',
+      message: `${at} は name / url / price / note を持つマップです`,
+      hint: '実在を確認できた一品の商品名・URL・実測価格・選定理由を書く',
+    })
+    return undefined
+  }
+  for (const key of Object.keys(value)) {
+    if (!(RECOMMEND_FIELDS as readonly string[]).includes(key)) {
+      issues.push({
+        file,
+        item: itemLabel,
+        code: 'items_unknown_field',
+        message: `${at}.${key} は未知のフィールドです`,
+        hint: `使えるフィールド: ${RECOMMEND_FIELDS.join(', ')}`,
+      })
+    }
+  }
+  const out: Partial<Recommend> = {}
+  for (const field of RECOMMEND_FIELDS) {
+    const v = value[field]
+    if (typeof v !== 'string' || v.trim() === '') {
+      issues.push({
+        file,
+        item: itemLabel,
+        code: 'items_invalid_yaml',
+        message: `${at}.${field} は空でない文字列で書いてください`,
+        hint: 'price は実測した金額、note は実測値と評価件数を根拠にしてください',
+      })
+      continue
+    }
+    if (field === 'url' && !/^https:\/\/\S+$/.test(v.trim())) {
+      issues.push({
+        file,
+        item: itemLabel,
+        code: 'items_invalid_yaml',
+        message: `${at}.url は https の絶対 URL にしてください`,
+        hint: '調査日に実取得で確認できた商品ページの URL を書く',
+      })
+      continue
+    }
+    out[field] = v.trim()
+  }
+  if (Object.keys(out).length !== RECOMMEND_FIELDS.length) return undefined
+  return out as Recommend
+}
 
 function parsePrice(
   value: unknown,
@@ -431,12 +492,12 @@ function parseCompare(
           message: `比較行 "${name || rat}" の point が空です`,
           hint: '手間・時間・実売価格（税込と単位）を書く',
         })
-      if (!/^https?:\/\//.test(source))
+      if (!/^https:\/\/\S+$/.test(source))
         issues.push({
           file,
           item: rat,
           code: 'items_source_url_invalid',
-          message: `比較行 "${name || rat}" の source が http(s) URL ではありません`,
+          message: `比較行 "${name || rat}" の source が https の絶対 URL ではありません`,
           hint: 'band の sources[] に登録した URL を書く',
         })
       if (issues.length > rowBefore) return
@@ -568,6 +629,7 @@ function parseItem(value: unknown, file: string, index: number, issues: ItemIssu
 
   const price = parsePrice(value.price, file, label, issues)
   const shops = parseShops(value.shops, file, label, issues)
+  const recommend = parseRecommend(value.recommend, file, label, issues)
 
   if (issues.length > before) return undefined
   const item: Item = {
@@ -584,6 +646,7 @@ function parseItem(value: unknown, file: string, index: number, issues: ItemIssu
   if (size) item.size = size
   if (compare) item.compare = compare
   if (price) item.price = price
+  if (recommend) item.recommend = recommend
   return item
 }
 

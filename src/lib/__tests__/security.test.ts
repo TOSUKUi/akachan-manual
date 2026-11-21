@@ -49,6 +49,31 @@ describe('セキュリティ基線（出典と外链）', () => {
     expect(html).toMatch(/<script[^>]+src="\.\/hash-jump\.js"/)
   })
 
+  it('CSP は SSG のローダ JSON 取得をallowedにする（同一 origin の fetch を殺さない）', () => {
+    // 回归テスト: connect-src 'none' を書いた日、/timeline は水和化の時点で
+    // 「Unexpected Application Error! NetworkError」に化けた。静的マルチページのまま（SPA 化禁止）でよこすローダ JSON は同一 origin の fetch なので、
+    // 'self' を認めるのが正解。緩めるなら 'self' に限定したことをここで固定する。
+    const html = readFileSync('index.html', 'utf8')
+    const csp = html.match(/http-equiv="Content-Security-Policy"\s+content="([^"]+)"/)
+    expect(csp).not.toBeNull()
+    const directives = Object.fromEntries(
+      (csp as RegExpMatchArray)[1]
+        .split(';')
+        .map((d) => d.trim())
+        .filter(Boolean)
+        .map((d) => {
+          const i = d.indexOf(' ')
+          return [d.slice(0, i), d.slice(i + 1)] as [string, string]
+        }),
+    )
+    expect(directives['connect-src']).toBe("'self'")
+    // 外部 origin を認めていないこと（information 漏らし許可の歯止めにしない）
+    expect(directives['connect-src']).not.toMatch(/https:\/\//)
+    expect(directives['object-src']).toBe("'none'")
+    expect(directives['base-uri']).toBe("'self'")
+    expect(directives['form-action']).toBe("'self'")
+  })
+
   it('localStorage に保存するのは item id とチェック文言だけ（PII を入れない）', () => {
     const src = readFileSync('src/pages/timeline.tsx', 'utf8')
     expect(src).toMatch(/done: valid/) // 既知 id との積集合で絞る設計

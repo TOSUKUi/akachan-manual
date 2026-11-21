@@ -24,6 +24,12 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
+      - run: npx prettier --check .
+      # 出典リンクの生死。外部サイトの一時障害で配備が止まらないよう continue-on-error。
+      # 死リンクはここに出る＝次の修正で直す対象。ローカルでは同じコマンドが exit 1 で止まる。
+      - name: URL liveness (non-blocking)
+        continue-on-error: true
+        run: node scripts/check-links.mjs --workers 8
 
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'

@@ -22,8 +22,8 @@ async function patch(file: string, edits: Edits): Promise<void> {
 await patch('src/lib/items-parse.ts', [
   [`    if (!/^https?:\\/\\//.test(url)) {`, `    if (!/^https:\\/\\/\\S+$/.test(url)) {`],
   [
-    `        message: \`url が http(s) URL ではありません（\${url || '(空)'}）\`,`,
-    "        message: `url が https の絶対 URL ではありません（\${url || '(空)'}）`,",
+    `        message: \`url が http(s) URL ではありません（${url || '(空)'}）\`,`,
+    "        message: `url が https の絶対 URL ではありません（${url || '(空)'}）`,",
   ],
   [`    if (!/^https?:\\/\\//.test(source))`, `    if (!/^https:\\/\\/\\S+$/.test(source))`],
   [`      if (!/^https?:\\/\\//.test(source))`, `      if (!/^https:\\/\\/\\S+$/.test(source))`],
@@ -32,8 +32,8 @@ await patch('src/lib/items-parse.ts', [
 await patch('src/lib/fact-parse.ts', [
   [`      if (!name || !url.startsWith('http')) {`, `      if (!name || !/^https:\\/\\/\\S+$/.test(url)) {`],
   [
-    `          message: \`frontmatter の sources[\${i}] に name と http(s) url が両方必要です\`,`,
-    '          message: `frontmatter の sources[\${i}] に name と https の url が両方必要です`,',
+    `          message: \`frontmatter の sources[${i}] に name と http(s) url が両方必要です\`,`,
+    '          message: `frontmatter の sources[${i}] に name と https の url が両方必要です`,',
   ],
 ])
 

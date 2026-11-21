@@ -74,6 +74,56 @@ describe('セキュリティ基線（出典と外链）', () => {
     expect(directives['form-action']).toBe("'self'")
   })
 
+  it('SSG のインラインスクリプトは CSP で sha256 により明示許可（unsafe-inline 不使用）', () => {
+    // vite-react-ssg は各ページに window.__VITE_REACT_SSG_HASH__ と
+    // window.__staticRouterHydrationData をインラインスクリプトで注入する。
+    // script-src を 'self' だけにするとこれが止まり、ローダが
+    // static-loader-data-manifest-undefined.json を読みに行って全ページが
+    // エラー境界になる（2026-11-21 に本番で実測）。
+    // 'unsafe-inline' に戻すと注入された任意スクリプトも通してしまうので、
+    // ページごとの SHA-256 を build 後に注入する設計にした。
+    const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
+    expect(pkg.scripts.postbuild).toContain('inject-csp-hashes.mjs')
+    const html = readFileSync('index.html', 'utf8')
+    const csp = (
+      html.match(/http-equiv="Content-Security-Policy"\s+content="([^"]+)"/) as RegExpMatchArray
+    )[1]
+    const scriptSrc = (csp.match(/script-src([^;]*)/) as RegExpMatchArray)[1]
+    expect(scriptSrc).toContain("'self'")
+    expect(scriptSrc).not.toContain("'unsafe-inline'")
+    expect(scriptSrc).not.toContain("'unsafe-eval'")
+    // 源側の index.html はインラインスクリプトを持たない（=dist で注入される 2 本だけ）
+    expect(html).not.toMatch(/<script>(?![\s\S]{0,3}$)/)
+  })
+
+  it('SSG が injected するインラインスクリプトは CSP の sha256 で個別許可する（unsafe-inline 不使用）', () => {
+    // vite-react-ssg は每个页面に 2 本のインラインスクリプトを注入する:
+    //   window.__VITE_REACT_SSG_HASH__ = '<hash>'
+    //   window.__staticRouterHydrationData = JSON.parse("...")
+    // CSP を script-src 'self' だけで配るとこの 2 本が止まり、
+    // window.__VITE_REACT_SSG_HASH__ が undefined のまま
+    // static-loader-data-manifest-undefined.json を fetch して 404、
+    // 404 の HTML を JSON.parse しようとして全ページがエラー境界に化けた
+    // （2026-11-21 に本番で実測。静的 HTML は正しく出るのでビルド障害に見えない）。
+    // 'unsafe-inline' に戻すと注入された任意スクリプトも通すため、
+    // build 後にページ単位の SHA-256 を列挙する方式にしている。
+    const html = readFileSync('dist/timeline.html', 'utf8')
+    const csp = html.match(/http-equiv="Content-Security-Policy"\s+content="([^"]+)"/)
+    expect(csp).not.toBeNull()
+    const scriptSrc = (csp as RegExpMatchArray)[1].match(/script-src([^;]*)/) as RegExpMatchArray
+    expect(scriptSrc[1]).toContain("'self'")
+    expect(scriptSrc[1]).toContain("'sha256-")
+    expect(scriptSrc[1]).not.toContain("'unsafe-inline'")
+    expect(scriptSrc[1]).not.toContain("'unsafe-eval'")
+    // インラインスクリプトは SSG が注入する 2 本だけ（自前の追記が無いこと）
+    const inline = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)]
+      .map((m) => m[1])
+      .filter((b) => b.trim().length > 0 && !/application\/json|text\/bookmark/.test(b))
+    expect(inline.length).toBeGreaterThan(0)
+    expect(inline.length).toBeLessThanOrEqual(2)
+    expect(inline.join('\n')).toMatch(/__VITE_REACT_SSG_HASH__|__staticRouterHydrationData/)
+  })
+
   it('localStorage に保存するのは item id とチェック文言だけ（PII を入れない）', () => {
     const src = readFileSync('src/pages/timeline.tsx', 'utf8')
     expect(src).toMatch(/done: valid/) // 既知 id との積集合で絞る設計

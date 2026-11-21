@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npm run gen && vite",
     "build": "npm run gen && tsc -b && vite-react-ssg build",
+    "postbuild": "node scripts/inject-csp-hashes.mjs",
     "preview": "vite preview",
     "gen": "tsx scripts/gen-site-data.mts && tsx scripts/gen-items-data.mts",
     "test": "vitest run",

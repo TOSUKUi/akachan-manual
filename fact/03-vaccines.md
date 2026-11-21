@@ -5,13 +5,13 @@ order: 3
 last_verified: 2026-08-15
 sources:
   - name: "品川区-こどもの予防接種"
-    url: "https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html"
+    url: "https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html"
   - name: "品川区-【品川区の予防接種】"
     url: "https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/20240306170455.html"
   - name: "品川区-里帰り出産等の理由により23区の契約医療機関以外で定期予防接種を受ける方"
     url: "https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000024752.html"
-  - name: "品川区-子どもの予防接種関係"
-    url: "https://www.city.shinagawa.tokyo.jp/PC/kuseizyoho/kuseizyoho-siryo/kuseizyoho-siryo-shinseisyo/hpg000024757.html"
+  - name: "品川区-予防接種 同伴時の委任状（PDF）"
+    url: "https://www.city.shinagawa.tokyo.jp/_res/projects/default_project/_page_/001/002/465/ininjyou2019.pdf"
   - name: "品川区-RSウイルス 定期予防接種"
     url: "https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/20230228094752.html"
   - name: "厚労省-予防接種・ワクチン情報"
@@ -35,14 +35,14 @@ must:
 ---
 
 予防接種は2か月から始まり、2歳まで続きます。どのワクチンをどの月齢に打つか、どれが無料でどれが有料か、品川区での予約方法、忘れた時の相談先を説明しています。接種した日の夜、赤ちゃんの様子をどう見たらよいかも載せています。
-根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html)
+根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html)
 
 ## 0〜2歳の予防接種スケジュール
 
 :::diagram vaccine-schedule:::
 
 下表は品川区公式ページ「こどもの予防接種」（更新日：令和8年4月1日）の「予防接種スケジュール」表と、厚生労働省の各ワクチン公式ページの標準スケジュールに基づく。品川区では「予防接種を受ける時期になりましたら、予防接種予診票（接種券）をご自宅に送付します」とされている。
-根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html), [厚労省-予防接種・ワクチン情報](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/index.html)
+根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html), [厚労省-予防接種・ワクチン情報](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/index.html)
 
 | 予診票送付時期 | ワクチン | 回数 | 接種方法（品川区ページの記載） |
 | --- | --- | --- | --- |
@@ -59,7 +59,7 @@ must:
 | 3歳・4歳 | 日本脳炎 | 3回 | 3歳で6～28日間の間隔で2回、4歳で1期初回完了後6か月以上あけて1回（7歳6か月前日まで）※3歳以降のため言及のみ |
 
 ※2歳以降は、9歳で日本脳炎2期1回、11歳で二種混合（DT）2期1回、年長でMR2期1回、小学6年（女子）でHPVが品川区の送付表にある。
-根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html), [厚労省-ロタウイルスワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/rota/index.html), [厚労省-BCGワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/bcg/index.html), [厚労省-MRワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/mr/index.html), [厚労省-日本脳炎ワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/japanese-encephalitis/index.html), [厚労省-5種混合ワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/dpt-ipv-hib/index.html), [厚労省-子どもの肺炎球菌ワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/pneumococcus-child/index.html)
+根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html), [厚労省-ロタウイルスワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/rota/index.html), [厚労省-BCGワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/bcg/index.html), [厚労省-MRワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/mr/index.html), [厚労省-日本脳炎ワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/japanese-encephalitis/index.html), [厚労省-5種混合ワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/dpt-ipv-hib/index.html), [厚労省-子どもの肺炎球菌ワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/pneumococcus-child/index.html)
 
 ### 接種したらチェック（todo）
 
@@ -89,7 +89,7 @@ must:
 - [ ] 日本脳炎 1期追加（4歳）
 :::
 
-根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html), [厚労省-予防接種・ワクチン情報](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/index.html)
+根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html), [厚労省-予防接種・ワクチン情報](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/index.html)
 
 ### 生後月齢ごとの目安（0〜2歳）
 
@@ -98,7 +98,7 @@ must:
 - **生後5～8か月**：BCGを1回。
 - **生後12か月～**：五種混合1期追加（3回目から6か月以上）、肺炎球菌追加（3回目から60日以上）、MR1期（2歳誕生日の前日まで）、水痘1回目（生後12～15カ月）。水痘2回目は1回目から6か月～1年あけて1歳～3歳の間に。
 - **3歳**：日本脳炎1期初回2回（本章は対象外のため言及のみ。品川区では3歳で予診票送付）。
-根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html), [厚労省-予防接種・ワクチン情報](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/index.html)
+根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html), [厚労省-予防接種・ワクチン情報](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/index.html)
 必須: [vaccines]
 
 ## 定期（I）・任意（II）：どこが無料で、どこにお金がかかるか
@@ -111,7 +111,7 @@ must:
   - **MRワクチン**：定期の対象年齢を過ぎて任意接種した2歳から19歳未満は「全額助成＝無料（2回まで）」（定期予防接種を受けられなかった回数のみ）。
   - **インフルエンザ**：生後6カ月～高校3年生相当、接種期間10月1日～翌年1月31日。皮下接種は1回2,000円助成（12歳以下は2回まで、13歳以上は1回まで）、経鼻接種（フルミスト）は4,000円助成（2歳以上18歳以下、1回で完了）。
   - **おたふくかぜ**：1歳～年長相当で**1回あたり3,000円助成（2回まで）**（品川区の任意接種費用助成の一環）。
-根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html), [品川区-里帰り出産等の理由により23区の契約医療機関以外で定期予防接種を受ける方](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000024752.html)
+根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html), [品川区-里帰り出産等の理由により23区の契約医療機関以外で定期予防接種を受ける方](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000024752.html)
 
 ## 品川区での接種方法
 
@@ -122,7 +122,7 @@ must:
 - **予診票を紛失・転入した方**：前の住所地の予診票は使えず、品川区電子申請サービスでの「こどもの予防接種予診票交付申請」が必要（母子健康手帳の出生届出済証明のページと予防接種記録のページの画像を添付）。3～4営業日で郵送。急ぎの場合は母子健康手帳を持って窓口で即時発行（品川区保健予防課〈区役所7F 広町2-1-36〉、品川・大井・荏原の各保健センター。いずれも午前8時30分～午後5時、土日祝・年末年始を除く。荏原保健センターは仮移転先 西五反田6-6-6）。
 - **23区外で定期接種（里帰り出産・入院等）**：事前に「予防接種依頼書交付申請」をして予防接種依頼書を受領し、接種後に費用の一部または全額の払い戻し（助成申請）。
 - **問い合わせ**：品川区保健予防課（予防接種担当）電話 03-5742-9152（FAX 03-5742-6013）、品川保健センター 03-3474-2225、大井保健センター 03-3772-2666、荏原保健センター 03-3788-7013。
-根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html), [品川区-【品川区の予防接種】](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/20240306170455.html), [品川区-RSウイルス 定期予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/20230228094752.html), [品川区-子どもの予防接種関係](https://www.city.shinagawa.tokyo.jp/PC/kuseizyoho/kuseizyoho-siryo/kuseizyoho-siryo-shinseisyo/hpg000024757.html), [品川区-里帰り出産等の理由により23区の契約医療機関以外で定期予防接種を受ける方](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000024752.html)
+根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html), [品川区-【品川区の予防接種】](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/20240306170455.html), [品川区-RSウイルス 定期予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/20230228094752.html), [品川区-予防接種 同伴時の委任状（PDF）](https://www.city.shinagawa.tokyo.jp/_res/projects/default_project/_page_/001/002/465/ininjyou2019.pdf), [品川区-里帰り出産等の理由により23区の契約医療機関以外で定期予防接種を受ける方](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000024752.html)
 
 ## 接種を忘れた・遅れた場合
 
@@ -131,14 +131,14 @@ must:
 - **予診票が間に合わなかった・失くした**：品川区電子申請サービスで交付申請（母子健康手帳の画像データが必要）。
 - **MR（麻しん・風しん）を定期の対象年齢で受けそこねた場合**：2歳から19歳未満の任意接種を品川区が全額助成（＝無料、2回まで）。
 - **相談先**：接種可否・追いつき（キャッチアップ）の時期の相談は品川区保健予防課（予防接種担当）03-5742-9152、または品川・大井・荏原の各保健センター（電話番号は前節）。
-根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html)
+根拠: [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html)
 
 ## 接種前後の注意
 
 - **発熱・体調が心配な場合**：厚生労働省の各ワクチン公式ページ（予防接種ガイドライン）では、「明らかな発熱を呈している方」「重篤な急性疾患にかかっていることが明らかな方」「その予防接種の成分でアナフィラキシーを起こしたことがある方」などが**接種不適当者**として挙げられ、接種を行わないこととされている。また、接種の判断に注意を要する**接種要注意者**も定められており、接種判断は接種医療機関の医師が行う。
 - **当日朝**：自宅で一度検温してから受診するよう推奨（医療機関でも検温）。厚労省は37.5℃以上を発熱のひとつの目安とする一方、体温調節機能が未熟な小児・幼児は37.5℃以上でも元気になることがよくあるため、接種に不安がある場合はお子さんの様子を知っている医師に相談する、とされている。
 - **接種後**：発熱や接種部位の発赤・腫れなどの副反応が出ることがある。気になる変化・症状がある場合は接種した医療機関に相談。定期予防接種の副反応については「予防接種健康被害救済制度」（健康被害が接種によるものであると厚生労働大臣が認定したとき給付を受けることができる制度）がある、と品川区ページも案内している。
-根拠: [厚労省-5種混合ワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/dpt-ipv-hib/index.html), [Pfizer-FAQで学ぶワクチン（接種前に熱がある場合）](https://www.pfizervaccines.jp/learn/faq/17), [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/PC/kenkou/yobousessyu/hpg000033448.html), [品川区-RSウイルス 定期予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/20230228094752.html)
+根拠: [厚労省-5種混合ワクチン](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou/yobou-sesshu/vaccine/dpt-ipv-hib/index.html), [Pfizer-FAQで学ぶワクチン（接種前に熱がある場合）](https://www.pfizervaccines.jp/learn/faq/17), [品川区-こどもの予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html), [品川区-RSウイルス 定期予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/20230228094752.html)
 
 ## Gaps
 

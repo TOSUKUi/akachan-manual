@@ -22,8 +22,8 @@ sources:
     url: "https://www.ncchd.go.jp/hospital/about/section/geka/ganka.html"
   - name: "AMED-視覚聴覚二重障害の医療 診療マニュアル"
     url: "https://dbmedj.org/manual/chapter/ch3-2/index.html"
-  - name: "日本産婦人科医会-視覚スクリーニングの実際"
-    url: "https://www.jaog.or.jp/note/%EF%BC%884%EF%BC%89%E8%A6%96%E8%A6%9A%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0%E3%81%AE%E5%AE%9F%E9%9A%9B"
+  - name: "日本眼科医会-園医のための眼科健診マニュアル（PDF）"
+    url: "https://www.gankaikai.or.jp/school-health/20191015_eni_manual.pdf"
   - name: "日本小児科学会-こどもの救急(ONLINE-QQ)"
     url: "https://kodomo-qq.jp/index.php?pname=hatsunetsu"
   - name: "神戸大学-こどもの発熱とその対応"
@@ -88,8 +88,8 @@ must:
 
 - NCCHDの乳幼児健康診査 身体診察マニュアル（コラム3）の定義：「直像鏡（検影器）を使用して眼底からの反射を瞳孔から観察する方法であり、角膜混濁、白内障、網膜芽細胞腫、網膜剥離などの疑いのある児を簡便に検出できる有効な方法である。両眼から同じ大きさの黄橙色の明るい反射が観察できれば正常である」。
 - 判定：「左右眼いずれかでも反射が観察できない児は、早急に眼科での精密検査を勧告する」。
-- 日本産婦人科医会の研修ノート（新生児・乳幼児の視覚スクリーニング）でも、1か月児健診・乳幼児健診での診察項目として「Red reflex 法」が挙げられており、「片方の反射が暗い場合には、強度の屈折異常が疑われる。片方の反射がない場合には、そちらの眼に白内障などの器質的疾患がある可能性が高い」としています。
-根拠: [NCCHD-乳幼児健康診査 身体診察マニュアル](https://www.ncchd.go.jp/center/activity/kokoro_jigyo/manual.pdf), [日本産婦人科医会-視覚スクリーニングの実際](https://www.jaog.or.jp/note/%EF%BC%884%EF%BC%89%E8%A6%96%E8%A6%9A%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0%E3%81%AE%E5%AE%9F%E9%9A%9B)
+- 日本眼科医会の『園医のための眼科健診マニュアル』でも、小児の視覚スクリーニングは斜視・形態覚刺激遮断・不同視・強度の屈折異常を**治療できる時期に発見するため**に行うとされ、形態覚遮断弱視の代表例として**片眼の先天白内障**が挙げられています（白内障を放置している間は網膜に形態覚刺激が入らず弱視になるため、早期発見と術後の訓練が必要とされています）。
+根拠: [NCCHD-乳幼児健康診査 身体診察マニュアル](https://www.ncchd.go.jp/center/activity/kokoro_jigyo/manual.pdf), [日本眼科医会-園医のための眼科健診マニュアル（PDF）](https://www.gankaikai.or.jp/school-health/20191015_eni_manual.pdf)
 
 ### 斜視・弱視の早期発見の重要性
 

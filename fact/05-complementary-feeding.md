@@ -10,8 +10,6 @@ sources:
     url: "https://www.pref.ishikawa.lg.jp/kosodate/syokuiku/2018/documents/jyunyuurinyuunosiengaido201903.pdf"
   - name: "厚生労働省「はちみつを与えるのは1歳を過ぎてから」（乳児ボツリヌス症）"
     url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000161461.html"
-  - name: "消費者庁「食品による子どもの窒息・誤嚥(ごえん)事故に注意!」（硬い豆やナッツ類は5歳以下には食べさせないで）"
-    url: "https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_047"
   - name: "消費者庁「はちみつに含まれる菌による乳児ボツリヌス症に注意してください」"
     url: "https://www.caa.go.jp/policies/policy/consumer_safety/food_safety/food_safety_portal/microorganism_virus/contents_001"
   - name: "日本小児科学会「食品による窒息 子どもを守るためにできること」（2025年8月31日改訂 Ver.3）"
@@ -91,7 +89,7 @@ must: []
   - 食事中は遊ばせず、目を離さない
   - 詰まってしまったときの応急処置の方法を日頃から確認しておく
 
-根拠: [日本小児科学会「食品による窒息 子どもを守るためにできること」](https://www.jpeds.or.jp/society-activities/column/proposals-assertions/50123.html)、[消費者庁「食品による子どもの窒息・誤嚥事故に注意!」](https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_047)、[国民生活センター「2020年度 縮刷版」](https://www.kokusen.go.jp/mimamori/pdf/support_FY2020all.pdf)、[授乳・離乳の支援ガイド(2019年3月)](https://www.pref.ishikawa.lg.jp/kosodate/syokuiku/2018/documents/jyunyuurinyuunosiengaido201903.pdf)
+根拠: [日本小児科学会「食品による窒息 子どもを守るためにできること」](https://www.jpeds.or.jp/society-activities/column/proposals-assertions/50123.html)、[消費者庁「食品による子どもの窒息・誤嚥事故に注意!」の趣旨（硬い豆やナッツ類等は5歳以下に食べさせない）を引用する日本小児科学会「食品による窒息 子どもを守るためにできること」](https://www.jpeds.or.jp/society-activities/column/proposals-assertions/50123.html)、[国民生活センター「2020年度 縮刷版」](https://www.kokusen.go.jp/mimamori/pdf/support_FY2020all.pdf)、[授乳・離乳の支援ガイド(2019年3月)](https://www.pref.ishikawa.lg.jp/kosodate/syokuiku/2018/documents/jyunyuurinyuunosiengaido201903.pdf)
 
 ## 与えてはいけないもの（注意点）
 - **はちみつ**：1歳未満の赤ちゃんには与えないでください（乳児ボツリヌス症の予防のため）。詳細は07章「やってはいけないこと」を参照してください。
@@ -99,7 +97,7 @@ must: []
 - **調味料（塩・砂糖）**：離乳の開始時期は調味料は必要ありません。離乳の進行に応じて、食塩や砂糖などの調味料を使用する場合は、それぞれの食品のもつ味を生かしながら、薄味でおいしく調理し、油脂類も少量の使用とします。
 - **硬い豆・ナッツ類**：5歳以下の子どもには食べさせないでください（上記「窒息の予防」を参照）。
 
-根拠: [厚生労働省「はちみつを与えるのは1歳を過ぎてから」](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000161461.html)、[消費者庁「はちみつに含まれる菌による乳児ボツリヌス症に注意してください」](https://www.caa.go.jp/policies/policy/consumer_safety/food_safety/food_safety_portal/microorganism_virus/contents_001)、[授乳・離乳の支援ガイド(2019年3月)](https://www.pref.ishikawa.lg.jp/kosodate/syokuiku/2018/documents/jyunyuurinyuunosiengaido201903.pdf)、[消費者庁「食品による子どもの窒息・誤嚥事故に注意!」](https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_047)
+根拠: [厚生労働省「はちみつを与えるのは1歳を過ぎてから」](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000161461.html)、[消費者庁「はちみつに含まれる菌による乳児ボツリヌス症に注意してください」](https://www.caa.go.jp/policies/policy/consumer_safety/food_safety/food_safety_portal/microorganism_virus/contents_001)、[授乳・離乳の支援ガイド(2019年3月)](https://www.pref.ishikawa.lg.jp/kosodate/syokuiku/2018/documents/jyunyuurinyuunosiengaido201903.pdf)、[消費者庁「食品による子どもの窒息・誤嚥事故に注意!」の趣旨（硬い豆やナッツ類等は5歳以下に食べさせない）を引用する日本小児科学会「食品による窒息 子どもを守るためにできること」](https://www.jpeds.or.jp/society-activities/column/proposals-assertions/50123.html)
 
 ## 母乳・育児用ミルクの役割
 - 離乳は「離乳食に完全に切り替える」ことではなく、**母乳または育児用ミルクなどの乳汁栄養から幼児食に移行する過程**です。離乳食が始まっても、母乳・育児用ミルクは引き続き大切な栄養源であり、離乳の進み方に合わせて回数を減らしていきます。
@@ -166,13 +164,13 @@ must: []
     {
       "fact": "窒息予防（年齢に応じた食形態、窒息統計）",
       "found": true,
-      "source": "日本小児科学会「食品による窒息 子どもを守るためにできること」(https://www.jpeds.or.jp/society-activities/column/proposals-assertions/50123.html), 消費者庁(https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_047)",
+      "source": "日本小児科学会「食品による窒息 子どもを守るためにできること」(https://www.jpeds.or.jp/society-activities/column/proposals-assertions/50123.html), 消費者庁の注意喚起を引用する日本小児科学会(https://www.jpeds.or.jp/society-activities/column/proposals-assertions/50123.html)",
       "note": "食品による窒息は5歳以下で多い（6年間で14歳以下80人死亡、うち73人が5歳以下=90%）。硬い豆やナッツ類は5歳以下には食べさせないで。"
     },
     {
       "fact": "禁忌食品（はちみつ、硬い豆/ナッツ類、塩分/糖分制限）",
       "found": true,
-      "source": "厚生労働省「はちみつを与えるのは1歳を過ぎてから」(https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000161461.html), 消費者庁(https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_047), 授乳・離乳の支援ガイド(2019年3月)",
+      "source": "厚生労働省「はちみつを与えるのは1歳を過ぎてから」(https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000161461.html), 消費者庁の注意喚起を引用する日本小児科学会(https://www.jpeds.or.jp/society-activities/column/proposals-assertions/50123.html), 授乳・離乳の支援ガイド(2019年3月)",
       "note": "はちみつは満1歳まで与えない（乳児ボツリヌス症予防）。硬い豆・ナッツ類は5歳以下に食べさせない。離乳開始時期は調味料不要、進行に応じて薄味で。"
     },
     {

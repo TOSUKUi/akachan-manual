@@ -23,7 +23,7 @@ sources:
   - name: "産婦・1カ月児健診"
     url: "https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/20260213150439.html"
   - name: "予防接種"
-    url: "https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000033448.html"
+    url: "https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html"
   - name: "乳幼児健診"
     url: "https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000000798.html"
   - name: "家庭あんしんセンター"
@@ -80,25 +80,25 @@ must: []
 
 - **1か月児健康診査**：「生後28日目～41日目までに1回」。品川区では公費助成（6,000円を上限）を行い、助産師等による育児相談・授乳相談も可能です。お問い合わせ：品川保健センター 保健事業係 電話03-3474-2221。
 - **予防接種開始**：品川区では「生後2カ月の接種開始にあわせて、はじめの予防接種予診票（接種券）をご自宅に送付します」。届くのは「誕生月の翌月末または翌々月の中旬」（例：4月前半生まれ→5月末発送）。対象は五種混合（1期初回3回）、小児用肺炎球菌、B型肝炎、ロタウイルス。
-根拠: [産婦・1カ月児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/20260213150439.html), [予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000033448.html)
+根拠: [産婦・1カ月児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/20260213150439.html), [予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html)
 
 ### 3 か月以降（BCG）
 
 - **BCG**：品川区の公式スケジュールでは、予診票は「生後5カ月」に送付され、接種は「満1歳誕生日の前日まで 1回（標準的には、生後5カ月～8カ月）」です（※「生後3カ月」ではなく、公式は5〜8カ月が標準の記載）。
 - 予診票が届いたら、親子健康手帳（母子健康手帳）と一緒に実施医療機関（区内契約医療機関）に持参して接種します。
-根拠: [予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000033448.html)
+根拠: [予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html)
 
 ### 1 歳
 
 - **予防接種（1歳の予診票）**：五種混合（1期追加1回）、小児用肺炎球菌（追加1回）、MR（麻しん・風しん）1期（1歳～2歳誕生日の前日までに1回）、水痘（1歳～3歳誕生日の前日までに、3カ月以上あけて2回）。
 - **1歳6カ月児健診**：保健センターでの集団健診（1歳7カ月前後。案内通知は受診日の前月上旬に郵送）。
-根拠: [予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000033448.html), [乳幼児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000000798.html)
+根拠: [予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html), [乳幼児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000000798.html)
 
 ### 2 歳
 
 - **2歳児歯科健診**：品川・大井・荏原の各保健センターで月2〜3回実施（予約制、案内通知は受診日の前月上旬に郵送）。希望者はフッ化物塗布（880円）の予防処置も予約可能。
 - MR（麻しん・風しん）2期は「小学校に入る前年度の3月31日までに1回」（年長の4月に予診票送付）。
-根拠: [乳幼児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000000798.html), [予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000033448.html)
+根拠: [乳幼児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000000798.html), [予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html)
 
 ## 常用の問い合わせ先
 
@@ -109,7 +109,7 @@ must: []
 - **家庭あんしんセンター**（子育て支援センター・相談・一時預かり）：品川区平塚2-12-2、電話03-5749-1032。開館：月曜～土曜 午前9時～午後6時。「子育てのこと、子どもの発達、性格などちょっと気がかりなことや心配なことを相談できます」。
 - **母子保健・健診・予防接種（健康課）**：健康課保健衛生担当 電話03-5742-6745（FAX 03-5742-6883）。予防接種は品川区保健予防課 電話03-5742-9152（FAX 03-5742-6013）。保健センター：品川03-3474-2225／大井03-3772-2666／荏原03-3788-7013。
 - **妊婦のための支援給付事業コールセンター**：電話03-6731-6732（祝日を除く月曜～金曜 午前8時30分～午後5時15分）。
-根拠: [品川区役所](https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-shinagawakuyakusyo/index.html), [入園手続](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-hoyou/kodomo-hoyou-hoikuen/hpg000027973.html), [すこやか医療費](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000017744.html), [出産一時金](https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-kenkouhoken/procedure-kenkouhoken-hokenkyuuhu/hpg000001524.html), [家庭あんしんセンター](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-kateisoudan/hpg000000504.html), [産婦・1カ月児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/20260213150439.html), [予防接種](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-yobousessyu/hpg000033448.html), [妊婦支援給付](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/20230120091157.html)
+根拠: [品川区役所](https://www.city.shinagawa.tokyo.jp/PC/shisetsu/shisetsu-kuyakusyo/shisetsu-kuyakusyo-shinagawakuyakusyo/index.html), [入園手続](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-hoyou/kodomo-hoyou-hoikuen/hpg000027973.html), [すこやか医療費](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000017744.html), [出産一時金](https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-kenkouhoken/procedure-kenkouhoken-hokenkyuuhu/hpg000001524.html), [家庭あんしんセンター](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-kateisoudan/hpg000000504.html), [産婦・1カ月児健診](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-umaretara/20260213150439.html), [予防接種](https://www.city.shinagawa.tokyo.jp/kenko/kenkoiryo/1002463/1002465.html), [妊婦支援給付](https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/20230120091157.html)
 
 ## Gaps
 

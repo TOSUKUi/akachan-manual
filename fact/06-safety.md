@@ -34,8 +34,8 @@ sources:
     url: "https://www.caa.go.jp/policies/policy/consumer_safety/caution/caution_061"
   - name: "国民生活センター-入浴・沐浴に伴う乳児の落下事故に注意"
     url: "https://www.kokusen.go.jp/news/data/n-20251217_1.html"
-  - name: "消費者庁-Vol.524 真夏でなくても車内での熱中症に注意しましょう!"
-    url: "https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20201008"
+  - name: "JAF-秋の車内温度（JAFユーザーテスト）"
+    url: "https://jaf.or.jp/common/safety-drive/car-learning/user-test/temperature/autumn"
   - name: "JAF-真夏の車内温度（JAFユーザーテスト）"
     url: "https://jaf.or.jp/common/safety-drive/car-learning/user-test/temperature/summer"
   - name: "こども家庭庁-みんなで見守り「こどもの熱中症」を防ぎましょう！"
@@ -122,11 +122,11 @@ must:
 
 ## 熱中症：車内放置と外出時の水分
 
-- 消費者庁（JAFのテスト紹介）：10月で最高気温約27度の比較的過ごしやすい気候でも、**日が射すと車内温度は約48度、ダッシュボードは65度を超える**ことがあります。エアコンで適温（25度程度）にした後にエンジンを停止・締め切った状態でも、**約1時間後の車内温度は50度以上（51.3度）**に達します。「**たとえ数分であっても、車内に子どもを残すことは絶対しない**」よう呼びかけています。
+- JAFユーザーテスト（秋の車内温度・10月実施）：その日の最高気温は約27度と過ごしやすい気候でも、**日が射すと車内温度は約48度、ダッシュボードは65度を超える**ことがあります。エアコンで適温（25度程度）にした後にエンジンを停止・締め切った状態でも、**約1時間後の車内温度は50度以上（51.3度）**に達します。「**たとえ数分であっても、車内に子どもを残すことは絶対しない**」よう呼びかけています。
 - JAFユーザーテスト：夏場で**エアコン停止からわずか15分で熱中症指数（WBGT）が危険レベルに達した**、とされています。「乳幼児は体温調節機能が未発達で、高温下では短時間で体温が上昇し、死に至ることがある。寝ているからという理由で車内に子どもを残すのは大変危険である」としています。
 - こども家庭庁：「**短時間であっても絶対に車内をこどもだけにせず、降ろし忘れにも注意**」「乳幼児は自分の力で移動することができず、『寝ているから』『ちょっとの時間だから』と放置することは危険です。特に、車内に置き去りにすることは絶対にやめましょう」としています。
 - 外出時は、子どもは身長が低い分、地面からの輻射熱を大人より強く受けるとされています。遊びに夢中になっているとのどの渇きなどの熱中症のサインに気づきにくいので、大人が見守りながら**休憩と水分補給**を勧めることが、こども家庭庁・消費者庁の呼びかけです。
-根拠: [消費者庁-Vol.524 真夏でなくても車内での熱中症に注意しましょう!](https://www.caa.go.jp/policies/policy/consumer_safety/child/project_001/mail/20201008), [JAF-真夏の車内温度（JAFユーザーテスト）](https://jaf.or.jp/common/safety-drive/car-learning/user-test/temperature/summer), [こども家庭庁-みんなで見守り「こどもの熱中症」を防ぎましょう！](https://www.cfa.go.jp/policies/child-safety-actions/cases/netchusho)
+根拠: [JAF-秋の車内温度（JAFユーザーテスト）](https://jaf.or.jp/common/safety-drive/car-learning/user-test/temperature/autumn), [JAF-真夏の車内温度（JAFユーザーテスト）](https://jaf.or.jp/common/safety-drive/car-learning/user-test/temperature/summer), [こども家庭庁-みんなで見守り「こどもの熱中症」を防ぎましょう！](https://www.cfa.go.jp/policies/child-safety-actions/cases/netchusho)
 
 ## 誤飲（薬・洗剤）と中毒110番
 

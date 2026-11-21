@@ -273,3 +273,62 @@ items:
 - `/sync` を実行して `AGENTS.md` に `items/` 層・タイムラインページ・`src/lib/scroll.ts` を追記し、`docs/uiux/*` を現在のレイアウトに合わせる。
 - チェック済み進捗の URL 共有（AC-11 のスコープ拡大）と、2 歳以降 band の追加は未着手（`MAX_END_MONTH = 84` の制約内）。
 - 2026-09-03（追加実施）: 月齢の目盛り 10 品目を追加し 71 → 81 品目（価格つき 78）。服のサイズアウト 60/70/80/90、おむつパンツへの切り替え・ビッグサイズ見直し、乳首サイズ交換、B 型ベビーカー検討、はいはい期安全対策、チャイルドシート前向き切替（価格なし=検討項目）。価格は西松屋の実売 97〜107 点をブラウザ描画で収集したレンジ（服 328〜1,307 円、おむつ BIG 44円/枚〜パンツ 21円/枚、B 型 21,998〜57,200 円など）とし、根拠は西松屋サイズ表／おむつ選びガイド／離乳食ガイド、ピジョン乳首ガイド・月齢ガイド、東京都のチャイルドシートguideline に固定。死んでいた引用 URL（区 災害への備え hpg000045106 → 404）は東京都福祉局の液体ミルク案内と区民避難所備蓄のページへ張り替え、区支援の重複記述（卒乳相談 3 件重複、ファミサポ重複）を実内容の異なる項目に分離した。回帰テストとして「0〜24 か月のどの月も 1 品以上」「どの band も 5 品以上」「服サイズは 60→70→80→90 の昇順」を追加。デプロイ済み本番を 5 ビューポートで実クリック検証し全件パス。
+
+### 2026-11-21 「選ぶならこれ」（プロが選ぶおすすめ）を品目カードに追加
+
+動機: 「品質がわからず選べない」への直接回答。各品目に**断定できる 1 点**を載せ、
+価格と選定理由を実測値で裏づける。曖昧な選び方ガイドで終わらせない。
+
+- データ: `items/*.md` の frontmatter `items[].recommend` に `name` / `url` / `price` / `note` の 4 字段。
+  `src/lib/items-model.ts` の `Recommend`、`src/lib/items-parse.ts` の `parseRecommend`
+  （`RECOMMEND_FIELDS` で 4 字段とも必須の非空文字列として検証）、
+  描画は `src/components/timeline/item-card.tsx` の `.reco` ブロック、
+  スタイルは `src/index.css` の `.reco*`（帯の上の淡いアクセント枠）。
+- カバレッジ: **90 品目のうち 84 品目に推荐**、6 品目は意図的な skip
+  （`pre-mokuyoku-set` / `pre-sleep-place` / `pre-health-tools` / `m1012-fishing-toy` /
+  `m1318-seat-check` / `m1924-size90` — 単一商品を断定できない、既製品より家庭にあるもので足りる、
+  体型で変わる等）。skip は意図をこのログに記録する（将来の agent が埋めにいかないようにするため）。
+- `recommend.url` は**商品ページ直リンクを許す**（`shops[]` の検索 URL 規律とは別枠。
+  `shops[]` は「取り扱い検索」のまま深リンク禁止を維持）。ただし band の `sources[]` に登録した
+  URL と完全一致が必須で、`/^https:\/\/\S+$/` と `items_source_unreferenced` の両ゲートを通す。
+  Amazon 商品ページの直リンクは登録上の名前を「ASIN/dp/…」の形にし、同じ URL を
+  「検索」と「商品ページ」で使い回さない（`items_source_url_duplicate` に当たる）。
+- 選定は西松屋・アカチャンホンポの実売ページと Amazon 商品ページを**実ブラウザで開いて**価格をとり、
+  同カテゴリの対抗品（価格・レビュー件数・評価）と比べて決めためんじょうを `note` に書く。
+  セール価格なら定価を併記、レビュー 0 件ならその旨を明記して判断材料の弱さを隠さない。
+  調査日（2026-09-02 時点）を `price` の接尾で示す。
+- 選定は 4 班（00+01 / 02+03 / 04+05 / 06+07）の並列サブエージェントで実施し、
+  本体側で URL 生死・https 化・税抜/税込表記・日本語の文字化け（贝印→貝印 等）を再検証してから取り込んだ。
+  取り込みは `scripts/apply-recommendations.mts`（幂等。既存 `recommend` の二重挿入を避けるため
+  末番の空きスロットへ入れ、插入前は「その id のブロックに recommend が無いか」を見る）。
+
+### 2026-11-21 CSP を sha256 ハッシュ許可へ（全ページのエラー境界化を解消）
+
+`script-src 'self'` を導入したデプロイ後、**本番 11 ページ全部**が
+「Unexpected Application Error! JSON.parse: unexpected character」で落ちた
+（静的 HTML は正しく、推荐ブロックも 85 個揃っているためビルド障害に見えなかった）。
+
+- 直接原因: vite-react-ssg が各ページ末尾に注入するインラインスクリプト 2 本
+  （`window.__VITE_REACT_SSG_HASH__ = '<hash>'` と `window.__staticRouterHydrationData`）が
+  `script-src 'self'` にブロックされる（インラインスクリプトは `'self'` では通らない）。
+  その結果ハッシュが `undefined` のまま `static-loader-data-manifest-undefined.json` を fetch し、
+  GitHub Pages の 404 HTML を `JSON.parse` して投げた。スタックの `qr/f/e.loader` がそれ。
+- `connect-src 'none'` も同時にローダの同一 origin fetch を殺していた（`'self'` に修正）。
+- 直し方: `'unsafe-inline'` に戻すと XSS 対策として実質の意味を失うため、
+  **ビルド後に各ページのインラインスクリプトの SHA-256 を列挙**する方式にした。
+  `scripts/inject-csp-hashes.mjs` を `postbuild` に配線し、`script-src 'self' 'sha256-…' 'sha256-…'` になる。
+  SSG が決定的に注入する 2 本だけが許可され、ページに注入された任意スクリプトは引き続き拒否される。
+  CSP 未許可のインラインが残れば postbuild が exit 1 でビルドを落とす（実行時発見にしない）。
+- 教訓: **CSP を立てるときは、ビルドツールが注入するインラインスクリプトを先に数える**。
+  SSG 側の都合で消せないものがあるので、`'self'` 一発指定は最初から破綻する。
+  `npm run build` の postbuild ゲートと、`src/lib/__tests__/security.test.ts` の
+  dist 検証（生成物が無い環境ではスキップ、実ゲートは postbuild）で抑えている。
+- 副次的事実: Cloudflare Web Analytics の `beacon.min.js` はこの CSP にブロックされる。
+  第三者追跡スクリプトなので**ブロックしたまま**を既定にする（このサイトに解析は不要）。
+  有効にしたくなったら `script-src` と `connect-src` に
+  `https://static.cloudflareinsights.com` / `https://cloudflareinsights.com` を足す判断が別途必要。
+- 検証: `dist` を実ブラウザで 390 / 768 / 1280 の 3 ビューポート + 本番で確認。
+  エラー境界なし・pageerror 0・band 8・推荐 84・`rel="noopener noreferrer"` + `target=_blank` 全件・
+  sr-only の「新しいタブで開きます」接尾あり・チェックで「残り 89 品（完了 1 品）」に変化し
+  再読込で復元・カテゴリ chip で 90 → 5 品・吸着 band 見出しは header+吸着バー直下
+  （モバイル 101px / デスクトップ 184px、spec 0004 の不変条件を維持）。

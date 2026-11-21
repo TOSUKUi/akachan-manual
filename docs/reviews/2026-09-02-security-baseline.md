@@ -29,3 +29,24 @@
 
 - `frame-ancestors` と HSTS は meta タグでは効かないため、Pages のレスポンスヘッダ側で効かせる必要がある（現時点で iframe 埋め込み・Cookie の類はないため実益なし）。
 - npm audit の dev 依存 37 件は upstream fix 待ち（fix 候補なし 15 件含む）。本番到達しないため許容。
+
+## 追記 2026-11-21: CSP は sha256 ハッシュ許可（`'unsafe-inline'` を使わない）
+
+`script-src 'self'` を入れたデプロイで本番 11 ページ全部がエラー境界に化けた。
+vite-react-ssg がページ末尾に注入するインラインスクリプト 2 本
+（`window.__VITE_REACT_SSG_HASH__` と `window.__staticRouterHydrationData`）が
+`'self'` では通らないため、ハッシュが `undefined` のまま
+`static-loader-data-manifest-undefined.json` を fetch → 404 の HTML を `JSON.parse` → 全ページ死。
+`connect-src 'none'` も同一 origin のローダ JSON fetch を殺していた（`'self'` に修正済み）。
+
+対応は `'unsafe-inline'` ではなく **ビルド後のハッシュ注入**。
+`scripts/inject-csp-hashes.mjs`（`postbuild`）が dist の各 HTML のインラインスクリプトの
+SHA-256 を `script-src` に列挙し、未許可が残れば exit 1 でビルドを落とす。
+SSG が決定的に注入する 2 本だけを許可し、注入された任意スクリプトは依然として拒否する。
+
+- CSP を緩めるな（`'unsafe-inline'` / `'unsafe-eval'` / ワイルドカード origin は退化）。
+  回帰テスト: `src/lib/__tests__/security.test.ts`。
+- Cloudflare Web Analytics の `beacon.min.js` はブロックされたまま。第三者追跡なので意図的。
+  必要なら `script-src` + `connect-src` に cloudflareinsights 由来 2 点を個別に足す判断を書く。
+- 実ブラウザ検証: 390 / 768 / 1280 で pageerror 0、エラー境界なし、チェック→再読込復元、
+  chip 絞り込み、吸着 band 見出しの位置まで確認済み。

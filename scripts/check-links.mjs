@@ -19,7 +19,9 @@ async function collect() {
   const files = []
   for (const dir of ['fact', 'items']) {
     const { readdir } = await import('node:fs/promises')
-    for (const e of (await readdir(dir, { withFileTypes: true })).filter((e) => e.isFile() && e.name.endsWith('.md')))
+    for (const e of (await readdir(dir, { withFileTypes: true })).filter(
+      (e) => e.isFile() && e.name.endsWith('.md'),
+    ))
       files.push(`${dir}/${e.name}`)
   }
   for (const f of files) {
@@ -66,9 +68,7 @@ async function worker(slice) {
   }
 }
 
-await Promise.all(
-  Array.from({ length: workers }, (_, i) => worker(urls.filter((_, j) => j % workers === i))),
-)
+await Promise.all(Array.from({ length: workers }, (_, i) => worker(urls.filter((_, j) => j % workers === i))))
 
 if (bad.length) {
   console.error(`\n[links] 失敗 ${bad.length} 件:`)

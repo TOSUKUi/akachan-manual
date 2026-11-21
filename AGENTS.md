@@ -24,6 +24,8 @@ node scripts/verify-live.mjs   # 配備済み（または BASE= のローカル�
 
 配備後は `node scripts/verify-live.mjs`（playwright-core と Chromium は npx/cache から自動解決、無ければ SKIPPED で exit 0）。CSP の sha256 未許可、エラー境界、推荐ブロックの name 欠落、チェックで aria-live が動かない、を 390/768/1280 × 3 ページで見る。
 
+出典 URL の生死は `node scripts/check-links.mjs`（fact/ と items/ を重複排除して全件）。判定は3分類で **exit 1 は実404だけ** — 403/451 は bot 遮断、5xx・timeout は相手方障害として報告に留める。落ちた応答は本文先看て「ページが見つかりません」語句があれば実404に寄せる（消費者庁は 404 を 403 で返した実測あり）。CI では `continue-on-error: true`、ローカルゲートでは失敗扱い。
+
 `npm run build` の postbuild で `scripts/inject-csp-hashes.mjs` が dist の各 HTML に CSP `script-src` の sha256 を注入する（vite-react-ssg のインラインスクリプト 2 本用。`'unsafe-inline'` は使わない。未許可が残ればビルドが落ちる）。CSP を変えたら必ずこの順で確認すること。
 
 スキャフォールド済み（Vite + React + vite-react-ssg + shadcn/ui）。コンテンツは `fact/*.md`（frontmatter + 本文、各セクションに「根拠: [ソース](URL)」必須）から `npm run gen` で `src/generated/site-data.ts` が生成される。検証ゲート（根拠リンク・必須カバレッジ 12 項目・180 日鮮度警告）はビルド時に失敗・警告する。調査途中稿は `fact-research/`（未公開）。

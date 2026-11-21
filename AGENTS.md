@@ -19,7 +19,10 @@ npm install          # 依存のインストール
 npm run dev          # dev サーバー
 npm run build        # dist/ に静的 HTML
 npm test             # テスト
+node scripts/verify-live.mjs   # 配備済み（または BASE= のローカル配信）を実ブラウザで検証
 ```
+
+配備後は `node scripts/verify-live.mjs`（playwright-core と Chromium は npx/cache から自動解決、無ければ SKIPPED で exit 0）。CSP の sha256 未許可、エラー境界、推荐ブロックの name 欠落、チェックで aria-live が動かない、を 390/768/1280 × 3 ページで見る。
 
 `npm run build` の postbuild で `scripts/inject-csp-hashes.mjs` が dist の各 HTML に CSP `script-src` の sha256 を注入する（vite-react-ssg のインラインスクリプト 2 本用。`'unsafe-inline'` は使わない。未許可が残ればビルドが落ちる）。CSP を変えたら必ずこの順で確認すること。
 

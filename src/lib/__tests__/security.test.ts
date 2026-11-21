@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { ITEMS_DATA } from '../../generated/items-data'
 import { SITE_DATA } from '../../generated/site-data'
@@ -96,7 +96,12 @@ describe('セキュリティ基線（出典と外链）', () => {
     expect(html).not.toMatch(/<script>(?![\s\S]{0,3}$)/)
   })
 
-  it('SSG が injected するインラインスクリプトは CSP の sha256 で個別許可する（unsafe-inline 不使用）', () => {
+  // dist を読む検証はビルド後でないと出来ないので、生成物が無い環境（CI の test ジョブ）では
+  // スキップする。実ゲートは postbuild の scripts/inject-csp-hashes.mjs —— build 時に
+  // 未許可のインラインスクリプトが残れば exit 1 でビルドを落とす。
+  const distTimeline = 'dist/timeline.html'
+  const itDist = existsSync(distTimeline) ? it : it.skip
+  itDist('SSG が注入したインラインスクリプトは CSP の sha256 で個別許可（unsafe-inline 不使用）', () => {
     // vite-react-ssg は每个页面に 2 本のインラインスクリプトを注入する:
     //   window.__VITE_REACT_SSG_HASH__ = '<hash>'
     //   window.__staticRouterHydrationData = JSON.parse("...")
@@ -107,7 +112,7 @@ describe('セキュリティ基線（出典と外链）', () => {
     // （2026-11-21 に本番で実測。静的 HTML は正しく出るのでビルド障害に見えない）。
     // 'unsafe-inline' に戻すと注入された任意スクリプトも通すため、
     // build 後にページ単位の SHA-256 を列挙する方式にしている。
-    const html = readFileSync('dist/timeline.html', 'utf8')
+    const html = readFileSync(distTimeline, 'utf8')
     const csp = html.match(/http-equiv="Content-Security-Policy"\s+content="([^"]+)"/)
     expect(csp).not.toBeNull()
     const scriptSrc = (csp as RegExpMatchArray)[1].match(/script-src([^;]*)/) as RegExpMatchArray

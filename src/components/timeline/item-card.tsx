@@ -103,6 +103,7 @@ export function ItemCard({ item, done, onToggle, sources, shops }: ItemCardProps
               <span className="reco-tag">選ぶならこれ</span>
               <a className="reco-name" href={item.recommend.url} target="_blank" rel="noopener noreferrer">
                 {item.recommend.name}
+                <span className="sr-only">（新しいタブで開きます）</span>
               </a>
               <span className="reco-price">{item.recommend.price}</span>
               <p className="reco-why">{item.recommend.note}</p>

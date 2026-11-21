@@ -165,6 +165,11 @@ items:
         q: 短肌着
       - kind: akachan
         q: 短肌着
+    recommend:
+      name: 'アカチャンホンポ スナップタイプ短肌着 2枚組'
+      url: 'https://shop.akachan.jp/shop/g/g264325800/'
+      price: '1,749円（税込・2枚組）'
+      note: 'アカチャンホンポで実測した販売価格。アカチャンホンポは実店舗と在庫を同時確認できる。西松屋並みの安価帯で、同じ2枚組でも2,000円超の高額品を避ける判断基準が価格実測にある。'
   - id: pre-combi-hadagi
     name: コンビ肌着
     category: kiru
@@ -188,6 +193,11 @@ items:
         q: コンビ肌着
       - kind: akachan
         q: コンビ肌着
+    recommend:
+      name: 'アカチャンホンポ モスリンガーゼ コンビ肌着 2枚組'
+      url: 'https://shop.akachan.jp/shop/g/g264325400/'
+      price: '2,189円（税込・2枚組）'
+      note: '実測価格2,189円。通気性のモスリンガーゼで新生児期の蒸れ対策になる。キルト型は冬向けで同じ価格なら年間通算の出番が長い分こちらが有利。'
   - id: pre-dress-all
     name: ドレスオール（コンビドレス）
     category: kiru
@@ -210,6 +220,11 @@ items:
         q: ドレスオール
       - kind: uniqlo
         q: ベビー ドレスオール
+    recommend:
+      name: 'Disney 新生児 2wayオール（ミッキー＆ミニー）'
+      url: 'https://www.amazon.co.jp/dp/B0B7W2DC1C'
+      price: '2,398円（税込）'
+      note: '実測2,398円、評価4.6、68件。前開きスナップで着脱しやすくガーゼ素材で蒸れにくい。退院着とお宮参りを兼ねられる。同じ用途の無名品は3.5〜3.7・10件前後で、レビュー実証で明確に上回るこれを選ぶ。'
   - id: pre-gauze
     name: ガーゼハンカチ
     category: arau
@@ -232,6 +247,11 @@ items:
         q: ガーゼハンカチ
       - kind: akachan
         q: ガーゼハンカチ
+    recommend:
+      name: 'Louple ガーゼハンカチ 12枚組 30×30cm'
+      url: 'https://www.amazon.co.jp/dp/B08K8NC4TS'
+      price: '999円（税込・1枚約83円）'
+      note: '実測999円、評価4.3、522件。1枚約83円。同じ用途の5枚組1,298円（評価4.0、167件）より枚数単価も評価も上。枚数で買うと1枚単価が下がるという価格実測の根拠になる。'
   - id: pre-okurumi
     name: おくるみ
     category: neru
@@ -255,6 +275,11 @@ items:
         q: おくるみ
       - kind: akachan
         q: おくるみ
+    recommend:
+      name: 'アカチャンホンポ 6重ガーゼおくるみ ジャガード'
+      url: 'https://shop.akachan.jp/shop/g/g264779300/'
+      price: '2,189円（税込）'
+      note: '実測2,189円で同店カテゴリ最安帯。6重ガーゼは薄手・厚手どちらの季節にも使える。キャラ許諾品は3,839円、フェイス型は4,389円で、使い捨てない物に2倍出す理由がない。'
   - id: pre-diaper-newborn
     name: 紙おむつ（新生児サイズ）
     category: arau
@@ -281,6 +306,11 @@ items:
         q: 紙おむつ 新生児 まとめ買い
       - kind: akachan
         q: 紙おむつ 新生児
+    recommend:
+      name: 'パンパース はじめての肌へのきわみ テープ NH 76枚'
+      url: 'https://www.amazon.co.jp/dp/B0CCJ3WSHW'
+      price: '2,980円（税込・1枚約39円）'
+      note: '実測2,980円、評価4.6、250件。1枚約39円。新生児は買い置き不要という方針に合う1パック単位。国内3ブランドの中で新生児用の評価件数が最も安定している。'
   - id: pre-oshiri-fuki
     name: おしりふき
     category: arau
@@ -306,6 +336,11 @@ items:
         q: おしりふき ケース買い
       - kind: nishimatyaya
         q: おしりふき
+    recommend:
+      name: 'グーン おしりふき 詰め替え 70枚×24パック（1680枚）'
+      url: 'https://www.amazon.co.jp/dp/B00U6ZBLZW'
+      price: '2,897円（税込・1枚約2円）'
+      note: '実測2,897円、評価4.5、11,490件。1枚約2円で、ケース買いが1枚単価で安いという説明を実測が裏付ける。パンパースのケース（3,780円/896枚＝1枚約4.2円）の約半額。'
   - id: pre-bottle
     name: 哺乳びん・乳首
     category: tabe
@@ -329,6 +364,11 @@ items:
         q: 哺乳瓶
       - kind: akachan
         q: 哺乳びん
+    recommend:
+      name: 'ピジョン 母乳実感 耐熱ガラス 240ml（M乳首）'
+      url: 'https://www.amazon.co.jp/dp/B09QC7KFLD'
+      price: '2,500円（税込・定価2,970円）'
+      note: '実測2,500円、評価4.6、771件。哺乳瓶で1位の実売品。ガラスは消毒の繰り返しに強く匂い移りが少ない。240mlなら離乳食期まで1本で足りる。'
   - id: pre-bottle-wash
     name: 哺乳びんの洗浄（洗剤・ブラシ）
     category: arau
@@ -354,6 +394,11 @@ items:
         q: 哺乳瓶 洗剤
       - kind: rakuten
         q: 哺乳瓶 洗い 洗剤 ブラシ
+    recommend:
+      name: 'ピジョン 哺乳瓶洗剤 ピュアッピュア マイルムース 詰め替え1000ml×4'
+      url: 'https://www.amazon.co.jp/dp/B0D9M1G2T2'
+      price: '1,873円（税込・1ml約2円）'
+      note: '実測1,873円、評価4.6、394件、購入6K+。泡タイプでポンプ式より手早く済むという説明と一致。西松屋の洗剤＋ブラシ（計745円）より価格は上だが、レビュー実証の量が圧倒的上位。'
   - id: pre-bottle-sterilize
     name: 哺乳びんの除菌・消毒（方式くらべ）
     category: tabe
@@ -400,6 +445,11 @@ items:
         q: 哺乳瓶 消毒
       - kind: rakuten
         q: 哺乳瓶 除菌 乾燥器
+    recommend:
+      name: 'ミルトンCP 60錠'
+      url: 'https://www.amazon.co.jp/dp/B00137ACBG'
+      price: '958円（税込・定価1,320円・1錠約27円）'
+      note: '実測958円、評価4.4、1,091件。薬液つけおきは西松屋のママセット2,990円に対し錠剤だけ追加なら半額以下で始められる。溶液は24時間有効ですすぎ不要。レンジ除菌が使えない製品问题を避けられる方式でもある。'
   - id: pre-mokuyoku-set
     name: 沐浴セット（ベビーバス・湯温計・ベビーソープ）
     category: arau
@@ -472,6 +522,11 @@ items:
         q: チャイルドシート
       - kind: rakuten
         q: チャイルドシート 新生児
+    recommend:
+      name: 'Joie チャイルドシート ステディR129'
+      url: 'https://www.amazon.co.jp/dp/B0C4TGJFD3'
+      price: '18,908円（税込・定価21,780円）'
+      note: '実測18,908円、評価4.4、106件。R129（i-Size）で新生児〜4歳（40-105cm）を長く後ろ向き。同じ価格帯の海外brandは旧基準モデルが混在し説明が分かりにくいとの指摘があり、国内流通実績と基準適合を両方確認できるこちらを推す。'
   - id: pre-a-stroller
     name: A型ベビーカー
     category: ugoku
@@ -498,6 +553,11 @@ items:
         q: A型ベビーカー
       - kind: rakuten
         q: A型 ベビーカー
+    recommend:
+      name: 'アップリカ カルーンエアメッシュ AC'
+      url: 'https://www.amazon.co.jp/dp/B0DDK5ZRVN'
+      price: '30,341円（税込・定価37,400円）'
+      note: '実測30,341円、評価4.4、238件。生後1か月〜36か月のA型規定に一致し、両対面・ワンタッチ開閉・軽量で初台の階段移動に対応。高級機8万円台と、1万6千円台の評価10件の無名機の中間で、国内保証とレビュー実証のバランスが一番良い。'
   - id: pre-baby-holder
     name: 抱っこひも・スリング
     category: ugoku
@@ -521,6 +581,11 @@ items:
         q: 抱っこ紐
       - kind: akachan
         q: 抱っこ紐
+    recommend:
+      name: 'Coperta 腰ベルト型抱っこ紐 改良版'
+      url: 'https://www.amazon.co.jp/dp/B08J46Q7CM'
+      price: '3,399円（税込・定価6,499円）'
+      note: '実測3,399円、評価4.2、2,366件。腰ベルト型でレビュー実証が最大級。新生児は横抱き対応という使い方が説明書に明記されている。2〜3万円級との価格差が大きく、まず1個試す位置づけに最適。'
   - id: pre-health-tools
     name: 体温計・爪切り・綿棒などのケア用品
     category: karada
@@ -559,4 +624,9 @@ items:
         q: 授乳クッション
       - kind: akachan
         q: 授乳クッション
+    recommend:
+      name: 'QUEEN ROSE 授乳クッション'
+      url: 'https://www.amazon.co.jp/dp/B0BZYSSDWV'
+      price: '3,400円（税込）'
+      note: '実測3,400円、評価4.5、751件。カバー洗濯可は選定基準と一致。同じ用途の高級品は12,000円で評価201件。価格は3分の1以下、評価件数は3倍超。'
 ---

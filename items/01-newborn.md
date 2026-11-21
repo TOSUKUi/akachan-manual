@@ -150,6 +150,11 @@ items:
         q: 母乳パッド
       - kind: akachan
         q: 母乳パッド
+    recommend:
+      name: 'dacco マミーパッド ファインプラス 152枚'
+      url: 'https://www.amazon.co.jp/dp/B085P94M77'
+      price: '839円（税込・1枚約5.5円）'
+      note: '実測839円、評価4.4、1,818件、購入5K+。母乳パッドで1位の実売品。1枚約5.5円で、ピジョンの144枚1,291円（1枚約9円）より約4割安い。'
   - id: nb-breast-pump
     name: さく乳器（手動・電動）
     category: karada
@@ -173,6 +178,11 @@ items:
         q: さく乳器
       - kind: akachan
         q: さく乳器
+    recommend:
+      name: 'ピジョン 母乳アシスト 手動さく乳器'
+      url: 'https://www.amazon.co.jp/dp/B09QCLJLS3'
+      price: '3,982円（税込・定価5,940円）'
+      note: '実測3,982円、評価4.0、581件。頻繁に搾る予定がなければ手動から、という方針に合う国内標準品。電動は5千円〜3万円台であり、手動で用途を確認してから昇格するのが合理的。'
   - id: nb-baby-lotion
     name: 赤ちゃん用の保湿剤
     category: karada
@@ -196,6 +206,11 @@ items:
         q: ベビーローション
       - kind: nishimatyaya
         q: ベビーローション
+    recommend:
+      name: 'ピジョン ベビーミルクローション 300g'
+      url: 'https://www.amazon.co.jp/dp/B09R9MGPCJ'
+      price: '725円（税込）'
+      note: '実測725円、評価4.5、1,196件、購入4K+。0か月対応の無香料・無添加。この価格ならまず1本試す障壁が低い。リコール該当なしを公式のお知らせ一覧で確認済み。'
   - id: nb-room-thermo
     name: 温湿度計
     category: karada
@@ -218,6 +233,11 @@ items:
         q: 温湿度計 子供 部屋
       - kind: rakuten
         q: 温湿度計
+    recommend:
+      name: 'TempPro TP49 デジタル温湿度計'
+      url: 'https://www.amazon.co.jp/dp/B07TYN8584'
+      price: '999円（税込・定価1,098円）'
+      note: '実測999円、評価4.1、76,202件。温湿度計でレビュー件数が桁違いの実証品。快適度表示付きで、数字で確認する習慣に直結する。西松屋で扱った似た商品は最低購入数10個で単品購入できなかった。'
   - id: nb-baby-uv
     name: ベビー用日焼け止め
     category: karada
@@ -241,6 +261,11 @@ items:
         q: ベビー 日焼け止め
       - kind: akachan
         q: ベビー 日焼け止め
+    recommend:
+      name: 'Mama&Kids UVライトヴェール SPF23/PA++ 90ml'
+      url: 'https://www.amazon.co.jp/dp/B00JW54MF8'
+      price: '2,695円（税込）'
+      note: '実測2,695円、評価4.3、336件。0か月表記が明確でお湯で落とせる。人気の安価品990円（評価4.5、1,099件）は1歳からの表記があるため、生後まもない時期の品としては選べない。'
   - id: nb-diaper-bin
     name: おむつ用ごみ箱（蓋付き・消臭）
     category: arau
@@ -265,6 +290,11 @@ items:
         q: おむつゴミ箱
       - kind: akachan
         q: おむつ用ゴミ箱
+    recommend:
+      name: 'コンビ ポイテック W防臭'
+      url: 'https://shop.akachan.jp/shop/g/g220900900/'
+      price: '1,628円（税込）'
+      note: '実測1,628円。同じ店でポット型として最安、レビュー2件はいずれも防臭を評価。ニオイポイは2,090円でレビュー0件だったため価格・評価ともに上。カセット式なので交換フィルタのランニングコストは別途必要。'
   - id: nb-nail-clipper
     name: ベビー用つめ切り・つめやすり
     category: karada
@@ -289,6 +319,11 @@ items:
         q: ベビー つめ切り
       - kind: akachan
         q: つめきり
+    recommend:
+      name: '貝印 つめ切りはさみ 新生児用（西松屋）'
+      url: 'https://www.24028-net.jp/category/HEALTH_NAILCLIPPER/4901601306064.html'
+      price: '548円（税込・本体499円）'
+      note: '西松屋で実測548円、在庫あり。刃物が細かく、寝ている間の爪切りに安全。同店の新生児用はさみは438円で110円安いが、刃物専門メーカー品である価格差としては妥当。ピジョンの新生児爪切りハサミ878円より安い。'
   - id: nb-mitten
     name: ベビー用ミトン（爪よけ）
     category: karada
@@ -313,6 +348,11 @@ items:
         q: ベビーミトン
       - kind: akachan
         q: ミトン
+    recommend:
+      name: '西松屋 3枚組フライスミトン'
+      url: 'https://www.24028-net.jp/category/NB_MITTEN/205280225017.html'
+      price: '548円（税込・3枚組・1枚約183円）'
+      note: '実測548円、在庫あり。同店新生児ミトンの人気1位。3枚で1枚約183円は、洗い替え前提の消耗用途で店舗の自社企画品が合理的という判断に沿う。'
   - id: nb-socks
     name: ベビー用ソックス・靴下
     category: kiru
@@ -337,6 +377,11 @@ items:
         q: ベビー 靴下
       - kind: akachan
         q: 新生児 ソックス
+    recommend:
+      name: '西松屋 3足組新生児クルーソックス'
+      url: 'https://www.24028-net.jp/category/NB_SOCKS/201516909010.html'
+      price: '526円（税込・3足組・1足約175円）'
+      note: '実測526円、在庫あり。新生児ソックスの人気2位。1足約175円で、似た刺繍品の2足427円（1足約214円）より1足単価が安い。サイズアウトが早いためまとめ買いしない方針に合う。'
   - id: nb-bath-thermo
     name: バスサーモ（浴用温度計）
     category: arau
@@ -360,6 +405,11 @@ items:
         q: バスサーモ
       - kind: akachan
         q: バスサーモ
+    recommend:
+      name: '西松屋 湯温計 カエル'
+      url: 'https://www.24028-net.jp/category/BATH_BATHGOODS/4961386517604.html'
+      price: '438円（税込・本体399円）'
+      note: '実測438円、在庫あり。同店お風呂グッズ人気2位。37〜40度の目盛り確認用なら安価なもので十分という方針に一致。他の湯温計878円の半額以下。'
   - id: nb-humidifier
     name: 加湿器
     category: karada
@@ -385,6 +435,11 @@ items:
         q: 加湿器
       - kind: nishimatyaya
         q: 加湿器
+    recommend:
+      name: 'Nuvano 加湿器 3.5L UV除菌 ハイブリッド'
+      url: 'https://www.amazon.co.jp/dp/B0HC25R9FV'
+      price: '3,599円（税込・定価5,999円）'
+      note: '実測3,599円、評価4.3、120件、購入800+。UV除菌タンクと上から給水で手入れが楽、連続45時間・静音で寝室向き。同じ価格帯のダイヤル式（3,980円・評価4.5、100件）より容量と除菌方式が上。セール価格なので定価5,999円も併記する。'
   - id: nb-bath-towel
     name: バスタオル（沐浴後の体をふく・敷く用）
     category: arau
@@ -410,6 +465,11 @@ items:
         q: ベビー バスタオル
       - kind: amazon
         q: ベビー バスタオル
+    recommend:
+      name: '西松屋 正方形4層ガーゼ バスタオル'
+      url: 'https://www.24028-net.jp/category/BATH_BATHTOWEL/200206441.html'
+      price: '966円（税込・本体879円）'
+      note: '実測966円、在庫あり。正方形（約100cm）は沐浴後に敷く・ふくの両用に扱いやすく、4層ガーゼは吸水と速乾を両立。大人バスタオルの代用は1,000円超でサイズが過大。'
   - id: nb-bath-mat
     name: バスマット（沐浴〜入浴後の敷く用）
     category: arau
@@ -434,4 +494,9 @@ items:
         q: バスマット 赤ちゃん
       - kind: nishimatyaya
         q: バスマット
+    recommend:
+      name: 'リッチェル ベビー用バスマット 湯上りマット'
+      url: 'https://www.amazon.co.jp/dp/B0G1LSRPBP'
+      price: '4,008円（税込）'
+      note: '実測4,008円、評価4.5、165件、購入2K+。新生児〜6か月の沐浴期専用設計で、赤ちゃんを寝かせて着替えさせる用途に直結。安価なゴムマット909円（評価4.5、311件）は赤ちゃん専用ではなく硬い。'
 ---

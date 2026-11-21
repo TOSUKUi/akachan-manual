@@ -146,6 +146,7 @@ const RECO_BLOCK = `          {item.recommend && (
                 rel="noopener noreferrer"
               >
                 {item.recommend.name}
+                <span className="sr-only">（新しいタブで開きます）</span>
               </a>
               <span className="reco-price">{item.recommend.price}</span>
               <p className="reco-why">{item.recommend.note}</p>
